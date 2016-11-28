@@ -3,16 +3,6 @@
 public class Ball : MonoBehaviour
 {
 
-    private Rigidbody2D ownRigidbody;
-    //private float lastSpeed = 0;
-
-    // Use this for initialization
-    void Start()
-    {
-        Vector2 randomForce = new Vector2(0.7f, 0.7f);
-        ownRigidbody = GetComponent<Rigidbody2D>();
-        ownRigidbody.AddForce(randomForce * 5, ForceMode2D.Impulse);
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -25,4 +15,12 @@ public class Ball : MonoBehaviour
         collidedGameobject.GetComponent<Block>().Die();
     }
 
+    void Start()
+    {
+        Vector2 randomForce = new Vector2(0.7f, 0.7f);
+        this.ownRigidbody = GetComponent<Rigidbody2D>();
+        this.ownRigidbody.AddForce(randomForce * 5, ForceMode2D.Impulse);
+    }
+
+    private Rigidbody2D ownRigidbody;
 }

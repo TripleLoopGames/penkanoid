@@ -9,17 +9,22 @@ public class BreakoutCool : MonoBehaviour {
 
     private void Initialize()
     {
-        _originPosition = LocalConfig.SpawnArea.OriginPosition;
-        _endPosition = LocalConfig.SpawnArea.EndPosition;
+        this.originPosition = LocalConfig.SpawnArea.OriginPosition;
+        this.endPosition = LocalConfig.SpawnArea.EndPosition;
         InitializeBlocks();
     }
 
     private BreakoutCool InitializeBlocks()
     {
+
         int[] preArray = new int[20];
-        GameObject[] blocksArray = preArray.Select((int ho) => {
+        GameObject blockParent = new GameObject("BlockParent");
+        GameObject[] blocksArray = preArray.Select((int _, int index) => {
             Vector2 position = GetAvaliablePosition();
-            return SRResources.Game.Block.Instantiate(position);
+            GameObject blockObject = SRResources.Game.Block.Instantiate(position);
+            blockObject.GetComponent<Block>().Initialize(index);
+            blockObject.transform.SetParent(blockParent.transform);
+            return blockObject;
         }).ToArray();
         return this;
     }
@@ -39,7 +44,7 @@ public class BreakoutCool : MonoBehaviour {
         do
         {
             testedPosition = RandomPosition();
-            colliderCount = Physics2D.OverlapCircleNonAlloc(testedPosition, radius, collidersDetected, _avoidSpawnInLayers);
+            colliderCount = Physics2D.OverlapCircleNonAlloc(testedPosition, radius, collidersDetected, this.avoidSpawnInLayers);
             tries++;
             if (tries >= LocalConfig.FindPosition.MaxTries)
             {
@@ -59,14 +64,14 @@ public class BreakoutCool : MonoBehaviour {
 
     private Vector2 RandomPosition()
     {
-        float xPosition = Random.Range(_originPosition.x, _endPosition.x);
-        float yPosition = Random.Range(_originPosition.y, _endPosition.y);
+        float xPosition = Random.Range(this.originPosition.x, this.endPosition.x);
+        float yPosition = Random.Range(this.originPosition.y, this.endPosition.y);
         return new Vector2(xPosition, yPosition);
     }
 
-    private Vector2 _originPosition;
-    private Vector2 _endPosition;
+    private Vector2 originPosition;
+    private Vector2 endPosition;
 
     [SerializeField]
-    private LayerMask _avoidSpawnInLayers;
+    private LayerMask avoidSpawnInLayers;
 }

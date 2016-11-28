@@ -2,8 +2,6 @@
 
 public class Ball : MonoBehaviour
 {
-
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collidedGameobject = collision.gameObject;

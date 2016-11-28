@@ -4,11 +4,17 @@ using Random = UnityEngine.Random;
 using LocalConfig = Config.Generation;
 using System;
 
-public class BreakoutCool : MonoBehaviour {
+public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
 
     private void Start()
     {
         Initialize();
+    }
+
+
+    public void Handle(PlayerDeadMessage message)
+    {
+        this.inputManager.DisableInput();
     }
 
     private void Initialize()

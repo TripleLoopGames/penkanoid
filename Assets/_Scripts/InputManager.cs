@@ -24,15 +24,17 @@ public class InputManager : MonoBehaviourEx
         }
         if (Input.GetKey(KeyCode.A))
         {
-            Messenger.Publish(new UserDirectionMessage(Vector2.left,25));
+            Physics2D.gravity = new Vector2(-10, 0);
+            //Messenger.Publish(new UserDirectionMessage(Vector2.left,25));
         }
         if (Input.GetKey(KeyCode.D))
         {
-            Messenger.Publish(new UserDirectionMessage(Vector2.right,25));
+            Physics2D.gravity = new Vector2(10, 0);
+            //Messenger.Publish(new UserDirectionMessage(Vector2.right,25));
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //Messenger.Publish(new UserDirectionMessage("space"));
+            Messenger.Publish(new UserShootMessage());
         }
     }
 

@@ -1,23 +1,30 @@
 ﻿using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviourEx
 {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collidedGameobject = collision.gameObject;
         bool hasCollidedWithBlock = collidedGameobject.CompareTag(SRTags.Block);
-        if (!hasCollidedWithBlock)
+        bool hasCollidedWithPlayer = collidedGameobject.CompareTag(SRTags.Player);
+        if (hasCollidedWithBlock)
         {
+            collidedGameobject.GetComponent<Block>().Die();
             return;
         }
-        collidedGameobject.GetComponent<Block>().Die();
+        if (hasCollidedWithPlayer)
+        {
+            Messenger.Publish(new PlayerDeadMessage());
+            return;
+        }
     }
 
-    void Start()
+    public Ball Inititalize(Vector2 position, Vector2 direction, float magnitude)
     {
-        Vector2 randomForce = new Vector2(0.7f, 0.7f);
         this.ownRigidbody = GetComponent<Rigidbody2D>();
-        this.ownRigidbody.AddForce(randomForce * 1.5f, ForceMode2D.Impulse);
+        this.gameObject.transform.position = position;
+        this.ownRigidbody.AddForce(direction * magnitude, ForceMode2D.Impulse);
+        return this;
     }
 
     private Rigidbody2D ownRigidbody;

@@ -17,7 +17,7 @@ public class BreakoutCool : MonoBehaviour {
     private BreakoutCool InitializeBlocks()
     {
 
-        int[] preArray = new int[20];
+        int[] preArray = new int[30];
         GameObject blockParent = new GameObject("BlockParent");
         GameObject[] blocksArray = preArray.Select((int _, int index) => {
             Vector2 position = GetAvaliablePosition();

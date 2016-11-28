@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
     {
         Vector2 randomForce = new Vector2(0.7f, 0.7f);
         this.ownRigidbody = GetComponent<Rigidbody2D>();
-        this.ownRigidbody.AddForce(randomForce * 5, ForceMode2D.Impulse);
+        this.ownRigidbody.AddForce(randomForce * 1.5f, ForceMode2D.Impulse);
     }
 
     private Rigidbody2D ownRigidbody;

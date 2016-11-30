@@ -4,12 +4,6 @@ using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>
 {
-
-    void Start()
-    {
-        this.ownRigidbody = GetComponent<Rigidbody2D>();
-    }
-
     public void Handle(UserShootMessage message)
     {
         Ball ball = SRResources.Game.Ball.Instantiate().GetComponent<Ball>();
@@ -23,6 +17,4 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     {
         GetComponent<Animator>().SetBool("isAlive",false);
     }
-
-    private Rigidbody2D ownRigidbody;
 }

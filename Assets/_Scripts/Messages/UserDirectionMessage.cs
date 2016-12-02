@@ -2,12 +2,10 @@
 
 public class UserDirectionMessage
 {
-    public Vector2 Force { get; set; }
-    public float Magnitude { get; set; }
+    public Vector2 Position { get; set; }
 
-    public UserDirectionMessage(Vector2 force, float magnitude)
+    public UserDirectionMessage(Vector2 position)
     {
-        this.Force = force;
-        this.Magnitude = magnitude;
+        this.Position = position;
     }
 }

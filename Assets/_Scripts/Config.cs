@@ -3,8 +3,10 @@ using System.Collections;
 
 public static class Config
 {
-    public static class Generation
+    public static class LevelManager
     {
+        public const int layerMask = -1;
+
         public static class SpawnArea
         {
             public static readonly Vector2 OriginPosition = new Vector2(-7.76f, 4.04f);

@@ -18,11 +18,17 @@ public class InputManager : MonoBehaviourEx
 
     public InputManager Initialize()
     {
+#if UNITY_ANDROID
         if (SystemInfo.supportsGyroscope)
         {
             this.gyro = Input.gyro;
             this.gyro.enabled = true;
+        } else
+        {
+            this.gyroNotSupported = true;
+            Debug.Log("The system doesn't support Gyroscope");
         }
+#endif
         return this;
     }
 
@@ -61,7 +67,7 @@ public class InputManager : MonoBehaviourEx
         }
 
 #elif UNITY_ANDROID
-        if (this.gyro.enabled)
+        if (!this.gyroNotSupported && this.gyro.enabled)
         {
             float currentDirection = Input.gyro.gravity.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
             if (this.direction != currentDirection)
@@ -94,9 +100,11 @@ public class InputManager : MonoBehaviourEx
         }
         return false;
     }
+
+    private Gyroscope gyro;
+    private bool gyroNotSupported;
 #endif
 
     private float direction;
     private bool inputEnabled;
-    private Gyroscope gyro;
 }

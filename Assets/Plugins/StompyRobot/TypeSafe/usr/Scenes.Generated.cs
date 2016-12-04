@@ -21,14 +21,21 @@ public sealed class SRScenes {
     
     private const string _tsInternal = "1.2.2-Unity5";
     
-    public static global::TypeSafe.Scene Game {
+    public static global::TypeSafe.Scene Menu {
         get {
             return __all[0];
         }
     }
     
+    public static global::TypeSafe.Scene Game {
+        get {
+            return __all[1];
+        }
+    }
+    
     private static global::System.Collections.Generic.IList<global::TypeSafe.Scene> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.Scene>(new global::TypeSafe.Scene[] {
-                new global::TypeSafe.Scene("Game", 0)});
+                new global::TypeSafe.Scene("Menu", 0),
+                new global::TypeSafe.Scene("Game", 1)});
     
     public static global::System.Collections.Generic.IList<global::TypeSafe.Scene> All {
         get {

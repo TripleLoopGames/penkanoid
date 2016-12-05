@@ -10,6 +10,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     public void Handle(PlayerDeadMessage message)
     {
         this.inputDetector.DisableInput();
+        this.ui.ShowEnd();
     }
 
     private void Initialize()
@@ -68,7 +69,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.mainCamera.name = "mainCamera";
         this.mainCamera.transform.SetParent(this.gameObject.transform, false);
         return this;
-    }   
+    }
 
     private BreakoutCool InitializeInputDetector()
     {

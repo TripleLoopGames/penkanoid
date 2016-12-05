@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
 
@@ -12,8 +13,8 @@ public class GameUi : MonoBehaviourEx {
 
     private GameUi InitializeEndGame()
     {
-        GameObject mainPanel = Resources.EndGame.Instantiate();
-        Button[] buttons = mainPanel.GetComponentsInChildren<Button>();
+        this.endGame = Resources.EndGame.Instantiate();
+        Button[] buttons = this.endGame.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button => {
             if(button.name == "Restart")
             {
@@ -25,11 +26,24 @@ public class GameUi : MonoBehaviourEx {
             }
             return button;
         }).ToArray();
-        mainPanel.name = "EndGame";
-        mainPanel.transform.SetParent(this.gameObject.transform, false);
-        mainPanel.SetActive(false);
+        this.endGame.name = "EndGame";
+        this.endGame.transform.SetParent(this.gameObject.transform, false);
+        HideEnd();
         return this;
     }
+
+    public GameUi ShowEnd()
+    {
+        this.endGame.SetActive(true);
+        return this;
+    }
+
+    public GameUi HideEnd()
+    {
+        this.endGame.SetActive(false);
+        return this;
+    }
+
 
     private void OnReStart()
     {
@@ -46,4 +60,6 @@ public class GameUi : MonoBehaviourEx {
         GetComponent<Canvas>().worldCamera = camera;
         return this;
     }
+
+    private GameObject endGame;
 }

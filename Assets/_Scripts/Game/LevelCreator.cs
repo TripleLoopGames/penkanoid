@@ -3,9 +3,9 @@ using Random = UnityEngine.Random;
 using System.Linq;
 using LocalConfig = Config.LevelManager;
 
-public class LevelManager : MonoBehaviour
+public class LevelCreator : MonoBehaviour
 {
-    public LevelManager InitializeBlocks()
+    public GameObject InitializeBlocks()
     {
         this.avoidSpawnInLayers.value = LocalConfig.layerMask;
         int[] preArray = new int[30];
@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour
             blockObject.transform.SetParent(blockParent.transform);
             return blockObject;
         }).ToArray();
-        return this;
+        return blockParent;
     }
 
     private Vector2 GetAvaliablePosition()

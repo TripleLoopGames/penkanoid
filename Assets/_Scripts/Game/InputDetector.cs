@@ -1,22 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class InputManager : MonoBehaviourEx
+public class InputDetector : MonoBehaviourEx
 {
 
-    public InputManager EnableInput()
+    public InputDetector EnableInput()
     {
         this.inputEnabled = true;
         return this;
     }
 
-    public InputManager DisableInput()
+    public InputDetector DisableInput()
     {
         this.inputEnabled = false;
         return this;
     }
 
-    public InputManager Initialize()
+    public InputDetector Initialize()
     {
 #if UNITY_ANDROID
         if (SystemInfo.supportsGyroscope)

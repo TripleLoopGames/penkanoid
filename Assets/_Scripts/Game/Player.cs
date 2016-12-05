@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using LocalConfig = Config.Player;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
 {
@@ -34,20 +35,19 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         GetComponent<Animator>().SetBool("isAlive",false);
     }
 
-    //void FixedUpdate()
-    //{
-    //    if(this.gravityDirection == null)
-    //    {
-    //        return;
-    //    }
-    //    this.ownRigidbody.AddForce(this.gravityDirection * 50 * this.ownRigidbody.mass);
-    //}
-
-    private void Start()
+    public Player Initialize()
     {
         this.ownRigidbody = GetComponent<Rigidbody2D>();
+        this.gameObject.transform.position = LocalConfig.position;
+        return this;
+    }
+
+    public Player Reset()
+    {
+        this.gameObject.transform.position = LocalConfig.position;
+        GetComponent<Animator>().SetBool("isAlive", true);
+        return this;
     }
 
     private Rigidbody2D ownRigidbody;
-    // private Vector2 gravityDirection;
 }

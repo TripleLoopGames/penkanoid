@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = UnityEngine.Random;
 using System.Linq;
-using LocalConfig = Config.LevelManager;
+using LocalConfig = Config.LevelCreator;
 
 public class LevelCreator : MonoBehaviour
 {

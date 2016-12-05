@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class Config
 {
-    public static class LevelManager
+    public static class LevelCreator
     {
         public const int layerMask = -1;
 
@@ -20,5 +20,10 @@ public static class Config
             //tries before reducing the radius
             public const int MaxTries = 15;
         }
+    }
+
+    public static class Player
+    {
+        public static readonly Vector2 position = new Vector2(0f, -3.6f);
     }
 }

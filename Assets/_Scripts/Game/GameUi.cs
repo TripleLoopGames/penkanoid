@@ -5,20 +5,20 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx {
 
-    public GameUi Initialize()
+    public GameUi Initialize(Action restart)
     {
-        InitializeEndGame();
+        InitializeEndGame(restart);
         return this;
     }
 
-    private GameUi InitializeEndGame()
+    private GameUi InitializeEndGame(Action restart)
     {
         this.endGame = Resources.EndGame.Instantiate();
         Button[] buttons = this.endGame.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button => {
             if(button.name == "Restart")
             {
-               button.onClick.AddListener(() => OnReStart());
+               button.onClick.AddListener(() => restart());
             }
             if (button.name == "Menu")
             {
@@ -42,12 +42,6 @@ public class GameUi : MonoBehaviourEx {
     {
         this.endGame.SetActive(false);
         return this;
-    }
-
-
-    private void OnReStart()
-    {
-        Debug.Log("should call a delegate or send a message to re-start the level");
     }
 
     private void OnMenu()

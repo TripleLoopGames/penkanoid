@@ -13,6 +13,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.ui.ShowEnd();
     }
 
+    public BreakoutCool ReStart()
+    {
+        Debug.Log("Restarting...");
+        return this;
+    }
+
     private void Initialize()
     {
         InitializeCamera()
@@ -23,6 +29,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializePlayer()
         .SetReferences();
         this.inputDetector.EnableInput();
+    }
+
+    private BreakoutCool Reset()
+    {
+        this.player.Reset();
+        return this;
     }
 
     private BreakoutCool SetReferences()
@@ -37,7 +49,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<GameUi>();
-        this.ui.Initialize();
+        this.ui.Initialize(() => ReStart());
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();
@@ -49,9 +61,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool InitializePlayer()
     {
-        GameObject player = Resources.Player.Instantiate();
-        player.name = "player";
-        player.transform.SetParent(this.gameObject.transform, false);
+        this.player = Resources.Player.Instantiate().GetComponent<Player>();
+        this.player.name = "player";
+        this.player.transform.SetParent(this.gameObject.transform, false);
+        this.player.Initialize();
         return this;
     }
 
@@ -95,4 +108,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private InputDetector inputDetector;
     private LevelCreator levelCreator;
     private Camera mainCamera;
+    private Player player;
 }

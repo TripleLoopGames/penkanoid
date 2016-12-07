@@ -697,32 +697,39 @@ public sealed class SRResources {
             }
         }
         
-        public static global::TypeSafe.PrefabResource Block {
+        public static global::TypeSafe.PrefabResource BallPool {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
             }
         }
         
-        public static global::TypeSafe.PrefabResource Scenario {
+        public static global::TypeSafe.PrefabResource Block {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
             }
         }
         
-        public static global::TypeSafe.PrefabResource Player {
+        public static global::TypeSafe.PrefabResource Scenario {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
             }
         }
         
-        public static global::TypeSafe.PrefabResource Ball {
+        public static global::TypeSafe.PrefabResource Player {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
             }
         }
         
+        public static global::TypeSafe.PrefabResource Ball {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
+            }
+        }
+        
         private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                     new global::TypeSafe.PrefabResource("Main Camera", "Game/Main Camera"),
+                    new global::TypeSafe.PrefabResource("BallPool", "Game/BallPool"),
                     new global::TypeSafe.PrefabResource("Block", "Game/Block"),
                     new global::TypeSafe.PrefabResource("Scenario", "Game/Scenario"),
                     new global::TypeSafe.PrefabResource("Player", "Game/Player"),

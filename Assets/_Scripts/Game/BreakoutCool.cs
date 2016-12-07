@@ -2,6 +2,7 @@
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 using Resources = SRResources.Game;
+using PathologicalGames;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelCreator))]
@@ -27,6 +28,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeInputDetector()
         .InitializeScenario()
         .InitializePlayer()
+        .InitializeBallPool()
         .SetReferences();
         this.inputDetector.EnableInput();
     }
@@ -40,6 +42,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool SetReferences()
     {
         this.ui.SetCamera(this.mainCamera);
+        this.player.SetBallPool(this.ballPool);
         return this;
     }
 
@@ -99,6 +102,14 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool InitializeBallPool()
+    {
+        this.ballPool = Resources.BallPool.Instantiate().GetComponent<SpawnPool>();
+        this.ballPool.name = "BallPool";
+        this.ballPool.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
     private void Start()
     {
         Initialize();
@@ -109,4 +120,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private LevelCreator levelCreator;
     private Camera mainCamera;
     private Player player;
+    private SpawnPool ballPool;
 }

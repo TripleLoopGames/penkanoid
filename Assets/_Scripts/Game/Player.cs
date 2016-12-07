@@ -2,6 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 using LocalConfig = Config.Player;
+using PathologicalGames;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
 {
@@ -23,11 +24,11 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public void Handle(UserShootMessage message)
     {
-        Ball ball = SRResources.Game.Ball.Instantiate().GetComponent<Ball>();
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.3f;
-        ball.Inititalize(spawnPosition, randomDirection, 2);
+        Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
+        ball.Inititalize(spawnPosition, randomDirection, 2);        
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -42,6 +43,13 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         return this;
     }
 
+
+    public Player SetBallPool(SpawnPool ballPool)
+    {
+        this.ballPool = ballPool;
+        return this;
+    }
+
     public Player Reset()
     {
         this.gameObject.transform.position = LocalConfig.position;
@@ -50,4 +58,5 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     }
 
     private Rigidbody2D ownRigidbody;
+    private SpawnPool ballPool;
 }

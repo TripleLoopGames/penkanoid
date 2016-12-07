@@ -16,7 +16,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     public BreakoutCool ReStart()
     {
-        Debug.Log("Restarting...");
+        Reset();
+        this.inputDetector.EnableInput();
         return this;
     }
 
@@ -35,7 +36,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool Reset()
     {
+        this.ballPool.DespawnAll();
         this.player.Reset();
+        this.ui.HideEnd();
+        this.levelCreator.Reset();
+        this.levelCreator.GenerateLevel();
         return this;
     }
 
@@ -97,7 +102,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeLevelCreator()
     {
         this.levelCreator = GetComponent<LevelCreator>();
-        GameObject blocks = this.levelCreator.InitializeBlocks();
+        this.levelCreator.Initialize();
+        GameObject blocks = this.levelCreator.GenerateLevel();
         blocks.transform.SetParent(this.gameObject.transform, false);
         return this;
     }

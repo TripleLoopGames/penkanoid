@@ -5,20 +5,35 @@ using LocalConfig = Config.LevelCreator;
 
 public class LevelCreator : MonoBehaviour
 {
-    public GameObject InitializeBlocks()
+    public LevelCreator Initialize()
+    {
+        this.blockParent = new GameObject("BlockParent");
+        return this;
+    }
+
+    public GameObject GenerateLevel()
     {
         this.avoidSpawnInLayers.value = LocalConfig.layerMask;
         int[] preArray = new int[30];
-        GameObject blockParent = new GameObject("BlockParent");
-        GameObject[] blocksArray = preArray.Select((int _, int index) =>
+        this.blocksArray = preArray.Select((int _, int index) =>
         {
             Vector2 position = GetAvaliablePosition();
             GameObject blockObject = SRResources.Game.Block.Instantiate(position);
             blockObject.GetComponent<Block>().Initialize(index);
-            blockObject.transform.SetParent(blockParent.transform);
+            blockObject.transform.SetParent(this.blockParent.transform);
             return blockObject;
         }).ToArray();
-        return blockParent;
+        return this.blockParent;
+    }
+
+    public LevelCreator Reset()
+    {
+        this.blocksArray.Select((GameObject block, int index) =>
+        {
+            Destroy(block);
+            return block;
+        }).ToArray();
+        return this;
     }
 
     private Vector2 GetAvaliablePosition()
@@ -59,4 +74,6 @@ public class LevelCreator : MonoBehaviour
     }
 
     private LayerMask avoidSpawnInLayers;
+    GameObject[] blocksArray;
+    GameObject blockParent;
 }

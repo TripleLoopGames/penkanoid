@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TimerComponent : MonoBehaviour
 {
-
     public TimerComponent StartTimer(int time, Action<int> onSecond, Action onEnd)
     {
         if(this.coroutine != null)
@@ -18,7 +17,7 @@ public class TimerComponent : MonoBehaviour
         return this;
     }
 
-    public TimerComponent Reset()
+    public TimerComponent StopTimer()
     {
         if (this.coroutine != null)
         {
@@ -28,6 +27,7 @@ public class TimerComponent : MonoBehaviour
         return this;
     }
 
+    // oups this is not a timer this is a countdown
     private IEnumerator WaitAndExecuteEverySecond(int time, Action<int> onSecond, Action onEnd)
     {
         int count = time;

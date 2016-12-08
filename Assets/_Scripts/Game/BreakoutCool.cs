@@ -18,16 +18,24 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializePlayer()
         .InitializeBallPool()
         .SetReferences();
+        StartGame();
+    }
+
+    private BreakoutCool StartGame()
+    {
         this.inputDetector.EnableInput();
         this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+        return this;
     }
 
     private BreakoutCool EndGame()
     {
         this.inputDetector.DisableInput();
         this.ui.ShowEnd();
+        this.ui.StopCountDown();
         return this;
     }
+
     public void Handle(PlayerDeadMessage message)
     {
         EndGame();
@@ -36,7 +44,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     public BreakoutCool ReStart()
     {
         Reset();
-        this.inputDetector.EnableInput();
+        StartGame();
         return this;
     }
 

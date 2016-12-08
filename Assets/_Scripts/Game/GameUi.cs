@@ -36,6 +36,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
         return this;
     }
 
+    public GameUi StopCountDown()
+    {
+        this.timerComponent.StopTimer();
+        return this;
+    }
+
     public GameUi ShowEnd()
     {
         this.endGame.SetActive(true);

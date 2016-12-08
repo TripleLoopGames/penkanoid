@@ -89,10 +89,10 @@ PolygonCollider2D:
       - {x: -9.599999, y: -6}
       - {x: 9.599999, y: -6}
       - {x: 9.599999, y: 6}
-    - - {x: -8.63, y: 4.74}
-      - {x: 8.75, y: 4.74}
-      - {x: 8.75, y: -5.0299997}
-      - {x: -8.63, y: -5.0299997}
+    - - {x: -8.707874, y: 4.049504}
+      - {x: 8.724043, y: 4.0207334}
+      - {x: 8.75, y: -5.590532}
+      - {x: -8.727565, y: -5.5696974}
 --- !u!212 &212321306060978628
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -123,8 +123,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b5a9231804b61bb47ab000dcff42bad9, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: b153b8ffab497d64bb2019cd62393529, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

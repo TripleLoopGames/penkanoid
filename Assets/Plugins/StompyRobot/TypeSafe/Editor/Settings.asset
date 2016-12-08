@@ -27,7 +27,4 @@ MonoBehaviour:
   TriggerOnResourceChange: 1
   TriggerOnSceneChange: 1
   Whitelist: []
-  TypeCache:
-  - Path: Assets/Plugins/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
-    Type: SRDebugger.Settings, Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+  TypeCache: []

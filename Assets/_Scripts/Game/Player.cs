@@ -68,6 +68,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     {
         this.gameObject.transform.position = LocalConfig.InitialPosition;
         GetComponent<Animator>().SetBool("isAlive", true);
+        this.health = LocalConfig.InitialHealth;
         return this;
     }
 

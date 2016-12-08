@@ -5,12 +5,18 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage> {
 
+
+
     public void Handle(PlayerChangeHealthMessage message)
     {
-        for (int index = 0; index < this.hearts.Length; index++)
-        {
-            this.hearts[index].SetActive(index < message.Health);
-        }
+        SetHearts(message.Health);
+    }
+
+    public GameUi Reset()
+    {
+        HideEnd();
+        SetHearts(this.initialHealth);
+        return this;
     }
 
     public GameUi ShowEnd()
@@ -27,8 +33,15 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage> {
 
     public GameUi Initialize(Action restart,int initialHealth)
     {
+        this.initialHealth = initialHealth;
         InitializeEndGame(restart)
         .InitializeHealth(initialHealth);
+        return this;
+    }
+
+    public GameUi SetCamera(Camera camera)
+    {
+        GetComponent<Canvas>().worldCamera = camera;
         return this;
     }
 
@@ -63,10 +76,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage> {
                             .Select((Transform heartTransform) => heartTransform.gameObject)
                             .Where(heart => heart.CompareTag(SRTags.UiHeart))
                             .ToArray();
-        for (int index = 0; index < this.hearts.Length; index++)
-        {
-            this.hearts[index].SetActive(index < initialHealth);
-        }
+        SetHearts(initialHealth);
         return this;
     }
 
@@ -75,13 +85,19 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage> {
         Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu));
     }
 
-    public GameUi SetCamera(Camera camera)
+    private GameUi SetHearts(int health)
     {
-        GetComponent<Canvas>().worldCamera = camera;
+        for (int index = 0; index < this.hearts.Length; index++)
+        {
+            this.hearts[index].SetActive(index < health);
+        }
         return this;
     }
+
+
 
     private GameObject endGame;
     private GameObject health;
     private GameObject[] hearts;
+    private int initialHealth;
 }

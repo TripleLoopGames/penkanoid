@@ -40,6 +40,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.player.Reset();
         this.ui.HideEnd();
         this.levelCreator.Reset();
+        this.ui.Reset();
         this.levelCreator.GenerateLevel();
         return this;
     }

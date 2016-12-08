@@ -39,7 +39,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     public Player Initialize()
     {
         this.ownRigidbody = GetComponent<Rigidbody2D>();
-        this.gameObject.transform.position = LocalConfig.position;
+        this.gameObject.transform.position = LocalConfig.InitialPosition;
+        this.health = LocalConfig.InitialHealth;
         return this;
     }
 
@@ -52,11 +53,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public Player Reset()
     {
-        this.gameObject.transform.position = LocalConfig.position;
+        this.gameObject.transform.position = LocalConfig.InitialPosition;
         GetComponent<Animator>().SetBool("isAlive", true);
         return this;
     }
 
     private Rigidbody2D ownRigidbody;
     private SpawnPool ballPool;
+    private int health;
 }

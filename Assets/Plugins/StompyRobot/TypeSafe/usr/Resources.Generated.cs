@@ -758,10 +758,17 @@ public sealed class SRResources {
                 }
             }
             
+            public static global::TypeSafe.PrefabResource Health {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
+                }
+            }
+            
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                         new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
-                        new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame")});
+                        new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame"),
+                        new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health")});
             
             /// <summary>
             /// Return a list of all resources in this folder.

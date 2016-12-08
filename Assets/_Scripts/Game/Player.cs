@@ -6,6 +6,19 @@ using PathologicalGames;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
 {
+    public Player Damage()
+    {
+        this.health -= 1;
+        if(this.health <= 0)
+        {
+            Messenger.Publish(new PlayerChangeHealthMessage(0));
+            Messenger.Publish(new PlayerDeadMessage());
+            return this;
+        }
+        Messenger.Publish(new PlayerChangeHealthMessage(this.health));
+        return this;
+    }
+
     public void Handle(UserDirectionMessage message)
     {
         // magic number to transform position :(

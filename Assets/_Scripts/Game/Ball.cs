@@ -2,7 +2,6 @@
 
 public class Ball : MonoBehaviourEx
 {
-
     public override void Awake()
     {
        base.Awake();
@@ -21,7 +20,7 @@ public class Ball : MonoBehaviourEx
         }
         if (hasCollidedWithPlayer)
         {
-            Messenger.Publish(new PlayerDeadMessage());
+            collidedGameobject.GetComponent<Player>().Damage();
             return;
         }
     }

@@ -57,7 +57,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<GameUi>();
-        this.ui.Initialize(() => ReStart());
+        this.ui.Initialize(() => ReStart(), Config.Player.InitialHealth);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();

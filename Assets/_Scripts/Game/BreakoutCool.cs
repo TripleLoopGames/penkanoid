@@ -8,19 +8,6 @@ using PathologicalGames;
 [RequireComponent(typeof(LevelCreator))]
 public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 {
-    public void Handle(PlayerDeadMessage message)
-    {
-        this.inputDetector.DisableInput();
-        this.ui.ShowEnd();
-    }
-
-    public BreakoutCool ReStart()
-    {
-        Reset();
-        this.inputDetector.EnableInput();
-        return this;
-    }
-
     private void Initialize()
     {
         InitializeCamera()
@@ -32,6 +19,25 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeBallPool()
         .SetReferences();
         this.inputDetector.EnableInput();
+        this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+    }
+
+    private BreakoutCool EndGame()
+    {
+        this.inputDetector.DisableInput();
+        this.ui.ShowEnd();
+        return this;
+    }
+    public void Handle(PlayerDeadMessage message)
+    {
+        EndGame();
+    }
+
+    public BreakoutCool ReStart()
+    {
+        Reset();
+        this.inputDetector.EnableInput();
+        return this;
     }
 
     private BreakoutCool Reset()

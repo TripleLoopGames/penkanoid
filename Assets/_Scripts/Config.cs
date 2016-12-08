@@ -27,4 +27,9 @@ public static class Config
         public static readonly Vector2 InitialPosition = new Vector2(0f, -3.6f);
         public const int InitialHealth = 3;
     }
+
+    public static class GameFlow
+    {
+        public const int countDownTime = 15;
+    }
 }

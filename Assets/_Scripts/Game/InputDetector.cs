@@ -76,6 +76,15 @@ public class InputDetector : MonoBehaviourEx
                 this.direction = currentDirection;
             }
         }
+        else
+        {
+            float currentDirection = Input.acceleration.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
+            if (this.direction != currentDirection)
+            {
+                Messenger.Publish(new UserDirectionMessage(new Vector2(currentDirection, 0)));
+                this.direction = currentDirection;
+            }
+        }
         if (Input.touchCount > 0)
         {
             if (!IsTouchPhaseBegan())

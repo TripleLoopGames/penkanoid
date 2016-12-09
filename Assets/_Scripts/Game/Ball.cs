@@ -11,13 +11,7 @@ public class Ball : MonoBehaviourEx
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collidedGameobject = collision.gameObject;
-        bool hasCollidedWithBlock = collidedGameobject.CompareTag(SRTags.Block);
         bool hasCollidedWithPlayer = collidedGameobject.CompareTag(SRTags.Player);
-        if (hasCollidedWithBlock)
-        {
-            collidedGameobject.GetComponent<Block>().Die();
-            return;
-        }
         if (hasCollidedWithPlayer)
         {
             collidedGameobject.GetComponent<Player>().Damage();

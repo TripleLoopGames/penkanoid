@@ -53,9 +53,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.ballPool.DespawnAll();
         this.player.Reset();
         this.ui.HideEnd();
-        this.levelCreator.Reset();
         this.ui.Reset();
-        this.levelCreator.GenerateLevel();
+        this.currentLevel.Destroy();
+        this.currentLevel = null;
+        this.currentLevel = GenerateAndAddLevel();
         return this;
     }
 
@@ -117,9 +118,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeLevelCreator()
     {
         this.levelCreator = GetComponent<LevelCreator>();
-        this.levelCreator.Initialize();
-        GameObject blocks = this.levelCreator.GenerateLevel();
-        blocks.transform.SetParent(this.gameObject.transform, false);
+        this.currentLevel = this.GenerateAndAddLevel();
         return this;
     }
 
@@ -131,6 +130,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private Level GenerateAndAddLevel()
+    {
+        Level currentLevel = this.levelCreator.GenerateLevel().GetComponent<Level>();
+        currentLevel.Initialize();
+        currentLevel.name = "Level-X";
+        currentLevel.transform.SetParent(this.gameObject.transform, false);
+        return currentLevel;
+    }
+
     private void Start()
     {
         Initialize();
@@ -138,6 +146,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private GameUi ui;
     private InputDetector inputDetector;
+    private Level currentLevel;
     private LevelCreator levelCreator;
     private Camera mainCamera;
     private Player player;

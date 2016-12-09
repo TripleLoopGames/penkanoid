@@ -30,6 +30,6 @@ public static class Config
 
     public static class GameFlow
     {
-        public const int countDownTime = 15;
+        public const int countDownTime = 200;
     }
 }

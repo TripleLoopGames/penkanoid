@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using LocalConfig = Config.Player;
+using PlayerConfig = Config.Player;
+using BallConfig = Config.Ball;
 using PathologicalGames;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
@@ -41,7 +42,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.3f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
-        ball.Inititalize(spawnPosition, randomDirection, 2);        
+        ball.Shoot(spawnPosition, randomDirection, 2, BallConfig.lifetime, (transfrom) => this.ballPool.Despawn(transfrom));        
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -52,8 +53,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     public Player Initialize()
     {
         this.ownRigidbody = GetComponent<Rigidbody2D>();
-        this.gameObject.transform.position = LocalConfig.InitialPosition;
-        this.health = LocalConfig.InitialHealth;
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
+        this.health = PlayerConfig.InitialHealth;
         return this;
     }
 
@@ -66,9 +67,9 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public Player Reset()
     {
-        this.gameObject.transform.position = LocalConfig.InitialPosition;
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
         GetComponent<Animator>().SetBool("isAlive", true);
-        this.health = LocalConfig.InitialHealth;
+        this.health = PlayerConfig.InitialHealth;
         return this;
     }
 

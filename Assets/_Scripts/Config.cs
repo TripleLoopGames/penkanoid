@@ -32,4 +32,9 @@ public static class Config
     {
         public const int countDownTime = 200;
     }
+
+    public static class Ball
+    {
+        public const int lifetime = 10;
+    }
 }

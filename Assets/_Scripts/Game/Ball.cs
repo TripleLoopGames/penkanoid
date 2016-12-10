@@ -25,7 +25,7 @@ public class Ball : MonoBehaviourEx
     {
         this.gameObject.transform.position = position;
         this.ownRigidbody.AddForce(direction * magnitude, ForceMode2D.Impulse);
-        this.timerComponent.StartTimer(lifeTime, value => { }, () => despawnBall(this.transform));
+        this.timerComponent.StartTimer(lifeTime, () => despawnBall(this.transform));
         return this;
     }
 

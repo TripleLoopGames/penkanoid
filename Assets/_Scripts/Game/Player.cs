@@ -54,7 +54,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.3f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
-        ball.Shoot(spawnPosition, randomDirection, 2, BallConfig.lifetime, (transfrom) => this.ballPool.Despawn(transfrom));        
+        ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform));
+        ball.Shoot(randomDirection, 2, BallConfig.lifetime);        
     }
 
     public void Handle(PlayerDeadMessage message)

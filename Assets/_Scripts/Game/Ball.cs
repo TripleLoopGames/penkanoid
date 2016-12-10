@@ -10,6 +10,20 @@ public class Ball : MonoBehaviourEx
        this.timerComponent = GetComponent<TimerComponent>();
     }
 
+    public Ball Initialize(Vector2 position, Action despawnBall)
+    {
+        this.gameObject.transform.position = position;
+        this.despawnOwn = despawnBall;
+        return this;
+    }
+
+    public Ball Shoot(Vector2 direction, float magnitude, int lifeTime)
+    {
+        this.ownRigidbody.AddForce(direction * magnitude, ForceMode2D.Impulse);
+        this.timerComponent.StartTimer(lifeTime, this.despawnOwn);
+        return this;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject collidedGameobject = collision.gameObject;
@@ -17,18 +31,12 @@ public class Ball : MonoBehaviourEx
         if (hasCollidedWithPlayer)
         {
             collidedGameobject.GetComponent<Player>().Damage();
+            this.despawnOwn();
             return;
         }
     }
 
-    public Ball Shoot(Vector2 position, Vector2 direction, float magnitude, int lifeTime, Action<Transform> despawnBall)
-    {
-        this.gameObject.transform.position = position;
-        this.ownRigidbody.AddForce(direction * magnitude, ForceMode2D.Impulse);
-        this.timerComponent.StartTimer(lifeTime, () => despawnBall(this.transform));
-        return this;
-    }
-
+    private Action despawnOwn;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timerComponent;
 }

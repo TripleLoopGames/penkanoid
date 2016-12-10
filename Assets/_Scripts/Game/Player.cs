@@ -7,18 +7,30 @@ using PathologicalGames;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
 {
+    public Player Initialize()
+    {
+        this.ownRigidbody = GetComponent<Rigidbody2D>();
+        this.timer = GetComponent<TimerComponent>();
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
+        this.health = PlayerConfig.InitialHealth;
+        return this;
+    }
+
     public Player Damage()
     {
-        this.health -= 1;
+        if (this.invulnerable)
+        {
+            return this;
+        }
+        ChangeHealth(-1);
         if(this.health <= 0)
         {
-            Messenger.Publish(new PlayerChangeHealthMessage(0));
+            this.timer.StopTimer();
             Messenger.Publish(new PlayerDeadMessage());
             return this;
         }
-        Messenger.Publish(new PlayerChangeHealthMessage(this.health));
         return this;
-    }
+    }    
 
     public void Handle(UserDirectionMessage message)
     {
@@ -32,7 +44,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         {
             xPosition = -0.7f;
         }
-        Vector2 targetPosition = new Vector2(xPosition* 13.07f, this.ownRigidbody.position.y);
+        Vector2 targetPosition = new Vector2(xPosition * 13.07f, this.ownRigidbody.position.y);
         this.ownRigidbody.position = targetPosition;
     }
 
@@ -50,15 +62,6 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         GetComponent<Animator>().SetBool("isAlive",false);
     }
 
-    public Player Initialize()
-    {
-        this.ownRigidbody = GetComponent<Rigidbody2D>();
-        this.gameObject.transform.position = PlayerConfig.InitialPosition;
-        this.health = PlayerConfig.InitialHealth;
-        return this;
-    }
-
-
     public Player SetBallPool(SpawnPool ballPool)
     {
         this.ballPool = ballPool;
@@ -70,10 +73,65 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         this.gameObject.transform.position = PlayerConfig.InitialPosition;
         GetComponent<Animator>().SetBool("isAlive", true);
         this.health = PlayerConfig.InitialHealth;
+        this.invulnerable = false;
         return this;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        bool pickupTrigger = collision.gameObject.CompareTag(SRTags.Pickup);
+        if (!pickupTrigger)
+        {
+            return;
+        }
+        Pickup pickup = collision.gameObject.GetComponent<Pickup>();
+        ItemStats pickupStats = pickup.GetStats();
+        pickup.Destroy();
+        ProcessStats(pickupStats);
+    }
+
+    private Player ProcessStats(ItemStats stats)
+    {
+        if (stats.HealthAmount != 0)
+        {
+            ChangeHealth(stats.HealthAmount);
+        }
+        if (stats.GameTime != 0)
+        {
+            AddTime(stats.GameTime);
+        }
+        if (stats.InvincibilityTime != 0)
+        {
+            AddInvencibility(stats.InvincibilityTime);
+        }
+        return this;
+    }
+
+    private Player ChangeHealth(int variance)
+    {
+        this.health += variance;
+        Messenger.Publish(new PlayerChangeHealthMessage(this.health));
+        return this;
+    }
+
+    private Player AddTime(int time)
+    {
+        Messenger.Publish(new ModifyTimeMessage(time));
+        return this;
+    }
+
+    private Player AddInvencibility(int time)
+    {
+        this.invulnerable = true;
+        this.timer.StartTimer(time, () => {
+            this.invulnerable = false;
+        });
+        return this;
+    }
+
+    private bool invulnerable = false;
     private Rigidbody2D ownRigidbody;
+    private TimerComponent timer;
     private SpawnPool ballPool;
     private int health;
 }

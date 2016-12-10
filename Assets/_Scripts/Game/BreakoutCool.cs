@@ -21,6 +21,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         StartGame();
     }
 
+    public void Handle(PlayerDeadMessage message)
+    {
+        EndGame();
+    }
+
     private BreakoutCool StartGame()
     {
         this.inputDetector.EnableInput();
@@ -36,12 +41,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    public void Handle(PlayerDeadMessage message)
-    {
-        EndGame();
-    }
-
-    public BreakoutCool ReStart()
+    private BreakoutCool ReStart()
     {
         Reset();
         StartGame();

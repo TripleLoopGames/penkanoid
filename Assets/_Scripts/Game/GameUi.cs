@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
 
-public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
+public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
     public GameUi Initialize(Action restart, int initialHealth)
     {
@@ -12,6 +12,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
         .InitializeHealth(initialHealth)
         .InitializeTimer();
         return this;
+    }
+
+    public void Handle(ModifyTimeMessage message)
+    {
+        ModifyTime(message.Time);
     }
 
     public void Handle(PlayerChangeHealthMessage message)
@@ -29,16 +34,16 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
     public GameUi StartCountDown(int time, Action onEnd)
     {
         Action<int> onTimerTick = value =>
-        {
+        {         
             this.timerText.text = value.ToString();
         };
-        this.timerComponent.StartTimer(time, onTimerTick, onEnd);
+        this.timer.StartTimer(time, onTimerTick, onEnd);
         return this;
     }
 
     public GameUi StopCountDown()
     {
-        this.timerComponent.StopTimer();
+        this.timer.StopTimer();
         return this;
     }
 
@@ -99,9 +104,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
     private GameUi InitializeTimer()
     {
         GameObject time = Resources.Time.Instantiate();
-        this.timerComponent = time.GetComponent<TimerComponent>();
-        this.timerComponent.name = "Time";
-        this.timerComponent.transform.SetParent(this.gameObject.transform, false);
+        this.timer = time.GetComponent<TimerComponent>();
+        this.timer.name = "Time";
+        this.timer.transform.SetParent(this.gameObject.transform, false);
         this.timerText = time.GetComponentInChildren<Text>();
         return this;
     }
@@ -120,9 +125,16 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>
         return this;
     }
 
+    private GameUi ModifyTime(int time)
+    {
+        int timeLeft = this.timer.GetTimeLeft();
+        this.timer.SetTimeLeft(timeLeft + time);
+        return this;
+    }
+
     private GameObject endGame;
     private GameObject health;
-    private TimerComponent timerComponent;
+    private TimerComponent timer;
     private Text timerText;
     private GameObject[] hearts;
     private int initialHealth;

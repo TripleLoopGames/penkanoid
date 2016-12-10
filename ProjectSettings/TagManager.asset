@@ -8,6 +8,7 @@ TagManager:
   - Canvas
   - UiHeart
   - Ball
+  - Pickup
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Pickups
+    uniqueID: 2891547535
     locked: 0

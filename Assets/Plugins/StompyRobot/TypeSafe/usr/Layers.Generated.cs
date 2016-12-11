@@ -51,12 +51,33 @@ public sealed class SRLayers {
         }
     }
     
+    public static global::TypeSafe.Layer Pickups {
+        get {
+            return __all[5];
+        }
+    }
+    
+    public static global::TypeSafe.Layer Balls {
+        get {
+            return __all[6];
+        }
+    }
+    
+    public static global::TypeSafe.Layer Blocks {
+        get {
+            return __all[7];
+        }
+    }
+    
     private static global::System.Collections.Generic.IList<global::TypeSafe.Layer> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.Layer>(new global::TypeSafe.Layer[] {
                 new global::TypeSafe.Layer("Default", 0),
                 new global::TypeSafe.Layer("TransparentFX", 1),
                 new global::TypeSafe.Layer("Ignore Raycast", 2),
                 new global::TypeSafe.Layer("Water", 4),
-                new global::TypeSafe.Layer("UI", 5)});
+                new global::TypeSafe.Layer("UI", 5),
+                new global::TypeSafe.Layer("Pickups", 8),
+                new global::TypeSafe.Layer("Balls", 9),
+                new global::TypeSafe.Layer("Blocks", 10)});
     
     public static global::System.Collections.Generic.IList<global::TypeSafe.Layer> All {
         get {

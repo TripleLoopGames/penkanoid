@@ -34,4 +34,10 @@ public sealed class SRLayerMask {
     public const int Water = 16;
     
     public const int UI = 32;
+    
+    public const int Pickups = 256;
+    
+    public const int Balls = 512;
+    
+    public const int Blocks = 1024;
 }

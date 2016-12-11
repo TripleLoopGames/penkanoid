@@ -17,7 +17,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
-        .SetReferences();
+        .SetReferences()
+        .SetCollisionsBetweenLayers();
         StartGame();
     }
 
@@ -66,6 +67,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.player.SetBallPool(this.ballPool);
         return this;
     }
+
+    private BreakoutCool SetCollisionsBetweenLayers()
+    {
+        Physics2D.IgnoreLayerCollision(SRLayers.Pickups, SRLayers.Balls, true);
+        Physics2D.IgnoreLayerCollision(SRLayers.Pickups, SRLayers.Pickups, true);
+        Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
+        Physics2D.IgnoreLayerCollision(SRLayers.Blocks, SRLayers.Pickups, true);
+        return this;
+    }      
 
     private BreakoutCool InitializeUI()
     {

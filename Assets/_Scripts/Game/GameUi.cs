@@ -60,6 +60,18 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
+    public GameUi ShowWin()
+    {
+        this.winGame.SetActive(true);
+        return this;
+    }
+
+    public GameUi HideWin()
+    {
+        this.winGame.SetActive(false);
+        return this;
+    }
+
     public GameUi SetCamera(Camera camera)
     {
         GetComponent<Canvas>().worldCamera = camera;
@@ -91,11 +103,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private GameUi InitializeWinGame(Action restart, Action nextLevel)
     {
-        this.endGame = Resources.WinGame.Instantiate();
-        this.endGame.name = "WinGame";
-        this.endGame.transform.SetParent(this.gameObject.transform, false);
+        this.winGame = Resources.WinGame.Instantiate();
+        this.winGame.name = "WinGame";
+        this.winGame.transform.SetParent(this.gameObject.transform, false);
 
-        Button[] buttons = this.endGame.GetComponentsInChildren<Button>();
+        Button[] buttons = this.winGame.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
         {
             if (button.name == "NextLevel")
@@ -108,7 +120,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
             }
             return button;
         }).ToArray();
-        HideEnd();
+        HideWin();
         return this;
     }
 
@@ -157,6 +169,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     }
 
     private GameObject endGame;
+    private GameObject winGame;
     private GameObject health;
     private TimerComponent timer;
     private Text timerText;

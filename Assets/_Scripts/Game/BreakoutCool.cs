@@ -27,6 +27,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         EndGame();
     }
 
+    private BreakoutCool LevelCleared()
+    {
+        Debug.Log("Level has been Cleared!");
+        return this;
+    }
+
     private BreakoutCool StartGame()
     {
         this.inputDetector.EnableInput();
@@ -149,7 +155,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private Level GenerateAndAddLevel()
     {
         Level currentLevel = this.levelCreator.GenerateLevel().GetComponent<Level>();
-        currentLevel.Initialize();
+        currentLevel.Initialize(() => LevelCleared());
         currentLevel.name = "Level-X";
         currentLevel.transform.SetParent(this.gameObject.transform, false);
         return currentLevel;

@@ -5,10 +5,12 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour
 {
-    public Block Initialize(int id)
+    public Block Initialize(int id, Action<int> onBlockDeactivation)
     {
         this.name = "Block_" + id;
+        this.id = id;
         this.parent = GetComponentInParent<Level>();
+        this.onBlockDeactivation = onBlockDeactivation;
         return this;
     }
 
@@ -31,6 +33,7 @@ public class Block : MonoBehaviour
             {
                 SpawnItem();
             }
+            this.onBlockDeactivation(this.id);
             this.gameObject.SetActive(false);
         }
     }
@@ -42,6 +45,8 @@ public class Block : MonoBehaviour
         return this;
     }
 
+    private int id;
+    private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
     private Level parent;
 }

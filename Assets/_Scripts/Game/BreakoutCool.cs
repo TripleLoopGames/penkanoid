@@ -49,6 +49,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool NextLevel()
+    {
+        Debug.Log("Switch to next Level");
+        return this;
+    }
+
     private BreakoutCool Reset()
     {
         this.ballPool.DespawnAll();
@@ -83,7 +89,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<GameUi>();
-        this.ui.Initialize(() => ReStart(), Config.Player.InitialHealth);
+        this.ui.Initialize(() => ReStart(), () => NextLevel(), Config.Player.InitialHealth);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();

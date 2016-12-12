@@ -5,10 +5,11 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
-    public GameUi Initialize(Action restart, int initialHealth)
+    public GameUi Initialize(Action restart, Action nextLevel, int initialHealth)
     {
         this.initialHealth = initialHealth;
         InitializeEndGame(restart)
+        .InitializeWinGame(restart, nextLevel)
         .InitializeHealth(initialHealth)
         .InitializeTimer();
         return this;
@@ -77,6 +78,29 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
             if (button.name == "Restart")
             {
                 button.onClick.AddListener(() => restart());
+            }
+            if (button.name == "Menu")
+            {
+                button.onClick.AddListener(() => OnMenu());
+            }
+            return button;
+        }).ToArray();
+        HideEnd();
+        return this;
+    }
+
+    private GameUi InitializeWinGame(Action restart, Action nextLevel)
+    {
+        this.endGame = Resources.WinGame.Instantiate();
+        this.endGame.name = "WinGame";
+        this.endGame.transform.SetParent(this.gameObject.transform, false);
+
+        Button[] buttons = this.endGame.GetComponentsInChildren<Button>();
+        buttons = buttons.Select(button =>
+        {
+            if (button.name == "NextLevel")
+            {
+                button.onClick.AddListener(() => nextLevel());
             }
             if (button.name == "Menu")
             {

@@ -29,7 +29,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool LevelCleared()
     {
-        Debug.Log("Level has been Cleared!");
+        WinGame();
         return this;
     }
 
@@ -37,6 +37,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.inputDetector.EnableInput();
         this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+        return this;
+    }
+
+    private BreakoutCool WinGame()
+    {
+        this.inputDetector.DisableInput();
+        // dirty check last level
+        this.ui.ShowWin(this.currentLevelId >= 3);
+        this.ui.StopCountDown();
         return this;
     }
 
@@ -51,13 +60,19 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool ReStart()
     {
         Reset();
+        // we start always at lvl 1 when we restart
+        this.currentLevelId = 1;
+        this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
         StartGame();
         return this;
     }
 
     private BreakoutCool NextLevel()
     {
-        Debug.Log("Switch to next Level");
+        Reset();
+        this.currentLevelId++;
+        this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
+        StartGame();
         return this;
     }
 
@@ -66,10 +81,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.ballPool.DespawnAll();
         this.player.Reset();
         this.ui.HideEnd();
+        this.ui.HideWin();
         this.ui.Reset();
         this.currentLevel.Destroy();
-        this.currentLevel = null;
-        this.currentLevel = GenerateAndAddLevel();
+        this.currentLevel = null;       
         return this;
     }
 
@@ -140,7 +155,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeLevelCreator()
     {
         this.levelCreator = GetComponent<LevelCreator>();
-        this.currentLevel = this.GenerateAndAddLevel();
+        // change this.currentLevelId for id in unity prefs
+        this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
         return this;
     }
 
@@ -152,9 +168,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private Level GenerateAndAddLevel()
+    private Level GenerateAndAddLevel(int id)
     {
-        Level currentLevel = this.levelCreator.GenerateLevel().GetComponent<Level>();
+        Level currentLevel = this.levelCreator.GenerateLevel(id).GetComponent<Level>();
         currentLevel.Initialize(() => LevelCleared());
         currentLevel.name = "Level-X";
         currentLevel.transform.SetParent(this.gameObject.transform, false);
@@ -166,6 +182,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Initialize();
     }
 
+    private int currentLevelId = 1;
     private GameUi ui;
     private InputDetector inputDetector;
     private Level currentLevel;

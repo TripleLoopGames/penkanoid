@@ -946,14 +946,28 @@ public sealed class SRResources {
             private Levels() {
             }
             
-            public static global::TypeSafe.PrefabResource Level_1 {
+            public static global::TypeSafe.PrefabResource Level_3 {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
                 }
             }
             
+            public static global::TypeSafe.PrefabResource Level_1 {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource Level_2 {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
+                }
+            }
+            
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("Level_1", "Game/Levels/Level_1")});
+                        new global::TypeSafe.PrefabResource("Level_3", "Game/Levels/Level_3"),
+                        new global::TypeSafe.PrefabResource("Level_1", "Game/Levels/Level_1"),
+                        new global::TypeSafe.PrefabResource("Level_2", "Game/Levels/Level_2")});
             
             /// <summary>
             /// Return a list of all resources in this folder.

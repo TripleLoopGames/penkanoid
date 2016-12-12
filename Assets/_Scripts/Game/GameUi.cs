@@ -60,9 +60,35 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public GameUi ShowWin()
+    public GameUi ShowWin(bool lastLevel)
     {
         this.winGame.SetActive(true);
+
+        if (!lastLevel)
+        {
+            return this;
+        }
+
+        Button[] buttons = this.winGame.GetComponentsInChildren<Button>();
+        buttons = buttons.Select(button =>
+        {
+            if (button.name == "NextLevel")
+            {
+                button.gameObject.SetActive(false);
+            }
+            return button;
+        }).ToArray();
+
+        Text[] texts = this.winGame.GetComponentsInChildren<Text>(true);
+        texts = texts.Select(text =>
+        {
+            if (text.gameObject.name == "Ending")
+            {
+                text.gameObject.SetActive(true);
+            }
+            return text;
+        }).ToArray();
+
         return this;
     }
 

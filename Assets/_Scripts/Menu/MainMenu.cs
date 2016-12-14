@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using Resources = SRResources.Menu;
+using PathologicalGames;
 
 [RequireComponent(typeof(ChangeSceneComponent))]
 public class MainMenu : MonoBehaviour
@@ -8,20 +10,32 @@ public class MainMenu : MonoBehaviour
     {
         InitializeCamera()
         .InitializeUI()
+        .InitializeInputDetector()
+        .InitializeScenario()
+        .InitializePlayer()
+        .InitializeBallPool()
+        .InitializeStartBlock()
         .SetReferences();
+        StartMenu();
+        return this;
+    }
+
+    private MainMenu StartMenu()
+    {
+        this.inputDetector.EnableInput();
         return this;
     }
 
     private MainMenu InitializeUI()
     {
-        GameObject canvas = SRResources.Menu.Ui.Canvas.Instantiate();
+        GameObject canvas = Resources.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<MenuUi>();
         this.ui.Initialize();
         if (EventSystem.current == null)
         {
-            GameObject eventSystem = SRResources.Menu.Ui.EventSystem.Instantiate();
+            GameObject eventSystem = Resources.Ui.EventSystem.Instantiate();
             eventSystem.name = "EventSystemIn";
             eventSystem.transform.SetParent(this.transform, false);
         }
@@ -30,15 +44,56 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu InitializeCamera()
     {
-        this.mainCamera = SRResources.Menu.Main_Camera.Instantiate().GetComponent<Camera>();
+        this.mainCamera = Resources.Main_Camera.Instantiate().GetComponent<Camera>();
         this.mainCamera.name = "mainCamera";
         this.mainCamera.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private MainMenu InitializePlayer()
+    {
+        this.player = SRResources.Game.Player.Instantiate().GetComponent<Player>();
+        this.player.name = "player";
+        this.player.transform.SetParent(this.gameObject.transform, false);
+        this.player.Initialize();
+        return this;
+    }
+
+    private MainMenu InitializeInputDetector()
+    {
+        this.inputDetector = GetComponent<InputDetector>();
+        this.inputDetector.Initialize();
+        return this;
+    }
+
+    private MainMenu InitializeBallPool()
+    {
+        this.ballPool = SRResources.Game.BallPool.Instantiate().GetComponent<SpawnPool>();
+        this.ballPool.name = "BallPool";
+        this.ballPool.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private MainMenu InitializeScenario()
+    {
+        GameObject scenario = Resources.Scenario.Instantiate();
+        scenario.name = "scenario";
+        scenario.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private MainMenu InitializeStartBlock()
+    {
+        GameObject scenario = Resources.StartBlock.Instantiate();
+        scenario.name = "startBlock";
+        scenario.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
     private MainMenu SetReferences()
     {
         this.ui.SetCamera(this.mainCamera);
+        this.player.SetBallPool(this.ballPool);
         return this;
     }
 
@@ -47,6 +102,10 @@ public class MainMenu : MonoBehaviour
         Initialize();
     }
 
+    private Player player;
+    private InputDetector inputDetector;
     private MenuUi ui;
     private Camera mainCamera;
+    private SpawnPool ballPool;
+
 }

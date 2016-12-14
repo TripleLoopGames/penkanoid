@@ -35,21 +35,35 @@ public sealed class SRResources {
         private Menu() {
         }
         
-        public static global::TypeSafe.PrefabResource MainMenu {
+        public static global::TypeSafe.PrefabResource StartBlock {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
             }
         }
         
-        public static global::TypeSafe.PrefabResource Main_Camera {
+        public static global::TypeSafe.PrefabResource MainMenu {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
             }
         }
         
+        public static global::TypeSafe.PrefabResource Main_Camera {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
+            }
+        }
+        
+        public static global::TypeSafe.PrefabResource Scenario {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
+            }
+        }
+        
         private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                    new global::TypeSafe.PrefabResource("StartBlock", "Menu/StartBlock"),
                     new global::TypeSafe.PrefabResource("MainMenu", "Menu/MainMenu"),
-                    new global::TypeSafe.PrefabResource("Main Camera", "Menu/Main Camera")});
+                    new global::TypeSafe.PrefabResource("Main Camera", "Menu/Main Camera"),
+                    new global::TypeSafe.PrefabResource("Scenario", "Menu/Scenario")});
         
         public sealed class Ui {
             
@@ -74,9 +88,15 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource MainPanel {
+            public static global::TypeSafe.PrefabResource Title {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource MainPanel {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
                 }
             }
             
@@ -84,6 +104,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("EventSystem", "Menu/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Background", "Menu/Ui/Background"),
                         new global::TypeSafe.PrefabResource("Canvas", "Menu/Ui/Canvas"),
+                        new global::TypeSafe.PrefabResource("Title", "Menu/Ui/Title"),
                         new global::TypeSafe.PrefabResource("MainPanel", "Menu/Ui/MainPanel")});
             
             /// <summary>

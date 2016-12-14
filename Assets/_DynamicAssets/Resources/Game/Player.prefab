@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 50461786910770614}
   - component: {fileID: 95247405619559212}
   - component: {fileID: 114256368222737782}
-  - component: {fileID: 68663521418103858}
+  - component: {fileID: 60711733500004764}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -66,6 +66,39 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!60 &60711733500004764
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1881070687228388}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: 0.78000003, y: 0.5866667}
+      - {x: 0.7666667, y: 0.62666667}
+      - {x: 0.48666668, y: 1.0400001}
+      - {x: 0.5, y: 1.28}
+      - {x: 0.3, y: 1.36}
+      - {x: -0.07333334, y: 1.36}
+      - {x: -0.16666667, y: 1.32}
+      - {x: -0.35333335, y: 1.36}
+      - {x: -0.38, y: 1.36}
+      - {x: -0.55333334, y: 0.9066667}
+      - {x: -0.67333335, y: 0.81333333}
+      - {x: -0.78000003, y: 0.56}
+      - {x: -0.78000003, y: 0.24000001}
+      - {x: -0.6333333, y: 0.04}
+      - {x: -0.56666666, y: 0}
+      - {x: 0.55333334, y: 0}
+      - {x: 0.62, y: 0.04}
+      - {x: 0.75333333, y: 0.17333333}
+      - {x: 0.78000003, y: 0.29333335}
 --- !u!61 &61924810545510106
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -80,21 +113,6 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.5}
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
---- !u!68 &68663521418103858
-EdgeCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1881070687228388}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  m_Points:
-  - {x: -0.78, y: 0.7733333}
-  - {x: 0.78, y: 0.7733333}
 --- !u!95 &95247405619559212
 Animator:
   serializedVersion: 3

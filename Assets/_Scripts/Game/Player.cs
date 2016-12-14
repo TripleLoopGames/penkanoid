@@ -23,7 +23,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
             return this;
         }
         ChangeHealth(-1);
-        if(this.health <= 0)
+        GetComponent<Animator>().SetTrigger("Damage");
+        if (this.health <= 0)
         {
             this.timer.StopTimer();
             Messenger.Publish(new PlayerDeadMessage());
@@ -50,6 +51,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public void Handle(UserShootMessage message)
     {
+        GetComponent<Animator>().SetTrigger("Shoot");
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.3f;

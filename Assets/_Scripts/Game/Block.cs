@@ -14,6 +14,12 @@ public class Block : MonoBehaviour
         return this;
     }
 
+    public Block EnableIgnoreCollisionResult()
+    {
+        this.ignoreCollisionResult = true;
+        return this;
+    }
+
     public Block SetItemOnHit(GameObject item)
     {
         this.itemOnHit = item;
@@ -25,6 +31,10 @@ public class Block : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (this.ignoreCollisionResult)
+        {
+            return;
+        }
         GameObject collidedGameobject = collision.gameObject;
         bool hasCollidedWithBall = collidedGameobject.CompareTag(SRTags.Ball);
         if (hasCollidedWithBall)
@@ -45,6 +55,7 @@ public class Block : MonoBehaviour
         return this;
     }
 
+    private bool ignoreCollisionResult;
     private int id;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;

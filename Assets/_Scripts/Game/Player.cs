@@ -18,7 +18,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public Player Damage()
     {
-        if (this.invulnerable)
+        if (this.invulnerable || this.dead)
         {
             return this;
         }
@@ -26,6 +26,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         GetComponent<Animator>().SetTrigger("Damage");
         if (this.health <= 0)
         {
+            this.dead = true;
             this.timer.StopTimer();
             Messenger.Publish(new PlayerDeadMessage());
             return this;
@@ -77,6 +78,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         GetComponent<Animator>().SetBool("isAlive", true);
         this.health = PlayerConfig.InitialHealth;
         this.invulnerable = false;
+        this.dead = false;
         return this;
     }
 
@@ -133,6 +135,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     }
 
     private bool invulnerable = false;
+    private bool dead = false;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timer;
     private SpawnPool ballPool;

@@ -27,18 +27,26 @@ public class Level : MonoBehaviour
         return this;
     }
 
+    public Level EnableIgnoreCollisionResult()
+    {
+        this.blocks.ToList().ForEach(block => {
+            block.GetComponent<Block>().EnableIgnoreCollisionResult();
+        });
+        return this;
+    }
+
     public Level DestroyPickUps()
     {
-        bool[] destroyedPickuposResult = this.pickUps.Select(pickUp =>
+        this.pickUps.ForEach(pickUp =>
         {
             // if pickup consumed do not try to destroy it
             if (pickUp == null)
             {
-                return false;
+                return;
             }
             Destroy(pickUp);
-            return true;
-        }).ToArray();
+            return;
+        });
         return this;
     }
 

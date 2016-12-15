@@ -17,11 +17,27 @@ public class Level : MonoBehaviour
             TypeSafe.PrefabResource choosen = Utils.RandomWeightedChooser(pickups);
             if (choosen.Name != "EmptyPickup")
             {
-                GameObject pickUP = choosen.Instantiate();
-                block.SetItemOnHit(pickUP);
+                GameObject pickUp = choosen.Instantiate();
+                block.SetItemOnHit(pickUp);
+                this.pickUps.Add(pickUp);
             }
             index++;
             return block.gameObject;
+        }).ToArray();
+        return this;
+    }
+
+    public Level DestroyPickUps()
+    {
+        bool[] destroyedPickuposResult = this.pickUps.Select(pickUp =>
+        {
+            // if pickup consumed do not try to destroy it
+            if (pickUp == null)
+            {
+                return false;
+            }
+            Destroy(pickUp);
+            return true;
         }).ToArray();
         return this;
     }
@@ -59,5 +75,6 @@ public class Level : MonoBehaviour
     }
 
     private GameObject[] blocks;
+    private List<GameObject> pickUps = new List<GameObject>();
     private Action onLevelCleared;
 }

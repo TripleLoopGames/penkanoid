@@ -45,6 +45,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.inputDetector.DisableInput();
         // dirty check last level
         this.ui.ShowWin(this.currentLevelId >= 3);
+        this.currentLevel.DestroyPickUps();
         this.ui.StopCountDown();
         return this;
     }
@@ -52,6 +53,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool EndGame()
     {
         this.inputDetector.DisableInput();
+        this.currentLevel.DestroyPickUps();
         this.ui.ShowEnd();
         this.ui.StopCountDown();
         return this;

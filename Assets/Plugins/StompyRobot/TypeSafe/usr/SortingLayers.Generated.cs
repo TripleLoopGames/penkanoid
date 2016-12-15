@@ -39,10 +39,17 @@ public sealed class SRSortingLayers {
         }
     }
     
+    public static global::TypeSafe.SortingLayer UI {
+        get {
+            return __all[3];
+        }
+    }
+    
     private static global::System.Collections.Generic.IList<global::TypeSafe.SortingLayer> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.SortingLayer>(new global::TypeSafe.SortingLayer[] {
                 new global::TypeSafe.SortingLayer("Background", -1752030837),
                 new global::TypeSafe.SortingLayer("Default", 0),
-                new global::TypeSafe.SortingLayer("Pickups", -1403419761)});
+                new global::TypeSafe.SortingLayer("Pickups", -1403419761),
+                new global::TypeSafe.SortingLayer("UI", 1522321345)});
     
     public static global::System.Collections.Generic.IList<global::TypeSafe.SortingLayer> All {
         get {

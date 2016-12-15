@@ -8,10 +8,10 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public GameUi Initialize(Action restart, Action nextLevel, int initialHealth)
     {
         this.initialHealth = initialHealth;
-        InitializeEndGame(restart)
-        .InitializeWinGame(restart, nextLevel)
-        .InitializeHealth(initialHealth)
-        .InitializeTimer();
+        InitializeHealth(initialHealth)
+        .InitializeTimer()
+        .InitializeEndGame(restart)
+        .InitializeWinGame(restart, nextLevel);
         return this;
     }
 
@@ -100,7 +100,10 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     public GameUi SetCamera(Camera camera)
     {
-        GetComponent<Canvas>().worldCamera = camera;
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = camera;
+        // set canvas layer, needs camera
+        canvas.sortingLayerID = SRSortingLayers.UI;
         return this;
     }
 
@@ -116,10 +119,6 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
             if (button.name == "Restart")
             {
                 button.onClick.AddListener(() => restart());
-            }
-            if (button.name == "Menu")
-            {
-                button.onClick.AddListener(() => OnMenu());
             }
             return button;
         }).ToArray();

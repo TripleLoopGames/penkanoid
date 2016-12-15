@@ -869,13 +869,13 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource WinGame {
+            public static global::TypeSafe.PrefabResource EndGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource EndGame {
+            public static global::TypeSafe.PrefabResource WinGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
@@ -896,8 +896,8 @@ public sealed class SRResources {
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                         new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
-                        new global::TypeSafe.PrefabResource("WinGame", "Game/Ui/WinGame"),
                         new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame"),
+                        new global::TypeSafe.PrefabResource("WinGame", "Game/Ui/WinGame"),
                         new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health"),
                         new global::TypeSafe.PrefabResource("Time", "Game/Ui/Time")});
             

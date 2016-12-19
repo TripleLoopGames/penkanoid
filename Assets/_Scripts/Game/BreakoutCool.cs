@@ -29,7 +29,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // change this.currentLevelId for id in unity prefs
         this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
 
-        this.sceneTransition.Enter(() => StartGame());
+        this.sceneTransition.Enter(() => StartNewGame());
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -43,10 +43,17 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private BreakoutCool StartGame()
+    private BreakoutCool StartNewGame()
     {
         this.inputDetector.EnableInput();
         this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+        return this;
+    }
+
+    private BreakoutCool StartNewLevel()
+    {
+        this.inputDetector.EnableInput();
+        this.ui.ReStartCountDown();
         return this;
     }
 
@@ -80,28 +87,37 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool ReStart()
     {
-        Reset();
+        FullReset();
         // we start always at lvl 1 when we restart
         this.currentLevelId = 1;
         this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
-        StartGame();
+        StartNewGame();
         return this;
     }
 
-    private BreakoutCool NextLevel()
+    private BreakoutCool LoadNextLevel()
     {
-        Reset();
+        NextLevelReset();
         this.currentLevelId++;
         this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
-        //StartGame();
         return this;
     }
 
-    private BreakoutCool Reset()
+    private BreakoutCool FullReset()
     {
         this.ballPool.DespawnAll();
-        this.player.Reset();
-        this.ui.Reset();
+        this.player.FullReset();
+        this.ui.FullReset();
+        this.currentLevel.Destroy();
+        this.currentLevel = null;
+        return this;
+    }
+
+    private BreakoutCool NextLevelReset()
+    {
+        this.ballPool.DespawnAll();
+        this.player.NextLevelReset();
+        this.ui.NextLevelReset();
         this.currentLevel.Destroy();
         this.currentLevel = null;
         return this;
@@ -146,8 +162,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         {
             this.sceneTransition.Exit(() =>
             {
-                NextLevel();
-                this.sceneTransition.Enter(() => StartGame());
+                LoadNextLevel();
+                this.sceneTransition.Enter(() => StartNewLevel());
             });
         };
 

@@ -27,13 +27,20 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         SetHearts(message.Health);
     }
 
-    public GameUi Reset()
+    public GameUi FullReset()
+    {
+        SetHearts(this.initialHealth);
+        HideEnd();
+        HideWinLevel();
+        HideWinGame();
+        return this;
+    }
+
+    public GameUi NextLevelReset()
     {
         HideEnd();
-        SetHearts(this.initialHealth);
-        this.HideEnd();
-        this.HideWinLevel();
-        this.HideWinGame();
+        HideWinLevel();
+        HideWinGame();
         return this;
     }
 
@@ -50,6 +57,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public GameUi StopCountDown()
     {
         this.timer.StopTimer();
+        return this;
+    }
+
+    public GameUi ReStartCountDown()
+    {
+        this.timer.RestartTimer();
         return this;
     }
 
@@ -126,7 +139,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
         {
-            if (button.name == "NextLevel")
+            if (button.name == "LoadNextLevel")
             {
                 button.onClick.AddListener(() => nextLevel());
             }

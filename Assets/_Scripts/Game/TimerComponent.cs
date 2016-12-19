@@ -9,6 +9,7 @@ public class TimerComponent : MonoBehaviour
     {
         StopCorutines();
         this.onSecond = onSecond;
+        this.onEnd = onEnd;
         this.coroutine = WaitAndExecuteEverySecond(time, onSecond, onEnd);
         StartCoroutine(this.coroutine);
         return this;
@@ -23,6 +24,14 @@ public class TimerComponent : MonoBehaviour
     public TimerComponent StopTimer()
     {
         StopCorutines();
+        return this;
+    }
+
+    public TimerComponent RestartTimer()
+    {
+        StopCorutines();
+        this.coroutine = WaitAndExecuteEverySecond(this.timeLeft, this.onSecond, this.onEnd);
+        StartCoroutine(this.coroutine);
         return this;
     }
 
@@ -64,6 +73,7 @@ public class TimerComponent : MonoBehaviour
     }
 
     private Action<int> onSecond;
+    private Action onEnd;
     private int timeLeft;
     private IEnumerator coroutine;
 }

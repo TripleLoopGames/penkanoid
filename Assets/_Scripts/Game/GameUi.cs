@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
@@ -11,7 +12,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         InitializeHealth(initialHealth)
         .InitializeTimer()
         .InitializeEndGame(restart)
-        .InitializeWinGame(restart, nextLevel);
+        .InitializeLevelWin(restart, nextLevel);
         return this;
     }
 
@@ -60,16 +61,16 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public GameUi ShowWin(bool lastLevel)
+    public GameUi ShowLevelWin(bool lastLevel)
     {
-        this.winGame.SetActive(true);
+        this.winLevel.SetActive(true);
 
         if (!lastLevel)
         {
             return this;
         }
 
-        Button[] buttons = this.winGame.GetComponentsInChildren<Button>();
+        Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
         {
             if (button.name == "NextLevel")
@@ -79,7 +80,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
             return button;
         }).ToArray();
 
-        Text[] texts = this.winGame.GetComponentsInChildren<Text>(true);
+        Text[] texts = this.winLevel.GetComponentsInChildren<Text>(true);
         texts = texts.Select(text =>
         {
             if (text.gameObject.name == "Ending")
@@ -92,9 +93,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public GameUi HideWin()
+    public GameUi HideLevelWin()
     {
-        this.winGame.SetActive(false);
+        this.winLevel.SetActive(false);
         return this;
     }
 
@@ -126,26 +127,22 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeWinGame(Action restart, Action nextLevel)
+    private GameUi InitializeLevelWin(Action restart, Action nextLevel)
     {
-        this.winGame = Resources.WinGame.Instantiate();
-        this.winGame.name = "WinGame";
-        this.winGame.transform.SetParent(this.gameObject.transform, false);
+        this.winLevel = Resources.WinLevel.Instantiate();
+        this.winLevel.name = "WinLevel";
+        this.winLevel.transform.SetParent(this.gameObject.transform, false);
 
-        Button[] buttons = this.winGame.GetComponentsInChildren<Button>();
+        Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
         {
             if (button.name == "NextLevel")
             {
                 button.onClick.AddListener(() => nextLevel());
             }
-            if (button.name == "Menu")
-            {
-                button.onClick.AddListener(() => OnMenu());
-            }
             return button;
         }).ToArray();
-        HideWin();
+        HideLevelWin();
         return this;
     }
 
@@ -194,7 +191,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     }
 
     private GameObject endGame;
-    private GameObject winGame;
+    private GameObject winLevel;
     private GameObject health;
     private TimerComponent timer;
     private Text timerText;

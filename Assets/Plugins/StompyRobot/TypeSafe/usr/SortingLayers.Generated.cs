@@ -33,21 +33,28 @@ public sealed class SRSortingLayers {
         }
     }
     
-    public static global::TypeSafe.SortingLayer Pickups {
+    public static global::TypeSafe.SortingLayer Ball {
         get {
             return __all[2];
         }
     }
     
-    public static global::TypeSafe.SortingLayer UI {
+    public static global::TypeSafe.SortingLayer Pickups {
         get {
             return __all[3];
+        }
+    }
+    
+    public static global::TypeSafe.SortingLayer UI {
+        get {
+            return __all[4];
         }
     }
     
     private static global::System.Collections.Generic.IList<global::TypeSafe.SortingLayer> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.SortingLayer>(new global::TypeSafe.SortingLayer[] {
                 new global::TypeSafe.SortingLayer("Background", -1752030837),
                 new global::TypeSafe.SortingLayer("Default", 0),
+                new global::TypeSafe.SortingLayer("Ball", 1597482303),
                 new global::TypeSafe.SortingLayer("Pickups", -1403419761),
                 new global::TypeSafe.SortingLayer("UI", 1522321345)});
     

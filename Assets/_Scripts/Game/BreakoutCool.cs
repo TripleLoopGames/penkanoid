@@ -44,10 +44,17 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.currentLevel.EnableIgnoreCollisionResult();
         this.inputDetector.DisableInput();
-        // dirty check last level
-        this.ui.ShowLevelWin(this.currentLevelId >= 3);
         this.currentLevel.DestroyPickUps();
         this.ui.StopCountDown();
+        // dirty check last level
+        if (this.currentLevelId < 3)
+        {
+            this.ui.ShowWinLevel();
+        }
+        else
+        {
+            this.ui.ShowWinGame();
+        }       
         return this;
     }
 
@@ -84,11 +91,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.ballPool.DespawnAll();
         this.player.Reset();
-        this.ui.HideEnd();
-        this.ui.HideLevelWin();
         this.ui.Reset();
         this.currentLevel.Destroy();
-        this.currentLevel = null;       
+        this.currentLevel = null;
         return this;
     }
 
@@ -106,7 +111,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
         Physics2D.IgnoreLayerCollision(SRLayers.Blocks, SRLayers.Pickups, true);
         return this;
-    }      
+    }
 
     private BreakoutCool InitializeUI()
     {

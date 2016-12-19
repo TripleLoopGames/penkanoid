@@ -86,40 +86,61 @@ public sealed class SRResources {
                     new global::TypeSafe.PrefabResource("Player", "Game/Player"),
                     new global::TypeSafe.PrefabResource("Ball", "Game/Ball")});
         
-        public sealed class Pickups {
+        public sealed class Ui {
             
-            private Pickups() {
+            private Ui() {
             }
             
-            public static global::TypeSafe.PrefabResource Heart {
+            public static global::TypeSafe.PrefabResource WinGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Clock {
+            public static global::TypeSafe.PrefabResource EventSystem {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Star {
+            public static global::TypeSafe.PrefabResource Canvas {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource EmptyPickup {
+            public static global::TypeSafe.PrefabResource EndGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
             }
             
+            public static global::TypeSafe.PrefabResource WinLevel {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource Health {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource Time {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[6]));
+                }
+            }
+            
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("Heart", "Game/Pickups/Heart"),
-                        new global::TypeSafe.PrefabResource("Clock", "Game/Pickups/Clock"),
-                        new global::TypeSafe.PrefabResource("Star", "Game/Pickups/Star"),
-                        new global::TypeSafe.PrefabResource("EmptyPickup", "Game/Pickups/EmptyPickup")});
+                        new global::TypeSafe.PrefabResource("WinGame", "Game/Ui/WinGame"),
+                        new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
+                        new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
+                        new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame"),
+                        new global::TypeSafe.PrefabResource("WinLevel", "Game/Ui/WinLevel"),
+                        new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health"),
+                        new global::TypeSafe.PrefabResource("Time", "Game/Ui/Time")});
             
             /// <summary>
             /// Return a list of all resources in this folder.
@@ -182,54 +203,40 @@ public sealed class SRResources {
             }
         }
         
-        public sealed class Ui {
+        public sealed class Pickups {
             
-            private Ui() {
+            private Pickups() {
             }
             
-            public static global::TypeSafe.PrefabResource EventSystem {
+            public static global::TypeSafe.PrefabResource Heart {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Canvas {
+            public static global::TypeSafe.PrefabResource Clock {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource EndGame {
+            public static global::TypeSafe.PrefabResource Star {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource WinLevel {
+            public static global::TypeSafe.PrefabResource EmptyPickup {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Health {
-                get {
-                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
-                }
-            }
-            
-            public static global::TypeSafe.PrefabResource Time {
-                get {
-                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
-                }
-            }
-            
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
-                        new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
-                        new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame"),
-                        new global::TypeSafe.PrefabResource("WinLevel", "Game/Ui/WinLevel"),
-                        new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health"),
-                        new global::TypeSafe.PrefabResource("Time", "Game/Ui/Time")});
+                        new global::TypeSafe.PrefabResource("Heart", "Game/Pickups/Heart"),
+                        new global::TypeSafe.PrefabResource("Clock", "Game/Pickups/Clock"),
+                        new global::TypeSafe.PrefabResource("Star", "Game/Pickups/Star"),
+                        new global::TypeSafe.PrefabResource("EmptyPickup", "Game/Pickups/EmptyPickup")});
             
             /// <summary>
             /// Return a list of all resources in this folder.
@@ -403,8 +410,8 @@ public sealed class SRResources {
             }
             global::System.Collections.Generic.List<global::TypeSafe.IResource> tmp = new global::System.Collections.Generic.List<global::TypeSafe.IResource>();
             tmp.AddRange(GetContents());
-            tmp.AddRange(Pickups.GetContentsRecursive());
             tmp.AddRange(Ui.GetContentsRecursive());
+            tmp.AddRange(Pickups.GetContentsRecursive());
             tmp.AddRange(Levels.GetContentsRecursive());
             __ts_internal_recursiveLookupCache = tmp;
             return __ts_internal_recursiveLookupCache;
@@ -509,9 +516,15 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource MainPanel {
+            public static global::TypeSafe.PrefabResource WinGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource MainPanel {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
                 }
             }
             
@@ -520,6 +533,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("Background", "Menu/Ui/Background"),
                         new global::TypeSafe.PrefabResource("Canvas", "Menu/Ui/Canvas"),
                         new global::TypeSafe.PrefabResource("Title", "Menu/Ui/Title"),
+                        new global::TypeSafe.PrefabResource("WinGame", "Menu/Ui/WinGame"),
                         new global::TypeSafe.PrefabResource("MainPanel", "Menu/Ui/MainPanel")});
             
             /// <summary>

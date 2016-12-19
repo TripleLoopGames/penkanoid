@@ -72,13 +72,22 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         return this;
     }
 
-    public Player Reset()
+    public Player FullReset()
     {
         this.gameObject.transform.position = PlayerConfig.InitialPosition;
         GetComponent<Animator>().SetBool("isAlive", true);
         this.health = PlayerConfig.InitialHealth;
+        this.timer.StopTimer();
         this.invulnerable = false;
         this.dead = false;
+        return this;
+    }
+
+    public Player NextLevelReset()
+    {
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
+        this.timer.StopTimer();
+        this.invulnerable = false;
         return this;
     }
 

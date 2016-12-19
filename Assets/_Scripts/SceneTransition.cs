@@ -32,7 +32,6 @@ public class SceneTransition : MonoBehaviour
         float currentValue = holeMaterial.GetFloat("_Radius");
         while (currentValue < 1.2f)
         {
-            Debug.Log(currentValue);
             holeMaterial.SetFloat("_Radius", currentValue);
             currentValue += 0.05f;
             yield return new WaitForSeconds(0.05f);
@@ -46,7 +45,6 @@ public class SceneTransition : MonoBehaviour
         float currentValue = holeMaterial.GetFloat("_Radius");
         while (currentValue > 0)
         {
-            Debug.Log(currentValue);
             holeMaterial.SetFloat("_Radius", currentValue);
             currentValue -= 0.05f;
             yield return new WaitForSeconds(0.05f);

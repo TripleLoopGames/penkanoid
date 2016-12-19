@@ -139,7 +139,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
         {
-            if (button.name == "LoadNextLevel")
+            if (button.name == "NextLevel")
             {
                 button.onClick.AddListener(() => nextLevel());
             }

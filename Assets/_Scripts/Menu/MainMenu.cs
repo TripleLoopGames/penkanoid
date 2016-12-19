@@ -9,20 +9,32 @@ public class MainMenu : MonoBehaviour
     private MainMenu Initialize()
     {
         InitializeCamera()
+        .InitializeTransition()
         .InitializeUI()
         .InitializeInputDetector()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
         .InitializeStartBlock()
-        .SetReferences();
-        StartMenu();
+        .SetReferences()
+        .SetExitAction();
+        this.sceneTransition.Enter(() => StartMenu());
         return this;
     }
 
     private MainMenu StartMenu()
     {
         this.inputDetector.EnableInput();
+        return this;
+    }
+
+    private MainMenu InitializeTransition()
+    {
+        GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
+        canvas.name = "Canvas_Transition";
+        canvas.transform.SetParent(this.gameObject.transform, false);
+        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
+        this.sceneTransition.Initialize();
         return this;
     }
 
@@ -97,6 +109,12 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
+    private MainMenu SetExitAction()
+    {
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit(onEnd));
+        return this;
+    }
+
     private void Start()
     {
         Initialize();
@@ -107,5 +125,6 @@ public class MainMenu : MonoBehaviour
     private MenuUi ui;
     private Camera mainCamera;
     private SpawnPool ballPool;
+    private SceneTransition sceneTransition;
 
 }

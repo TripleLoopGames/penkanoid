@@ -30,13 +30,14 @@ public class SceneTransition : MonoBehaviour
     IEnumerator AnimateEnter(Action afterAnimation)
     {
         float currentValue = holeMaterial.GetFloat("_Radius");
-        while (currentValue < 2.5)
+        while (currentValue < 1.2f)
         {
             Debug.Log(currentValue);
-            currentValue += 0.05f;
             holeMaterial.SetFloat("_Radius", currentValue);
+            currentValue += 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
+        holeMaterial.SetFloat("_Radius", 1.2f);
         afterAnimation();
     }
 
@@ -46,10 +47,11 @@ public class SceneTransition : MonoBehaviour
         while (currentValue > 0)
         {
             Debug.Log(currentValue);
-            currentValue -= 0.05f;
             holeMaterial.SetFloat("_Radius", currentValue);
+            currentValue -= 0.05f;
             yield return new WaitForSeconds(0.05f);
         }
+        holeMaterial.SetFloat("_Radius", 0);
         afterAnimation();
     }
 

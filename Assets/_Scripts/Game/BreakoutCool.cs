@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
@@ -24,6 +25,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
+
+        // change this.currentLevelId for id in unity prefs
+        this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
+
         this.sceneTransition.Enter(() => StartGame());
     }
 
@@ -88,7 +93,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Reset();
         this.currentLevelId++;
         this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
-        StartGame();
+        //StartGame();
         return this;
     }
 
@@ -136,11 +141,21 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool InitializeUI()
     {
+        //TODO Callback Hell :(
+        Action nextLevelFlow = () =>
+        {
+            this.sceneTransition.Exit(() =>
+            {
+                NextLevel();
+                this.sceneTransition.Enter(() => StartGame());
+            });
+        };
+
         GameObject canvas = SRResources.Game.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<GameUi>();
-        this.ui.Initialize(() => ReStart(), () => NextLevel(), Config.Player.InitialHealth);
+        this.ui.Initialize(() => ReStart(), nextLevelFlow, Config.Player.InitialHealth);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();
@@ -185,8 +200,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeLevelCreator()
     {
         this.levelCreator = GetComponent<LevelCreator>();
-        // change this.currentLevelId for id in unity prefs
-        this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
         return this;
     }
 

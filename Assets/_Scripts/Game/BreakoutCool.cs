@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 using Resources = SRResources.Game;
 using PathologicalGames;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelCreator))]
@@ -11,6 +14,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private void Initialize()
     {
         InitializeCamera()
+        .InitializeTransition()
         .InitializeUI()
         .InitializeLevelCreator()
         .InitializeInputDetector()
@@ -18,8 +22,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializePlayer()
         .InitializeBallPool()
         .SetReferences()
-        .SetCollisionsBetweenLayers();
-        StartGame();
+        .SetCollisionsBetweenLayers()
+        .SetExitAction();
+        this.sceneTransition.Enter(() => StartGame());
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -106,7 +111,23 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
         Physics2D.IgnoreLayerCollision(SRLayers.Blocks, SRLayers.Pickups, true);
         return this;
-    }      
+    }
+
+    private BreakoutCool SetExitAction()
+    {
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit(onEnd));
+        return this;
+    }
+
+    private BreakoutCool InitializeTransition()
+    {
+        GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
+        canvas.name = "Canvas_Transition";
+        canvas.transform.SetParent(this.gameObject.transform, false);
+        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
+        this.sceneTransition.Initialize();
+        return this;
+    }
 
     private BreakoutCool InitializeUI()
     {
@@ -194,4 +215,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private Camera mainCamera;
     private Player player;
     private SpawnPool ballPool;
+    private SceneTransition sceneTransition;
 }

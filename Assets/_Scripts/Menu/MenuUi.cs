@@ -12,7 +12,10 @@ public class MenuUi : MonoBehaviourEx
 
     public MenuUi SetCamera(Camera camera)
     {
-        GetComponent<Canvas>().worldCamera = camera;
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = camera;
+        // set canvas layer, needs camera
+        canvas.sortingLayerID = SRSortingLayers.UI;
         return this;
     }
 

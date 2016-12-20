@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 using PlayerConfig = Config.Player;
 using BallConfig = Config.Ball;
 using PathologicalGames;
+using System.Collections;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
 {
@@ -18,12 +19,13 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public Player Damage()
     {
-        if (this.invulnerable || this.interactionsBlocked)
+        if (this.invulnerable || this.damageInvulnerable ||  this.interactionsBlocked)
         {
             return this;
         }
         ChangeHealth(-1);
         GetComponent<Animator>().SetTrigger("Damage");
+        StartCoroutine(DamageInvulnerability());
         if (this.health <= 0)
         {
             this.timer.StopTimer();
@@ -47,6 +49,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         this.timer.StopTimer();
         this.invulnerable = false;
         this.interactionsBlocked = false;
+        this.damageInvulnerable = false;
         return this;
     }
 
@@ -56,6 +59,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         this.timer.StopTimer();
         this.invulnerable = false;
         this.interactionsBlocked = false;
+        this.damageInvulnerable = false;
         return this;
     }
 
@@ -154,6 +158,14 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         return this;
     }
 
+    private IEnumerator DamageInvulnerability()
+    {
+        this.damageInvulnerable = true;
+        yield return new WaitForSeconds(0.5f);
+        this.damageInvulnerable = false;
+    }
+
+    private bool damageInvulnerable = false;
     private bool invulnerable = false;
     private bool interactionsBlocked = false;
     private Rigidbody2D ownRigidbody;

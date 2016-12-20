@@ -18,7 +18,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     public Player Damage()
     {
-        if (this.invulnerable || this.dead)
+        if (this.invulnerable || this.interactionsBlocked)
         {
             return this;
         }
@@ -26,13 +26,38 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         GetComponent<Animator>().SetTrigger("Damage");
         if (this.health <= 0)
         {
-            this.dead = true;
             this.timer.StopTimer();
             Messenger.Publish(new PlayerDeadMessage());
             return this;
         }
         return this;
-    }    
+    }
+
+    public Player BlockInteractions()
+    {
+        this.interactionsBlocked = true;
+        return this;
+    }
+
+    public Player FullReset()
+    {
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
+        GetComponent<Animator>().SetBool("isAlive", true);
+        this.health = PlayerConfig.InitialHealth;
+        this.timer.StopTimer();
+        this.invulnerable = false;
+        this.interactionsBlocked = false;
+        return this;
+    }
+
+    public Player NextLevelReset()
+    {
+        this.gameObject.transform.position = PlayerConfig.InitialPosition;
+        this.timer.StopTimer();
+        this.invulnerable = false;
+        this.interactionsBlocked = false;
+        return this;
+    }
 
     public void Handle(UserDirectionMessage message)
     {
@@ -58,12 +83,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         spawnPosition.y += 1.3f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
         ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform));
-        ball.Shoot(randomDirection, 2, BallConfig.lifetime);        
+        ball.Shoot(randomDirection, 2, BallConfig.lifetime);
     }
 
     public void Handle(PlayerDeadMessage message)
     {
-        GetComponent<Animator>().SetBool("isAlive",false);
+        GetComponent<Animator>().SetBool("isAlive", false);
     }
 
     public Player SetBallPool(SpawnPool ballPool)
@@ -72,27 +97,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         return this;
     }
 
-    public Player FullReset()
-    {
-        this.gameObject.transform.position = PlayerConfig.InitialPosition;
-        GetComponent<Animator>().SetBool("isAlive", true);
-        this.health = PlayerConfig.InitialHealth;
-        this.timer.StopTimer();
-        this.invulnerable = false;
-        this.dead = false;
-        return this;
-    }
-
-    public Player NextLevelReset()
-    {
-        this.gameObject.transform.position = PlayerConfig.InitialPosition;
-        this.timer.StopTimer();
-        this.invulnerable = false;
-        return this;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (this.interactionsBlocked)
+        {
+            return;
+        }
         bool pickupTrigger = collision.gameObject.CompareTag(SRTags.Pickup);
         if (!pickupTrigger)
         {
@@ -137,14 +147,15 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     private Player AddInvencibility(int time)
     {
         this.invulnerable = true;
-        this.timer.StartTimer(time, () => {
+        this.timer.StartTimer(time, () =>
+        {
             this.invulnerable = false;
         });
         return this;
     }
 
     private bool invulnerable = false;
-    private bool dead = false;
+    private bool interactionsBlocked = false;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timer;
     private SpawnPool ballPool;

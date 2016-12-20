@@ -19,6 +19,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeUI()
         .InitializeLevelCreator()
         .InitializeInputDetector()
+        .InitializeDataController()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
@@ -45,6 +46,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool StartNewGame()
     {
+        this.dataController.AddPlayerGameTries(1);
         this.inputDetector.EnableInput();
         this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
         return this;
@@ -70,8 +72,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         }
         else
         {
-            int time = this.ui.GetTimeSpent();
-            this.ui.SetWinGameInfo(time);
+            int timeSpent = this.ui.GetTimeSpent();
+            int tries = this.dataController.GetPlayerGameTries();
+            // reset so when player tries again tries re-start
+            this.dataController.ResetPlayerGameTries();
+            this.ui.SetWinGameInfo(timeSpent, tries);
             this.ui.ShowWinGame();
         }       
         return this;
@@ -165,7 +170,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             this.sceneTransition.Exit(() =>
             {
                 LoadNextLevel();
-                this.sceneTransition.Enter(() => StartNewLevel());
+                this.sceneTransition.Enter(() => {
+                    StartNewLevel();
+                });
             });
         };
 
@@ -180,6 +187,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             eventSystem.name = "EventSystemIn";
             eventSystem.transform.SetParent(this.transform, false);
         }
+        return this;
+    }
+
+    private BreakoutCool InitializeDataController()
+    {
+        this.dataController = GetComponent<DataController>();
+        this.dataController.Initialize();
         return this;
     }
 
@@ -252,4 +266,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private Player player;
     private SpawnPool ballPool;
     private SceneTransition sceneTransition;
+    private DataController dataController;
 }

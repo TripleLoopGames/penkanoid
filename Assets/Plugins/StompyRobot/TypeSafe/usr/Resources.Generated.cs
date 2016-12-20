@@ -664,7 +664,14 @@ public sealed class SRResources {
         private SRDebugger() {
         }
         
-        private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[0]);
+        public static global::TypeSafe.Resource<global::SRDebugger.Settings> Settings {
+            get {
+                return ((global::TypeSafe.Resource<global::SRDebugger.Settings>)(__ts_internal_resources[0]));
+            }
+        }
+        
+        private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                    new global::TypeSafe.Resource<global::SRDebugger.Settings>("Settings", "SRDebugger/Settings")});
         
         public sealed class UI {
             

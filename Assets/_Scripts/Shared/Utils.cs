@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using System.Linq;
+using UnityEngine;
+using System;
 
 public static class Utils
 {
@@ -22,5 +24,11 @@ public static class Utils
         }
 
         return weights.First().Key;
+    }
+
+    public static String FormatSeconds(int seconds)
+    {
+        string twoDigitSeconds = (seconds % 60).ToString("00");
+        return $"{Mathf.Floor(seconds / 60)}:{seconds % 60}";
     }
 }

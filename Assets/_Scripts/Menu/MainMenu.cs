@@ -26,6 +26,7 @@ public class MainMenu : MonoBehaviour
     private MainMenu StartMenu()
     {
         this.inputDetector.EnableInput();
+        this.player.BlockInteractions();
         return this;
     }
 

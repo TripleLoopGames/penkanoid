@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
         .InitializeBallPool()
         .InitializeStartBlock()
         .SetReferences()
+        .SetCollisionsBetweenLayers()
         .SetExitAction();
         this.sceneTransition.Enter(() => StartMenu());
         return this;
@@ -106,6 +107,12 @@ public class MainMenu : MonoBehaviour
     {
         this.ui.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
+        return this;
+    }
+
+    private MainMenu SetCollisionsBetweenLayers()
+    {
+        Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
         return this;
     }
 

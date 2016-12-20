@@ -66,6 +66,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
+    public int GetTimeSpent()
+    {
+        return this.timer.GetTimeSpent();
+    }
+
     public GameUi ShowEnd()
     {
         this.endGame.SetActive(true);
@@ -101,6 +106,14 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         this.winGame.SetActive(false);
         return this;
     }
+
+    public GameUi SetWinGameInfo(int time = 0, int tries = 0)
+    {
+        Text info = this.winGame.GetComponentInChildren<Text>();
+        info.text = $"You've proven yourself a worthy volcano. \n And you did it in only {time} seconds... \n After {tries} tries, of course.";
+        return this;
+    }
+
 
     public GameUi SetCamera(Camera camera)
     {

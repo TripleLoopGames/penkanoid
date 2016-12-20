@@ -70,6 +70,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         }
         else
         {
+            int time = this.ui.GetTimeSpent();
+            this.ui.SetWinGameInfo(time);
             this.ui.ShowWinGame();
         }       
         return this;

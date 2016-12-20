@@ -3,11 +3,11 @@
 public class Pickup : MonoBehaviour {
 
     [SerializeField]
-    private int healthAmount;
+    private int healthAmount = 0;
     [SerializeField]
-    private int gameTime;
+    private int gameTime = 0;
     [SerializeField]
-    private int invincibilityTime;
+    private int invincibilityTime = 0;
 
     public void Destroy()
     {

@@ -6,12 +6,12 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
-    public GameUi Initialize(Action restart, Action nextLevel, int initialHealth)
+    public GameUi Initialize(Action restart, Action nextLevel, int initialHealth, int startTime)
     {
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
-        .InitializeTimer()
+        .InitializeTimer(startTime)
         .InitializeEndGame(restart)
         .InitializeWinLevel(nextLevel)
         .InitializeWinGame(restart);
@@ -61,7 +61,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     {
         Action<int> onTimerTick = value =>
         {         
-            this.timerText.text = value.ToString();
+            this.timeText.text = value.ToString();
         };
         this.timer.StartTimer(time, onTimerTick, onEnd);
         return this;
@@ -207,13 +207,14 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeTimer()
+    private GameUi InitializeTimer(int startTime)
     {
         GameObject time = Resources.Time.Instantiate();
         this.timer = time.GetComponent<TimerComponent>();
         this.timer.name = "Time";
         this.timer.transform.SetParent(this.gameObject.transform, false);
-        this.timerText = time.GetComponentInChildren<Text>();
+        this.timeText = time.GetComponentInChildren<Text>();
+        this.timeText.text = $"{startTime}";
         return this;
     }
 
@@ -244,7 +245,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     private GameObject winGame;
     private GameObject health;
     private TimerComponent timer;
-    private Text timerText;
+    private Text timeText;
     private GameObject[] hearts;
     private int initialHealth;
 }

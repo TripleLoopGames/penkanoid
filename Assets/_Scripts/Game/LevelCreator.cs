@@ -18,6 +18,7 @@ public class LevelCreator : MonoBehaviour
             case 3:
                 return Resources.Level_3.Instantiate();
             default :
+                Debug.LogWarning("Level outside boundaries!");
                 return Resources.Level_1.Instantiate();
         }     
     }

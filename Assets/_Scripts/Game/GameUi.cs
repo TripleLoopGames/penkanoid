@@ -9,6 +9,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public GameUi Initialize(Action restart, Action nextLevel, int initialHealth)
     {
         this.initialHealth = initialHealth;
+        this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
         .InitializeTimer()
         .InitializeEndGame(restart)
@@ -25,6 +26,18 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public void Handle(PlayerChangeHealthMessage message)
     {
         SetHearts(message.Health);
+    }
+
+    public GameUi MakeInteractable()
+    {
+        this.canvasGroup.interactable = true;
+        return this;
+    }
+
+    public GameUi MakeNonInteractable()
+    {
+        this.canvasGroup.interactable = false;
+        return this;
     }
 
     public GameUi FullReset()
@@ -225,6 +238,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
+    private CanvasGroup canvasGroup;
     private GameObject endGame;
     private GameObject winLevel;
     private GameObject winGame;

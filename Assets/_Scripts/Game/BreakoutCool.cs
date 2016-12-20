@@ -48,14 +48,14 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.dataController.AddPlayerGameTries(1);
         this.inputDetector.EnableInput();
-        this.ui.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+        this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
         return this;
     }
 
     private BreakoutCool StartNewLevel()
     {
         this.inputDetector.EnableInput();
-        this.ui.ReStartCountDown();
+        this.gameUI.ReStartCountDown();
         return this;
     }
 
@@ -64,20 +64,20 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.currentLevel.EnableIgnoreCollisionResult();
         this.inputDetector.DisableInput();
         this.currentLevel.DestroyPickUps();
-        this.ui.StopCountDown();
+        this.gameUI.StopCountDown();
         // dirty check last level
         if (this.currentLevelId < 3)
         {
-            this.ui.ShowWinLevel();
+            this.gameUI.ShowWinLevel();
         }
         else
         {
-            int timeSpent = this.ui.GetTimeSpent();
+            int timeSpent = this.gameUI.GetTimeSpent();
             int tries = this.dataController.GetPlayerGameTries();
             // reset so when player tries again tries re-start
             this.dataController.ResetPlayerGameTries();
-            this.ui.SetWinGameInfo(timeSpent, tries);
-            this.ui.ShowWinGame();
+            this.gameUI.SetWinGameInfo(timeSpent, tries);
+            this.gameUI.ShowWinGame();
         }       
         return this;
     }
@@ -87,8 +87,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.currentLevel.EnableIgnoreCollisionResult();
         this.inputDetector.DisableInput();
         this.currentLevel.DestroyPickUps();
-        this.ui.ShowEnd();
-        this.ui.StopCountDown();
+        this.gameUI.ShowEnd();
+        this.gameUI.StopCountDown();
         return this;
     }
 
@@ -114,7 +114,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.ballPool.DespawnAll();
         this.player.FullReset();
-        this.ui.FullReset();
+        this.gameUI.FullReset();
         this.currentLevel.Destroy();
         this.currentLevel = null;
         return this;
@@ -124,7 +124,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.ballPool.DespawnAll();
         this.player.NextLevelReset();
-        this.ui.NextLevelReset();
+        this.gameUI.NextLevelReset();
         this.currentLevel.Destroy();
         this.currentLevel = null;
         return this;
@@ -132,7 +132,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool SetReferences()
     {
-        this.ui.SetCamera(this.mainCamera);
+        this.gameUI.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
         return this;
     }
@@ -167,10 +167,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         //TODO Callback Hell :(
         Action nextLevelFlow = () =>
         {
+            this.gameUI.MakeNonInteractable();
             this.sceneTransition.Exit(() =>
             {
                 LoadNextLevel();
                 this.sceneTransition.Enter(() => {
+                    this.gameUI.MakeInteractable();
                     StartNewLevel();
                 });
             });
@@ -179,8 +181,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         GameObject canvas = SRResources.Game.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.ui = canvas.GetComponent<GameUi>();
-        this.ui.Initialize(() => ReStart(), nextLevelFlow, Config.Player.InitialHealth);
+        this.gameUI = canvas.GetComponent<GameUi>();
+        this.gameUI.Initialize(() => ReStart(), nextLevelFlow, Config.Player.InitialHealth);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();
@@ -258,7 +260,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     }
 
     private int currentLevelId = 1;
-    private GameUi ui;
+    private GameUi gameUI;
     private InputDetector inputDetector;
     private Level currentLevel;
     private LevelCreator levelCreator;

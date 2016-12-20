@@ -8,6 +8,7 @@ public class TimerComponent : MonoBehaviour
     public TimerComponent StartTimer(int time, Action<int> onSecond, Action onEnd)
     {
         StopCorutines();
+        this.timeSpent = 0;
         this.onSecond = onSecond;
         this.onEnd = onEnd;
         this.coroutine = WaitAndExecuteEverySecond(time, onSecond, onEnd);
@@ -47,6 +48,11 @@ public class TimerComponent : MonoBehaviour
         return this.timeLeft;
     }
 
+    public int GetTimeSpent()
+    {
+        return this.timeSpent;
+    }
+
     // oups this is not a timer this is a countdown
     private IEnumerator WaitAndExecuteEverySecond(int time, Action<int> onSecond, Action onEnd)
     {
@@ -56,6 +62,7 @@ public class TimerComponent : MonoBehaviour
             onSecond(this.timeLeft);
             yield return new WaitForSeconds(1f);
             this.timeLeft--;
+            this.timeSpent++;
         }
         onSecond(this.timeLeft);
         onEnd();
@@ -75,5 +82,6 @@ public class TimerComponent : MonoBehaviour
     private Action<int> onSecond;
     private Action onEnd;
     private int timeLeft;
+    private int timeSpent = 0;
     private IEnumerator coroutine;
 }

@@ -29,6 +29,6 @@ public static class Utils
     public static String FormatSeconds(int seconds)
     {
         string twoDigitSeconds = (seconds % 60).ToString("00");
-        return $"{Mathf.Floor(seconds / 60)}:{seconds % 60}";
+        return $"{Mathf.Floor(seconds / 60)}:{twoDigitSeconds}";
     }
 }

@@ -66,7 +66,7 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu InitializePlayer()
     {
-        this.player = SRResources.Game.Player.Instantiate().GetComponent<Player>();
+        this.player = SRResources.Game.Player.Instantiate(new Vector2()).GetComponent<Player>();
         this.player.name = "player";
         this.player.transform.SetParent(this.gameObject.transform, false);
         this.player.Initialize();

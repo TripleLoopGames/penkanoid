@@ -24,7 +24,7 @@ public static class Config
 
     public static class Player
     {
-        public static readonly Vector2 InitialPosition = new Vector2(0f, -3.6f);
+        public static readonly Vector2 InitialPosition = new Vector2(0f, -5.5f);
         public const int InitialHealth = 3;
     }
 

@@ -19,13 +19,15 @@ public class InputDetector : MonoBehaviourEx
     public InputDetector Initialize()
     {
 #if UNITY_ANDROID
-        if (SystemInfo.supportsGyroscope)
+        if (!SystemInfo.supportsGyroscope)
         {
+            Debug.Log("Gyroscope enabled");
             this.gyro = Input.gyro;
             this.gyro.enabled = true;
         } else
         {
             this.gyroNotSupported = true;
+            this.acceleration = Input.acceleration;
             Debug.Log("The system doesn't support Gyroscope");
         }
 #endif
@@ -67,9 +69,10 @@ public class InputDetector : MonoBehaviourEx
         }
 
 #elif UNITY_ANDROID
-        if (!this.gyroNotSupported && this.gyro.enabled)
+        if (this.gyroNotSupported && this.gyro.enabled)
         {
-            float currentDirection = Input.gyro.gravity.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
+            this.acceleration = Vector2.Lerp(this.acceleration, Input.gyro.gravity, 60f * Time.deltaTime);
+            float currentDirection = this.acceleration.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
             if (this.direction != currentDirection)
             {
                 Messenger.Publish(new UserDirectionMessage(new Vector2(currentDirection, 0)));
@@ -78,7 +81,9 @@ public class InputDetector : MonoBehaviourEx
         }
         else
         {
-            float currentDirection = Input.acceleration.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
+            // filter acceleration
+            this.acceleration = Vector3.Lerp(this.acceleration, Input.acceleration, 60f * Time.deltaTime);
+            float currentDirection = this.acceleration.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)
             if (this.direction != currentDirection)
             {
                 Messenger.Publish(new UserDirectionMessage(new Vector2(currentDirection, 0)));
@@ -112,6 +117,7 @@ public class InputDetector : MonoBehaviourEx
 
     private Gyroscope gyro;
     private bool gyroNotSupported;
+    private Vector2 acceleration;
 #endif
 
     private float direction;

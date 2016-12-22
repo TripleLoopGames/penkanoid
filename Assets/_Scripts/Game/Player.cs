@@ -67,16 +67,18 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     {
         // magic number to transform position :(
         float xPosition = message.Position.x;
-        if (xPosition > 0.7)
+        if (xPosition > 0.25)
         {
-            xPosition = 0.7f;
+            xPosition = 0.25f;
         }
-        if (xPosition < -0.7)
+        if (xPosition < -0.25)
         {
-            xPosition = -0.7f;
+            xPosition = -0.25f;
         }
-        Vector2 targetPosition = new Vector2(xPosition * 13.07f, this.ownRigidbody.position.y);
-        this.ownRigidbody.position = targetPosition;
+        float targetX = xPosition * 38.4f;
+        this.direction = targetX - this.transform.position.x;
+        float difference = Math.Abs(this.transform.position.x - (xPosition * 38.4f));
+        this.speed = this.speedCurve.Evaluate(difference);
     }
 
     public void Handle(UserShootMessage message)
@@ -116,6 +118,11 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         ItemStats pickupStats = pickup.GetStats();
         pickup.Destroy();
         ProcessStats(pickupStats);
+    }
+
+    private void FixedUpdate()
+    {
+       this.ownRigidbody.MovePosition(new Vector2 (this.transform.position.x + this.direction * this.speed * Time.fixedDeltaTime, this.transform.position.y));
     }
 
     private Player ProcessStats(ItemStats stats)
@@ -165,6 +172,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         this.damageInvulnerable = false;
     }
 
+    private float speed;
+    private float direction;
     private bool damageInvulnerable = false;
     private bool invulnerable = false;
     private bool interactionsBlocked = false;
@@ -172,4 +181,6 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     private TimerComponent timer;
     private SpawnPool ballPool;
     private int health;
+    [SerializeField]
+    private AnimationCurve speedCurve;
 }

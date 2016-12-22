@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4360804454650872}
   - component: {fileID: 114576826239299072}
   - component: {fileID: 212448289510162384}
-  - component: {fileID: 61924810545510106}
   - component: {fileID: 50461786910770614}
   - component: {fileID: 95247405619559212}
   - component: {fileID: 114256368222737782}
@@ -56,16 +55,16 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 1
+  m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!60 &60711733500004764
 PolygonCollider2D:
   m_ObjectHideFlags: 1
@@ -99,20 +98,6 @@ PolygonCollider2D:
       - {x: 0.62, y: 0.04}
       - {x: 0.75333333, y: 0.17333333}
       - {x: 0.78000003, y: 0.29333335}
---- !u!61 &61924810545510106
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1881070687228388}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0.5}
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
 --- !u!95 &95247405619559212
 Animator:
   serializedVersion: 3
@@ -152,6 +137,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab30fd27b74c0634b8a3a47c21ace26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: -0.015704263
+      outSlope: -0.015704263
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 0.999638
+      value: 0.0071512284
+      inSlope: 0.017195562
+      outSlope: -0.0041769827
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 2.5090125
+      value: 2.5020278
+      inSlope: 0.094718575
+      outSlope: 0.18447265
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 12
+      value: 4
+      inSlope: 0.0052613476
+      outSlope: 0.0052613476
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!212 &212448289510162384
 SpriteRenderer:
   m_ObjectHideFlags: 1

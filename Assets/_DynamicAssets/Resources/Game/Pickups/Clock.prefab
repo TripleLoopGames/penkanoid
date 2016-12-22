@@ -20,10 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4747332430962422}
   - component: {fileID: 212922631405029054}
-  - component: {fileID: 60714214848661348}
   - component: {fileID: 61079485641219486}
   - component: {fileID: 50318508012945700}
   - component: {fileID: 114748681318598040}
+  - component: {fileID: 58215130543297124}
   m_Layer: 8
   m_Name: Clock
   m_TagString: Pickup
@@ -64,8 +64,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60714214848661348
-PolygonCollider2D:
+--- !u!58 &58215130543297124
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -76,26 +76,8 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
-  m_Points:
-    m_Paths:
-    - - {x: 0.4290112, y: 0.27606142}
-      - {x: 0.32347456, y: 0.37671512}
-      - {x: 0.17154117, y: 0.42326987}
-      - {x: -0.007044615, y: 0.35239953}
-      - {x: -0.10789992, y: 0.41313466}
-      - {x: -0.23609285, y: 0.41851994}
-      - {x: -0.32676363, y: 0.37530676}
-      - {x: -0.39347452, y: 0.33177176}
-      - {x: -0.44901535, y: 0.25859576}
-      - {x: -0.48585483, y: 0.12983069}
-      - {x: -0.42507267, y: -0.041880608}
-      - {x: -0.1564371, y: -0.3009285}
-      - {x: -0.0636643, y: -0.38375708}
-      - {x: -0.007320285, y: -0.40910816}
-      - {x: 0.13455616, y: -0.31699762}
-      - {x: 0.39709046, y: -0.07849881}
-      - {x: 0.43915656, y: 0.013426129}
-      - {x: 0.46873286, y: 0.15615422}
+  serializedVersion: 2
+  m_Radius: 0.49333334
 --- !u!61 &61079485641219486
 BoxCollider2D:
   m_ObjectHideFlags: 1

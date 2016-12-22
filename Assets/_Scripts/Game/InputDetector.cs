@@ -19,7 +19,7 @@ public class InputDetector : MonoBehaviourEx
     public InputDetector Initialize()
     {
 #if UNITY_ANDROID
-        if (!SystemInfo.supportsGyroscope)
+        if (SystemInfo.supportsGyroscope)
         {
             Debug.Log("Gyroscope enabled");
             this.gyro = Input.gyro;
@@ -69,7 +69,7 @@ public class InputDetector : MonoBehaviourEx
         }
 
 #elif UNITY_ANDROID
-        if (this.gyroNotSupported && this.gyro.enabled)
+        if (!this.gyroNotSupported && this.gyro.enabled)
         {
             this.acceleration = Vector2.Lerp(this.acceleration, Input.gyro.gravity, 60f * Time.deltaTime);
             float currentDirection = this.acceleration.x; // theoretical limits (-1, 1) real limits(-0,7, 0.7)

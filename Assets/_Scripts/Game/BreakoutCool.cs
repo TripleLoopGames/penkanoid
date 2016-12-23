@@ -20,6 +20,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeLevelCreator()
         .InitializeInputDetector()
         .InitializeDataController()
+        .InitializeSoundPlayer()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
@@ -247,6 +248,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool InitializeSoundPlayer()
+    {
+        this.soundPlayer = SRResources.Audio.SoundPlayer.Instantiate().GetComponent<SoundPlayer>();
+        this.soundPlayer.name = "SoundPlayer";
+        this.soundPlayer.Initialize();
+        this.soundPlayer.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
     private Level GenerateAndAddLevel(int id)
     {
         Level currentLevel = this.levelCreator.GenerateLevel(id).GetComponent<Level>();
@@ -263,6 +273,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private int currentLevelId = 1;
     private GameUi gameUI;
+    private SoundPlayer soundPlayer;
     private InputDetector inputDetector;
     private Level currentLevel;
     private LevelCreator levelCreator;

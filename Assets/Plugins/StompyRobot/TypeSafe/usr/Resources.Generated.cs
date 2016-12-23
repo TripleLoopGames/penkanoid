@@ -1141,7 +1141,35 @@ public sealed class SRResources {
         private Audio() {
         }
         
-        private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[0]);
+        public static global::TypeSafe.PrefabResource SoundPlayer {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
+            }
+        }
+        
+        public static global::TypeSafe.PrefabResource Effects {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
+            }
+        }
+        
+        public static global::TypeSafe.PrefabResource Music {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
+            }
+        }
+        
+        public static global::TypeSafe.PrefabResource EffectPool {
+            get {
+                return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
+            }
+        }
+        
+        private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                    new global::TypeSafe.PrefabResource("SoundPlayer", "Audio/SoundPlayer"),
+                    new global::TypeSafe.PrefabResource("Effects", "Audio/Effects"),
+                    new global::TypeSafe.PrefabResource("Music", "Audio/Music"),
+                    new global::TypeSafe.PrefabResource("EffectPool", "Audio/EffectPool")});
         
         public sealed class music {
             

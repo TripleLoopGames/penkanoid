@@ -31,4 +31,10 @@ public static class Utils
         string twoDigitSeconds = (seconds % 60).ToString("00");
         return $"{Mathf.Floor(seconds / 60)}:{twoDigitSeconds}";
     }
+
+    public static void SetNameAndParent(string name, GameObject child, GameObject parent)
+    {
+        child.name = name;
+        child.transform.SetParent(parent.transform, true);
+    }
 }

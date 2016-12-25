@@ -1,47 +1,47 @@
-﻿using PathologicalGames;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Audio;
-using Resources = SRResources.Audio;
 
-public class SoundPlayer : MonoBehaviourEx
+[RequireComponent(typeof(AudioSource))]
+public class SoundPlayer : MonoBehaviour
 {
-    public SoundPlayer Initialize()
+    private AudioSource audioSource;
+    private SoundData soundData;
+    private Action despawnOwn;
+
+    public SoundPlayer Initialize(SoundData soundData, Action despawnOwn)
     {
-        this.effects = Resources.Effects.Instantiate().GetComponent<AudioSource>();
-        this.effects.transform.SetParent(this.gameObject.transform, false);
-
-        this.music = Resources.Music.Instantiate().GetComponent<AudioSource>();
-        this.music.transform.SetParent(this.gameObject.transform, false);
-
-        this.effectsPool = Resources.EffectPool.Instantiate().GetComponent<SpawnPool>();
-        this.effectsPool.transform.SetParent(this.gameObject.transform, false);
-
-        this.audioMixer = this.music.outputAudioMixerGroup.audioMixer;
+        this.soundData = soundData;
+        this.audioSource = GetComponent<AudioSource>();
+        this.despawnOwn = despawnOwn;
+        ApplyData(soundData);
         return this;
     }
 
-    public void Handle(int playEffectMessage)
+    public SoundPlayer Play()
     {
-
+        this.audioSource.Play();
+        return this;
     }
 
-    public void Handle(bool stopEffectMessage)
+    public SoundPlayer Reset()
     {
-
+        this.audioSource.Stop();
+        this.audioSource.clip = null;
+        this.audioSource.loop = false;
+        this.despawnOwn();
+        return this;
     }
 
-    public void Handle(float playMusicMessage)
+    public bool TheSameAs(SoundData soundData)
     {
-
+        return soundData.SameClipAndSource(soundData);
     }
 
-    private List<PlayingSound> playingSounds = new List<PlayingSound>();
+    private SoundPlayer ApplyData(SoundData soundData)
+    {
+        this.audioSource.clip = soundData.AudioClip;
+        this.audioSource.loop = soundData.Loop;
+        return this;
+    }
 
-    private AudioMixer audioMixer;
-
-    private AudioSource effects;
-    private AudioSource music;
-
-    private SpawnPool effectsPool;
 }

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4223761182847248}
   - component: {fileID: 114413843438318212}
   m_Layer: 0
-  m_Name: EffectPool
+  m_Name: SoundPlayerPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59dfbc0f4f3a98b4ebf4ad40fc3f43aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolName: EffectPool
+  poolName: SoundPlayerPool
   matchPoolScale: 0
   matchPoolLayer: 0
   dontReparent: 0
@@ -60,6 +60,20 @@ MonoBehaviour:
   _perPrefabPoolOptions:
   - prefab: {fileID: 4552002599094300, guid: df313391265abd0439b018207c55d90a, type: 2}
     preloadAmount: 10
+    preloadTime: 0
+    preloadFrames: 0
+    preloadDelay: 0
+    limitInstances: 0
+    limitAmount: 0
+    limitFIFO: 0
+    cullDespawned: 0
+    cullAbove: 0
+    cullDelay: 0
+    cullMaxPerPass: 0
+    _logMessages: 0
+    spawnPool: {fileID: 0}
+  - prefab: {fileID: 4668157163581456, guid: ffb89e1850b89f4418db89a55f61b3af, type: 2}
+    preloadAmount: 2
     preloadTime: 0
     preloadFrames: 0
     preloadDelay: 0

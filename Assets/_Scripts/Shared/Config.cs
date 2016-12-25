@@ -22,6 +22,15 @@ public static class Config
         }
     }
 
+    public static class SoundPlayer
+    {
+        public static class SoundTypes
+        {
+            public const string Music = "Music";
+            public const string Effect = "Effects";
+        }
+    }
+
     public static class Player
     {
         public static readonly Vector2 InitialPosition = new Vector2(0f, -5.5f);

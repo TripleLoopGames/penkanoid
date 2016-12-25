@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
         .InitializeTransition()
         .InitializeUI()
         .InitializeInputDetector()
+        .InitializeSoundCentralPool()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
@@ -88,6 +89,15 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
+    private MainMenu InitializeSoundCentralPool()
+    {
+        this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
+        this.soundCentralPool.name = "SoundCentralPool";
+        this.soundCentralPool.Initialize();
+        this.soundCentralPool.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
     private MainMenu InitializeScenario()
     {
         GameObject scenario = Resources.Scenario.Instantiate();
@@ -128,6 +138,7 @@ public class MainMenu : MonoBehaviour
         Initialize();
     }
 
+    private SoundCentralPool soundCentralPool;
     private Player player;
     private InputDetector inputDetector;
     private MenuUi ui;

@@ -20,7 +20,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeLevelCreator()
         .InitializeInputDetector()
         .InitializeDataController()
-        .InitializeSoundPlayer()
+        .InitializeSoundCentralPool()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
@@ -248,12 +248,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private BreakoutCool InitializeSoundPlayer()
+    private BreakoutCool InitializeSoundCentralPool()
     {
-        this.soundPlayer = SRResources.Audio.SoundPlayer.Instantiate().GetComponent<SoundPlayer>();
-        this.soundPlayer.name = "SoundPlayer";
-        this.soundPlayer.Initialize();
-        this.soundPlayer.transform.SetParent(this.gameObject.transform, false);
+        this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
+        this.soundCentralPool.name = "SoundCentralPool";
+        this.soundCentralPool.Initialize();
+        this.soundCentralPool.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
@@ -273,7 +273,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private int currentLevelId = 1;
     private GameUi gameUI;
-    private SoundPlayer soundPlayer;
+    private SoundCentralPool soundCentralPool;
     private InputDetector inputDetector;
     private Level currentLevel;
     private LevelCreator levelCreator;

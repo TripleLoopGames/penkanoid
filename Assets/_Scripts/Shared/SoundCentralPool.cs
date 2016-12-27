@@ -25,42 +25,65 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
 
     public void Handle(PlayEffectMessage message)
     {
+        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
+        if (playingSound != null)
+        {
+            Debug.LogWarning("Ignored play effect sound, already one playing");
+            return;
+        }
         SoundPlayer soundPlayer = this.soundPlayerPool.Spawn(Resources.EffectPlayer).GetComponent<SoundPlayer>();
-        soundPlayer.Initialize(message.SoundData, () => this.soundPlayerPool.Despawn(soundPlayer.transform));
+        soundPlayer.Initialize(message.SoundData, () =>
+        {
+            this.soundPlayers.Remove(soundPlayer);
+            this.soundPlayerPool.Despawn(soundPlayer.transform);
+        });
         soundPlayer.Play();
         this.soundPlayers.Add(soundPlayer);
     }
 
     public void Handle(PlayMusicMessage message)
     {
+        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
+        if (playingSound != null)
+        {
+            Debug.LogWarning("Ignored play music sound, already one playing");
+            return;
+        }
         SoundPlayer soundPlayer = this.soundPlayerPool.Spawn(Resources.MusicPlayer).GetComponent<SoundPlayer>();
-        soundPlayer.Initialize(message.SoundData, () => this.soundPlayerPool.Despawn(soundPlayer.transform));
+        soundPlayer.Initialize(message.SoundData, () =>
+        {
+            this.soundPlayers.Remove(soundPlayer);
+            this.soundPlayerPool.Despawn(soundPlayer.transform);
+        });
         soundPlayer.Play();
         this.soundPlayers.Add(soundPlayer);
     }
 
     public void Handle(StopEffectMessage message)
     {
-        SoundPlayer playingSound = this.soundPlayers.Find(playing => playing.TheSameAs(message.SoundData));
+        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
         if (playingSound == null)
         {
             Debug.LogWarning("Could not find Effect to stop");
             return;
         }
         playingSound.Reset();
-        this.soundPlayers.Remove(playingSound);
     }
 
     public void Handle(StopMusicMessage message)
     {
-        SoundPlayer playingSound = this.soundPlayers.Find(playing => playing.TheSameAs(message.SoundData));
+        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
         if (playingSound == null)
         {
             Debug.LogWarning("Could not find Music to stop");
             return;
         }
         playingSound.Reset();
-        this.soundPlayers.Remove(playingSound);
+    }
+
+    private SoundPlayer FindSoundPlayer(SoundData soundData)
+    {
+        return this.soundPlayers.Find(playing => playing.TheSameAs(soundData));
     }
 
     private List<SoundPlayer> soundPlayers = new List<SoundPlayer>();

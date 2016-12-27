@@ -47,6 +47,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool StartNewGame()
     {
+        SoundData playVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme, true);
+        Messenger.Publish(new PlayMusicMessage(playVulkanoid));
         this.dataController.AddPlayerGameTries(1);
         this.inputDetector.EnableInput();
         this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
@@ -74,6 +76,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         }
         else
         {
+            SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
+            Messenger.Publish(new StopMusicMessage(stopVulkanoid));
+            SoundData playVictory = new SoundData(GetInstanceID(), SRResources.Audio.Music.VictoryTheme);
+            Messenger.Publish(new PlayMusicMessage(playVictory));
             int timeSpent = this.gameUI.GetTimeSpent();
             int tries = this.dataController.GetPlayerGameTries();
             // reset so when player tries again tries re-start
@@ -86,6 +92,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool EndGame()
     {
+        SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
+        Messenger.Publish(new StopMusicMessage(stopVulkanoid));
+        SoundData playDefeat = new SoundData(GetInstanceID(), SRResources.Audio.Music.DefeatTheme);
+        Messenger.Publish(new PlayMusicMessage(playDefeat));
         this.currentLevel.EnableIgnoreCollisionResult();
         this.inputDetector.DisableInput();
         this.currentLevel.DestroyPickUps();
@@ -115,6 +125,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool FullReset()
     {
+        this.soundCentralPool.Reset();
         this.ballPool.DespawnAll();
         this.player.FullReset();
         this.gameUI.FullReset();

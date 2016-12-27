@@ -15,6 +15,14 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
         return this;
     }
 
+    public SoundCentralPool Reset()
+    {
+        // go trough all playing soudns and stop them
+        this.soundPlayers.Select((soundPlayer) => soundPlayer.Reset());
+        this.soundPlayers.RemoveAll((soundPlayer) => true);
+        return this;
+    }
+
     public void Handle(PlayEffectMessage message)
     {
         SoundPlayer soundPlayer = this.soundPlayerPool.Spawn(Resources.EffectPlayer).GetComponent<SoundPlayer>();
@@ -34,9 +42,9 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
     public void Handle(StopEffectMessage message)
     {
         SoundPlayer playingSound = this.soundPlayers.Find(playing => playing.TheSameAs(message.SoundData));
-        if(playingSound != null)
+        if(playingSound == null)
         {
-            Debug.Log("Could not find Effect to stop");
+            Debug.LogWarning("Could not find Effect to stop");
             return;
         }
         playingSound.Reset();
@@ -46,9 +54,9 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
     public void Handle(StopMusicMessage message)
     {
         SoundPlayer playingSound = this.soundPlayers.Find(playing => playing.TheSameAs(message.SoundData));
-        if (playingSound != null)
+        if (playingSound == null)
         {
-            Debug.Log("Could not find Music to stop");
+            Debug.LogWarning("Could not find Music to stop");
             return;
         }
         playingSound.Reset();
@@ -62,4 +70,5 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
     private AudioSource music;
 
     private SpawnPool soundPlayerPool;
+
 }

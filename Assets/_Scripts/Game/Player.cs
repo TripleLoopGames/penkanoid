@@ -181,6 +181,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
     private TimerComponent timer;
     private SpawnPool ballPool;
     private int health;
+    #pragma warning disable 0649 // variable assinged in the inspector.
     [SerializeField]
     private AnimationCurve speedCurve;
 }

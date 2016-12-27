@@ -99,7 +99,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         GetComponent<Animator>().SetTrigger("Shoot");
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
         Vector2 spawnPosition = this.gameObject.transform.position;
-        spawnPosition.y += 1.3f;
+        spawnPosition.y += 1.5f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
         ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform));
         SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);

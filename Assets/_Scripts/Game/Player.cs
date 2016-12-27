@@ -167,9 +167,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
     private Player AddInvencibility(int time)
     {
-        SoundData playInvencibility = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility, true);
-        Messenger.Publish(new PlayEffectMessage(playInvencibility));
-        this.invulnerable = true;
+        if (!this.invulnerable)
+        {
+            this.invulnerable = true;
+            SoundData playInvencibility = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility, true);
+            Messenger.Publish(new PlayEffectMessage(playInvencibility));
+        }       
         this.timer.StartTimer(time, () =>
         {
             StopInvulerability();

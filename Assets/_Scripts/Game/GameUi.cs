@@ -60,7 +60,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public GameUi StartCountDown(int time, Action onEnd)
     {
         Action<int> onTimerTick = value =>
-        {         
+        {
             this.timeText.text = Utils.FormatSeconds(value);
         };
         this.timer.StartTimer(time, onTimerTick, onEnd);
@@ -148,9 +148,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         {
             if (button.name == "Restart")
             {
-                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                Messenger.Publish(new PlayEffectMessage(playRestart));
-                button.onClick.AddListener(() => restart());
+                button.onClick.AddListener(() =>
+                {
+                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                    Messenger.Publish(new PlayEffectMessage(playRestart));
+                    restart();
+                });
             }
             return button;
         }).ToArray();
@@ -188,9 +191,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         {
             if (button.name == "PlayAgain")
             {
-                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                Messenger.Publish(new PlayEffectMessage(playRestart));
-                button.onClick.AddListener(() => restart());
+                button.onClick.AddListener(() =>
+                {
+                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                    Messenger.Publish(new PlayEffectMessage(playRestart));
+                    restart();
+                });
             }
             return button;
         }).ToArray();

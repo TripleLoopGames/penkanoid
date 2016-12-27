@@ -127,7 +127,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool FullReset()
     {
-        this.soundCentralPool.Reset();
         this.ballPool.DespawnAll();
         this.player.FullReset();
         this.gameUI.FullReset();

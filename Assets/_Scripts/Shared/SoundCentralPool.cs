@@ -25,12 +25,6 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
 
     public void Handle(PlayEffectMessage message)
     {
-        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
-        if (playingSound != null)
-        {
-            Debug.LogWarning("Ignored play effect sound, already one playing");
-            return;
-        }
         SoundPlayer soundPlayer = this.soundPlayerPool.Spawn(Resources.EffectPlayer).GetComponent<SoundPlayer>();
         soundPlayer.Initialize(message.SoundData, () =>
         {
@@ -43,12 +37,6 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
 
     public void Handle(PlayMusicMessage message)
     {
-        SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
-        if (playingSound != null)
-        {
-            Debug.LogWarning("Ignored play music sound, already one playing");
-            return;
-        }
         SoundPlayer soundPlayer = this.soundPlayerPool.Spawn(Resources.MusicPlayer).GetComponent<SoundPlayer>();
         soundPlayer.Initialize(message.SoundData, () =>
         {
@@ -64,7 +52,7 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
         SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
         if (playingSound == null)
         {
-            Debug.LogWarning("Could not find Effect to stop");
+            Debug.LogWarning("Could not find Effect to stop" + message.SoundData.AudioClip.name);
             return;
         }
         playingSound.Reset();
@@ -75,7 +63,7 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
         SoundPlayer playingSound = FindSoundPlayer(message.SoundData);
         if (playingSound == null)
         {
-            Debug.LogWarning("Could not find Music to stop");
+            Debug.LogWarning("Could not find Music to stop" + message.SoundData.AudioClip.name);
             return;
         }
         playingSound.Reset();

@@ -148,6 +148,8 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         {
             if (button.name == "Restart")
             {
+                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                Messenger.Publish(new PlayEffectMessage(playRestart));
                 button.onClick.AddListener(() => restart());
             }
             return button;
@@ -186,6 +188,8 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         {
             if (button.name == "PlayAgain")
             {
+                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                Messenger.Publish(new PlayEffectMessage(playRestart));
                 button.onClick.AddListener(() => restart());
             }
             return button;

@@ -9,6 +9,8 @@ TagManager:
   - UiHeart
   - Ball
   - Pickup
+  - Scenario
+  - Level
   layers:
   - Default
   - TransparentFX

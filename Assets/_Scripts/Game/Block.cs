@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Random = UnityEngine.Random;
 
-public class Block : MonoBehaviour
+public class Block : MonoBehaviourEx
 {
     public Block Initialize(int id, Action<int> onBlockDeactivation)
     {
@@ -43,6 +43,8 @@ public class Block : MonoBehaviour
             {
                 SpawnItem();
             }
+            SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
+            Messenger.Publish(new PlayEffectMessage(playIceBreak));
             this.onBlockDeactivation(this.id);
             this.gameObject.SetActive(false);
         }

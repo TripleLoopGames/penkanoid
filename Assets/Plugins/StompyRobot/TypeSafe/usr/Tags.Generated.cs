@@ -45,6 +45,10 @@ public sealed class SRTags {
     
     public const string Pickup = "Pickup";
     
+    public const string Scenario = "Scenario";
+    
+    public const string Level = "Level";
+    
     private static global::System.Collections.Generic.IList<string> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<string>(new string[] {
                 "Untagged",
                 "Respawn",
@@ -57,7 +61,9 @@ public sealed class SRTags {
                 "Canvas",
                 "UiHeart",
                 "Ball",
-                "Pickup"});
+                "Pickup",
+                "Scenario",
+                "Level"});
     
     public static global::System.Collections.Generic.IList<string> All {
         get {

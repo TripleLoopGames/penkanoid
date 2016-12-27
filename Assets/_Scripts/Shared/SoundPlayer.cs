@@ -32,9 +32,9 @@ public class SoundPlayer : MonoBehaviour
         return this;
     }
 
-    public bool TheSameAs(SoundData soundData)
+    public bool TheSameAs(SoundData soundDataToCompare)
     {
-        return soundData.SameClipAndSource(soundData);
+        return this.soundData.SameClipAndSource(soundDataToCompare);
     }
 
     private SoundPlayer ApplyData(SoundData soundData)

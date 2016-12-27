@@ -6,7 +6,7 @@ using BallConfig = Config.Ball;
 using PathologicalGames;
 using System.Collections;
 
-public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<PlayerDeadMessage>, IHandle<UserDirectionMessage>
+public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDirectionMessage>
 {
     public Player Initialize()
     {
@@ -25,13 +25,26 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         }
         ChangeHealth(-1);
         GetComponent<Animator>().SetTrigger("Damage");
-        StartCoroutine(DamageInvulnerability());
+        SoundData playDamage = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Damage);
+        Messenger.Publish(new PlayEffectMessage(playDamage));
+        StartCoroutine(DamageInvulnerability());        
         if (this.health <= 0)
         {
             this.timer.StopTimer();
+            GetComponent<Animator>().SetBool("isAlive", false);
+            StopInvulerability();
             Messenger.Publish(new PlayerDeadMessage());
             return this;
         }
+        return this;
+    }
+
+    public Player StopInvulerability()
+    {
+        SoundData stopInvulnerability = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility);
+        Messenger.Publish(new StopEffectMessage(stopInvulnerability));
+        this.timer.StopTimer();
+        this.invulnerable = false;
         return this;
     }
 
@@ -89,12 +102,9 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
         spawnPosition.y += 1.3f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
         ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform));
+        SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);
+        Messenger.Publish(new PlayEffectMessage(playShoot));
         ball.Shoot(randomDirection, 2, BallConfig.lifetime);
-    }
-
-    public void Handle(PlayerDeadMessage message)
-    {
-        GetComponent<Animator>().SetBool("isAlive", false);
     }
 
     public Player SetBallPool(SpawnPool ballPool)
@@ -157,10 +167,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<Player
 
     private Player AddInvencibility(int time)
     {
+        SoundData playInvencibility = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility, true);
+        Messenger.Publish(new PlayEffectMessage(playInvencibility));
         this.invulnerable = true;
         this.timer.StartTimer(time, () =>
         {
-            this.invulnerable = false;
+            StopInvulerability();
         });
         return this;
     }

@@ -42,7 +42,7 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
     public void Handle(StopEffectMessage message)
     {
         SoundPlayer playingSound = this.soundPlayers.Find(playing => playing.TheSameAs(message.SoundData));
-        if(playingSound == null)
+        if (playingSound == null)
         {
             Debug.LogWarning("Could not find Effect to stop");
             return;
@@ -66,8 +66,6 @@ public class SoundCentralPool : MonoBehaviourEx, IHandle<PlayEffectMessage>, IHa
     private List<SoundPlayer> soundPlayers = new List<SoundPlayer>();
 
     public AudioMixer audioMixer;
-
-    private AudioSource music;
 
     private SpawnPool soundPlayerPool;
 

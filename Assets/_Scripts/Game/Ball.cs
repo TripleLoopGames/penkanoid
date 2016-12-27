@@ -28,10 +28,24 @@ public class Ball : MonoBehaviourEx
     {
         GameObject collidedGameobject = collision.gameObject;
         bool hasCollidedWithPlayer = collidedGameobject.CompareTag(SRTags.Player);
+        bool hasCollidedWithScenario = collidedGameobject.CompareTag(SRTags.Scenario);
+        bool hasCollidedWithLevel = collidedGameobject.CompareTag(SRTags.Level);
         if (hasCollidedWithPlayer)
         {
             collidedGameobject.GetComponent<Player>().Damage();
             this.despawnOwn();
+            return;
+        }
+        if (hasCollidedWithScenario)
+        {
+            SoundData playWallHit = new SoundData(GetInstanceID(), SRResources.Audio.Effects.ReboteProyectil);
+            Messenger.Publish(new PlayEffectMessage(playWallHit));
+            return;
+        }
+        if (hasCollidedWithLevel)
+        {
+            SoundData playBlockHit = new SoundData(GetInstanceID(), SRResources.Audio.Effects.tick);
+            Messenger.Publish(new PlayEffectMessage(playBlockHit));
             return;
         }
     }

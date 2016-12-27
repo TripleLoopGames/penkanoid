@@ -77,7 +77,7 @@ public class Level : MonoBehaviour
         Dictionary<TypeSafe.PrefabResource, int> pickups = new Dictionary<TypeSafe.PrefabResource, int>();
         pickups.Add(ResourcesPickups.Heart, 3);
         pickups.Add(ResourcesPickups.Clock, 3);
-        pickups.Add(ResourcesPickups.Star, 3);
+        pickups.Add(ResourcesPickups.Star, 2000000);
         pickups.Add(ResourcesPickups.EmptyPickup, 91);
         return pickups;
     }

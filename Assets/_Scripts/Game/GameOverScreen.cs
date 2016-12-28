@@ -47,6 +47,17 @@ public class GameOverScreen : MonoBehaviourEx
         this.background.GetComponent<Image>().enabled = true;
         this.tryAgain.gameObject.SetActive(true);
         this.title.gameObject.SetActive(true);
+
+        this.tryAgain.interactable = false;
+
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.Append(this.tryAgain.transform.DOScale(0, 1.2f)
+            .From()
+            .SetEase(Ease.OutElastic, 0.4f));
+        mySequence.Insert(0, this.title.transform.DOScale(0, 1.2f)
+            .From()
+            .SetEase(Ease.OutElastic, 0.4f));     
+        mySequence.OnComplete(() => this.tryAgain.interactable = true);
         return this;
     }
 

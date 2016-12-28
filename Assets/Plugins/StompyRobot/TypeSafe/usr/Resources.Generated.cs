@@ -1171,9 +1171,9 @@ public sealed class SRResources {
                     new global::TypeSafe.PrefabResource("MusicPlayer", "Audio/MusicPlayer"),
                     new global::TypeSafe.PrefabResource("SoundPlayerPool", "Audio/SoundPlayerPool")});
         
-        public sealed class music {
+        public sealed class Music {
             
-            private music() {
+            private Music() {
             }
             
             public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> VolkanoidTheme {
@@ -1195,9 +1195,9 @@ public sealed class SRResources {
             }
             
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VolkanoidTheme", "Audio/music/VolkanoidTheme"),
-                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VictoryTheme", "Audio/music/VictoryTheme"),
-                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("DefeatTheme", "Audio/music/DefeatTheme")});
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VolkanoidTheme", "Audio/Music/VolkanoidTheme"),
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VictoryTheme", "Audio/Music/VictoryTheme"),
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("DefeatTheme", "Audio/Music/DefeatTheme")});
             
             /// <summary>
             /// Return a list of all resources in this folder.
@@ -1406,7 +1406,7 @@ public sealed class SRResources {
             }
             global::System.Collections.Generic.List<global::TypeSafe.IResource> tmp = new global::System.Collections.Generic.List<global::TypeSafe.IResource>();
             tmp.AddRange(GetContents());
-            tmp.AddRange(music.GetContentsRecursive());
+            tmp.AddRange(Music.GetContentsRecursive());
             tmp.AddRange(Effects.GetContentsRecursive());
             __ts_internal_recursiveLookupCache = tmp;
             return __ts_internal_recursiveLookupCache;

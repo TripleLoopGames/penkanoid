@@ -96,6 +96,11 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
     public void Handle(UserShootMessage message)
     {
+        if (this.inCooldown)
+        {
+            return;
+        }
+        StartCoroutine(ShootCooldown());
         GetComponent<Animator>().SetTrigger("Shoot");
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
         Vector2 spawnPosition = this.gameObject.transform.position;
@@ -187,11 +192,19 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         this.damageInvulnerable = false;
     }
 
+    private IEnumerator ShootCooldown()
+    {
+        this.inCooldown = true;
+        yield return new WaitForSeconds(0.5f);
+        this.inCooldown = false;
+    }
+
     private float speed;
     private float direction;
     private bool damageInvulnerable = false;
     private bool invulnerable = false;
     private bool interactionsBlocked = false;
+    private bool inCooldown;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timer;
     private SpawnPool ballPool;

@@ -35,6 +35,6 @@ public static class Utils
     public static void SetNameAndParent(string name, GameObject child, GameObject parent)
     {
         child.name = name;
-        child.transform.SetParent(parent.transform, true);
+        child.transform.SetParent(parent.transform, false);
     }
 }

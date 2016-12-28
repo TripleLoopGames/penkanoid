@@ -323,7 +323,7 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource EndGame {
+            public static global::TypeSafe.PrefabResource GameOverScreen {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
@@ -351,7 +351,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("WinGame", "Game/Ui/WinGame"),
                         new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
-                        new global::TypeSafe.PrefabResource("EndGame", "Game/Ui/EndGame"),
+                        new global::TypeSafe.PrefabResource("GameOverScreen", "Game/Ui/GameOverScreen"),
                         new global::TypeSafe.PrefabResource("WinLevel", "Game/Ui/WinLevel"),
                         new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health"),
                         new global::TypeSafe.PrefabResource("Time", "Game/Ui/Time")});
@@ -1272,43 +1272,43 @@ public sealed class SRResources {
             private Effects() {
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> WallHit {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> ReboteProyectil {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[0]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Invincibility {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> WallHit {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[1]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Confirm {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Invincibility {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[2]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> VolcanoShot {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Confirm {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[3]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Damage {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> VolcanoShot {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[4]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> tick {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Damage {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[5]));
                 }
             }
             
-            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> ReboteProyectil {
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> tick {
                 get {
                     return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[6]));
                 }
@@ -1321,13 +1321,13 @@ public sealed class SRResources {
             }
             
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("ReboteProyectil", "Audio/Effects/ReboteProyectil"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("WallHit", "Audio/Effects/WallHit"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("Invincibility", "Audio/Effects/Invincibility"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("Confirm", "Audio/Effects/Confirm"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VolcanoShot", "Audio/Effects/VolcanoShot"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("Damage", "Audio/Effects/Damage"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("tick", "Audio/Effects/tick"),
-                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("ReboteProyectil", "Audio/Effects/ReboteProyectil"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("Icebreak", "Audio/Effects/Icebreak")});
             
             /// <summary>

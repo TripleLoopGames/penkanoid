@@ -31,3 +31,6 @@ MonoBehaviour:
   - Path: Assets/Plugins/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
     Type: SRDebugger.Settings, Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
+    Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null

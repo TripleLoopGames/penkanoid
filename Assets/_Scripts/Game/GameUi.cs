@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
@@ -12,7 +11,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
         .InitializeTimer(startTime)
-        .InitializeEndGame(restart)
+        .InitializeGameOverScreen(restart)
         .InitializeWinLevel(nextLevel)
         .InitializeWinGame(restart);
         return this;
@@ -86,13 +85,13 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     public GameUi ShowEnd()
     {
-        this.endGame.SetActive(true);
+        this.gameOverScreen.Show();
         return this;
     }
 
     public GameUi HideEnd()
     {
-        this.endGame.SetActive(false);
+        this.gameOverScreen.Hide();
         return this;
     }
 
@@ -127,7 +126,6 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-
     public GameUi SetCamera(Camera camera)
     {
         Canvas canvas = GetComponent<Canvas>();
@@ -137,27 +135,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeEndGame(Action restart)
+    private GameUi InitializeGameOverScreen(Action restart)
     {
-        this.endGame = Resources.EndGame.Instantiate();
-        this.endGame.name = "EndGame";
-        this.endGame.transform.SetParent(this.gameObject.transform, false);
-
-        Button[] buttons = this.endGame.GetComponentsInChildren<Button>();
-        buttons = buttons.Select(button =>
-        {
-            if (button.name == "Restart")
-            {
-                button.onClick.AddListener(() =>
-                {
-                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                    Messenger.Publish(new PlayEffectMessage(playRestart));
-                    restart();
-                });
-            }
-            return button;
-        }).ToArray();
-        HideEnd();
+        this.gameOverScreen = Resources.GameOverScreen.Instantiate().GetComponent<GameOverScreen>();
+        Utils.SetNameAndParent("GameOverScreen", this.gameOverScreen.gameObject, this.gameObject);
+        this.gameOverScreen.Initialize(restart);
+        this.gameOverScreen.Hide();
         return this;
     }
 
@@ -250,7 +233,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     }
 
     private CanvasGroup canvasGroup;
-    private GameObject endGame;
+    private GameOverScreen gameOverScreen;
     private GameObject winLevel;
     private GameObject winGame;
     private GameObject health;

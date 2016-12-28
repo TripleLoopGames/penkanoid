@@ -305,7 +305,7 @@ public sealed class SRResources {
             private Ui() {
             }
             
-            public static global::TypeSafe.PrefabResource WinGame {
+            public static global::TypeSafe.PrefabResource WinGameScreen {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
                 }
@@ -348,7 +348,7 @@ public sealed class SRResources {
             }
             
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("WinGame", "Game/Ui/WinGame"),
+                        new global::TypeSafe.PrefabResource("WinGameScreen", "Game/Ui/WinGameScreen"),
                         new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
                         new global::TypeSafe.PrefabResource("GameOverScreen", "Game/Ui/GameOverScreen"),

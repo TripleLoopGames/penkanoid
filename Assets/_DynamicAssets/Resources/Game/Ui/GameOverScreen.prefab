@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 114236274617516762}
   - component: {fileID: 114902819270749444}
   m_Layer: 5
-  m_Name: EndGame
+  m_Name: GameOverScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

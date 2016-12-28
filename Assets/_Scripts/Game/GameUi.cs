@@ -109,20 +109,19 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     public GameUi ShowWinGame()
     {
-        this.winGame.SetActive(true);
+        this.winGameScreen.Show();
         return this;
     }
 
     public GameUi HideWinGame()
     {
-        this.winGame.SetActive(false);
+        this.winGameScreen.Hide();
         return this;
     }
 
-    public GameUi SetWinGameInfo(int time = 0, int tries = 0)
+    public GameUi SetWinGameInfo(int time, int tries)
     {
-        Text info = this.winGame.GetComponentInChildren<Text>();
-        info.text = $"You've proven yourself a worthy volcano. \n And you did it in only {time} seconds... \n After {tries} tries, of course.";
+        this.winGameScreen.SetInfo(time, tries);
         return this;
     }
 
@@ -165,25 +164,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private GameUi InitializeWinGame(Action restart)
     {
-        this.winGame = Resources.WinGame.Instantiate();
-        this.winGame.name = "WinGame";
-        this.winGame.transform.SetParent(this.gameObject.transform, false);
-
-        Button[] buttons = this.winGame.GetComponentsInChildren<Button>();
-        buttons = buttons.Select(button =>
-        {
-            if (button.name == "PlayAgain")
-            {
-                button.onClick.AddListener(() =>
-                {
-                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                    Messenger.Publish(new PlayEffectMessage(playRestart));
-                    restart();
-                });
-            }
-            return button;
-        }).ToArray();
-        HideWinGame();
+        this.winGameScreen = Resources.WinGameScreen.Instantiate().GetComponent<WinGameScreen>();
+        this.winGameScreen.name = "WinGame";
+        this.winGameScreen.transform.SetParent(this.gameObject.transform, false);
+        this.winGameScreen.Initialize(restart);
+        this.winGameScreen.Hide();
         return this;
     }
 
@@ -235,7 +220,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     private CanvasGroup canvasGroup;
     private GameOverScreen gameOverScreen;
     private GameObject winLevel;
-    private GameObject winGame;
+    private WinGameScreen winGameScreen;
     private GameObject health;
     private TimerComponent timer;
     private Text timeText;

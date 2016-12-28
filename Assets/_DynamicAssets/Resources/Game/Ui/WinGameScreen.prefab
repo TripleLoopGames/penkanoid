@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 222598095226693298}
   - component: {fileID: 114692553589783462}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 224797829450285234}
   - component: {fileID: 222415183623836658}
   - component: {fileID: 114384854770399060}
+  - component: {fileID: 114211513807647618}
   m_Layer: 5
   m_Name: WinGame
   m_TagString: Untagged
@@ -144,6 +145,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114211513807647618
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975709662624434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ef306b1e596ea545a952de0ab9bfdef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114384854770399060
 MonoBehaviour:
   m_ObjectHideFlags: 1

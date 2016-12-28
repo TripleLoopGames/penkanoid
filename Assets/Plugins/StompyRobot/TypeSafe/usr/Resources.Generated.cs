@@ -21,13 +21,20 @@ public sealed class SRResources {
     
     private const string _tsInternal = "1.2.2-Unity5";
     
+    public static global::TypeSafe.Resource<global::DG.Tweening.Core.DOTweenSettings> DOTweenSettings {
+        get {
+            return ((global::TypeSafe.Resource<global::DG.Tweening.Core.DOTweenSettings>)(__ts_internal_resources[0]));
+        }
+    }
+    
     public static global::TypeSafe.PrefabResource EventSystem {
         get {
-            return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
+            return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
         }
     }
     
     private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
+                new global::TypeSafe.Resource<global::DG.Tweening.Core.DOTweenSettings>("DOTweenSettings", "DOTweenSettings"),
                 new global::TypeSafe.PrefabResource("EventSystem", "EventSystem")});
     
     public sealed class Menu {

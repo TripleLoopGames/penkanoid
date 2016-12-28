@@ -60,7 +60,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     {
         Action<int> onTimerTick = value =>
         {
-            this.timeText.text = Utils.FormatSeconds(value);
+            this.timeText.text = value.ToString();
         };
         this.timer.StartTimer(time, onTimerTick, onEnd);
         return this;
@@ -192,7 +192,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         this.timer.name = "Time";
         this.timer.transform.SetParent(this.gameObject.transform, false);
         this.timeText = time.GetComponentInChildren<Text>();
-        this.timeText.text = Utils.FormatSeconds(startTime);
+        this.timeText.text = startTime.ToString();
         return this;
     }
 

@@ -26,12 +26,6 @@ public static class Utils
         return weights.First().Key;
     }
 
-    public static String FormatSeconds(int seconds)
-    {
-        string twoDigitSeconds = (seconds % 60).ToString("00");
-        return $"{Mathf.Floor(seconds / 60)}:{twoDigitSeconds}";
-    }
-
     public static void SetNameAndParent(string name, GameObject child, GameObject parent)
     {
         child.name = name;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -52,6 +53,20 @@ public class WinGameScreen : MonoBehaviourEx
         this.info.gameObject.SetActive(true);
         this.title.gameObject.SetActive(true);
         this.background.GetComponent<Image>().enabled = true;
+
+        this.playAgain.interactable = false;
+
+        Func<GameObject, Tween> tweenWinFactory = (GameObject targetObject) =>
+       {
+           return targetObject.transform.DOScale(0, 1.2f)
+           .From()
+           .SetEase(Ease.OutElastic, 0.4f);
+       };
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.Append(tweenWinFactory(this.playAgain.gameObject));
+        mySequence.Insert(0, tweenWinFactory(this.info));
+        mySequence.Insert(0, tweenWinFactory(this.title));
+        mySequence.OnComplete(() => this.playAgain.interactable = true);
         return this;
     }
 

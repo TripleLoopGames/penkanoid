@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 114384854770399060}
   - component: {fileID: 114211513807647618}
   m_Layer: 5
-  m_Name: WinGame
+  m_Name: WinGameScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

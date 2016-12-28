@@ -7,6 +7,7 @@ using Resources = SRResources.Game;
 using PathologicalGames;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelCreator))]
@@ -27,6 +28,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
+
+        DOTween.Init();
 
         // change this.currentLevelId for id in unity prefs
         this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);

@@ -21,16 +21,11 @@ MonoBehaviour:
   MinimumBuildTime: 3.5
   Namespace: 
   OutputDirectory: $TYPESAFE$/usr
-  ResourceFolderFilter: []
+  ResourceFolderFilter:
+  - Assets/Plugins
   TriggerOnInputChange: 1
   TriggerOnLayerChange: 1
   TriggerOnResourceChange: 1
   TriggerOnSceneChange: 1
   Whitelist: []
-  TypeCache:
-  - Path: Assets/Plugins/StompyRobot/SRDebugger/usr/Resources/SRDebugger/Settings.asset
-    Type: SRDebugger.Settings, Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
-    Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+  TypeCache: []

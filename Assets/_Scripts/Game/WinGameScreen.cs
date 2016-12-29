@@ -82,7 +82,7 @@ public class WinGameScreen : MonoBehaviourEx
     public WinGameScreen SetInfo(int time = 0, int tries = 0)
     {
         Text text = this.info.GetComponent<Text>();
-        text.text = $"You've proven yourself a worthy volcano. \n And you did it in only {time} seconds... \n After {tries} tries, of course.";
+        text.text = $"You've proven yourself a <b>worthy volcano.</b> \n And you did it in only <b>{time}</b> seconds... \n After <b>{tries}</b> tries, of course.";
         return this;
     }
 

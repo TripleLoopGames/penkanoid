@@ -28,4 +28,7 @@ MonoBehaviour:
   TriggerOnResourceChange: 1
   TriggerOnSceneChange: 1
   Whitelist: []
-  TypeCache: []
+  TypeCache:
+  - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
+    Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null

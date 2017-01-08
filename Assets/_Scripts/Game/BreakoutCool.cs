@@ -10,7 +10,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 [RequireComponent(typeof(InputDetector))]
-[RequireComponent(typeof(LevelCreator))]
+[RequireComponent(typeof(LevelFactory))]
 public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 {
     private void Initialize()
@@ -251,7 +251,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool InitializeLevelCreator()
     {
-        this.levelCreator = GetComponent<LevelCreator>();
+        this.levelFactory = GetComponent<LevelFactory>();
         return this;
     }
 
@@ -274,9 +274,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private Level GenerateAndAddLevel(int id)
     {
-        Level currentLevel = this.levelCreator.GenerateLevel(id).GetComponent<Level>();
-        currentLevel.Initialize(() => LevelCleared());
-        currentLevel.name = "Level-X";
+        currentLevel = this.levelFactory.LoadLevel(id, 1);
+        currentLevel.SetLevelCleared(() => LevelCleared());
         currentLevel.transform.SetParent(this.gameObject.transform, false);
         return currentLevel;
     }
@@ -291,7 +290,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SoundCentralPool soundCentralPool;
     private InputDetector inputDetector;
     private Level currentLevel;
-    private LevelCreator levelCreator;
+    private LevelFactory levelFactory;
     private Camera mainCamera;
     private Player player;
     private SpawnPool ballPool;

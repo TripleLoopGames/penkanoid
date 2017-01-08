@@ -14,6 +14,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         this.timer = GetComponent<TimerComponent>();
         this.gameObject.transform.position = PlayerConfig.InitialPosition;
         this.health = PlayerConfig.InitialHealth;
+        this.invulneravilityParticles = this.gameObject.GetComponentsInChildren<ParticleSystem>();
         return this;
     }
 
@@ -45,6 +46,10 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         Messenger.Publish(new StopEffectMessage(stopInvulnerability));
         this.timer.StopTimer();
         this.invulnerable = false;
+        foreach (ParticleSystem particle in invulneravilityParticles)
+        {
+            particle.Stop();
+        }
         return this;
     }
 
@@ -177,6 +182,11 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
             this.invulnerable = true;
             SoundData playInvencibility = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility, true);
             Messenger.Publish(new PlayEffectMessage(playInvencibility));
+            
+            foreach (ParticleSystem particle in invulneravilityParticles)
+            {
+                particle.Play();
+            }
         }       
         this.timer.StartTimer(time, () =>
         {
@@ -212,4 +222,5 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
     #pragma warning disable 0649 // variable assinged in the inspector.
     [SerializeField]
     private AnimationCurve speedCurve;
+    private ParticleSystem[] invulneravilityParticles;
 }

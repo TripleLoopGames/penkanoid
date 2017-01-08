@@ -11,6 +11,11 @@ public class Pickup : MonoBehaviour {
 
     public void Destroy()
     {
+        GameObject pickParticle = SRResources.Particles.ItemObtained.Instantiate();
+        pickParticle.name = "ItemObtained_Particle";
+        pickParticle.transform.SetParent(this.gameObject.transform.parent, false);
+        pickParticle.transform.position = this.gameObject.transform.position;
+
         Destroy(this.gameObject);
     }
 

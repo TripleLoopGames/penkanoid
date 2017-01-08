@@ -47,6 +47,11 @@ public class Block : MonoBehaviourEx
             Messenger.Publish(new PlayEffectMessage(playIceBreak));
             this.onBlockDeactivation(this.id);
             this.gameObject.SetActive(false);
+
+            GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
+            breakParticle.name = "IceBreak_Particle";
+            breakParticle.transform.SetParent(this.gameObject.transform.parent, false);
+            breakParticle.transform.position = this.gameObject.transform.position;
         }
     }
 
@@ -57,7 +62,7 @@ public class Block : MonoBehaviourEx
         return this;
     }
 
-    private bool ignoreCollisionResult;
+    private bool ignoreCollisionResult; 
     private int id;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;

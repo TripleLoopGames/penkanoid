@@ -1,0 +1,19 @@
+.container{
+  width: 754px;
+  height: 471px;
+  display: flex;
+  justify-content: center;
+  background-image: url("./images/Walls.png"),url("./images/Background.jpg");
+  background-size: cover;
+}
+
+.table{
+      border-spacing: 0px;
+      margin-top: 87px;
+}
+.block{
+  width: 42px;
+  height: 22px;
+  background-image: url("./images/iceBlock.png");
+  background-size: cover;  
+}

@@ -274,7 +274,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private Level GenerateAndAddLevel(int id)
     {
-        currentLevel = this.levelFactory.LoadLevel(id, 1);
+        currentLevel = this.levelFactory.CreateLevel(id, 1);
         currentLevel.SetLevelCleared(() => LevelCleared());
         currentLevel.transform.SetParent(this.gameObject.transform, false);
         return currentLevel;

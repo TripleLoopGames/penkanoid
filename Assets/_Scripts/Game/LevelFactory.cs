@@ -6,7 +6,7 @@ using BuildingResources = SRResources.Game.Building;
 
 public class LevelFactory : MonoBehaviour
 {
-    public Level LoadLevel(int levelId, int worldId)
+    public Level CreateLevel(int levelId, int worldId)
     {
         TextAsset jsonLevel = Resources.Load($"Game/Levels/World_{worldId}/Level_{levelId}") as TextAsset;
         if (jsonLevel == null)

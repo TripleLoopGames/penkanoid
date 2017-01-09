@@ -24,7 +24,7 @@ body{
 .block{
   width: 42px;
   height: 22px;
-  background-image: url("./images/iceBlock.png");
+  background-image: url("./images/IceBlock.png");
   background-size: cover;  
 }
 

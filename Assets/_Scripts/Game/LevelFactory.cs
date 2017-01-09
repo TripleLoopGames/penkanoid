@@ -16,7 +16,7 @@ public class LevelFactory : MonoBehaviour
         }
         LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevel.text);
         Block[,] blockLayout = new Block[LocalConfig.Rows, LocalConfig.Columns];
-        Level level = BuildingResources.Level.Instantiate().GetComponent<Level>();
+        Level level = BuildingResources.Level.Instantiate(new Vector2(0.25f,-0.25f)).GetComponent<Level>();
         level.name = $"Level_{worldId}_{levelId}";
 
         levelData.layout.Select(blockData =>

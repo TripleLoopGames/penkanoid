@@ -9,7 +9,8 @@ const wrapperBlock = {
   initialize: function (element) {
     this.block = element;
     this.show();
-    this.block.addEventListener('mousedown', () => {
+    this.block.addEventListener('mousedown', (event) => {
+      event.preventDefault();
       mouseDown = true;
       clearing = this.visible;
       if (clearing) {

@@ -1,11 +1,29 @@
 'use strict'
 
+let mouseDown = false;
+let clearing = true;
+
+document.addEventListener('mouseup', () => mouseDown = false);
+
 const wrapperBlock = {
   initialize: function (element) {
     this.block = element;
     this.show();
-    this.block.addEventListener('click', () => {
-      if (this.visible) {
+    this.block.addEventListener('mousedown', () => {
+      mouseDown = true;
+      clearing = this.visible;
+      if (clearing) {
+        this.hide();
+        return this;
+      }
+      this.show();
+      return this;
+    });
+    this.block.addEventListener('mouseover', () => {
+      if (!mouseDown) {
+        return this;
+      }
+      if (clearing) {
         this.hide();
         return this;
       }

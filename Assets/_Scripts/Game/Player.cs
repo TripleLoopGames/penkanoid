@@ -5,11 +5,13 @@ using PlayerConfig = Config.Player;
 using BallConfig = Config.Ball;
 using PathologicalGames;
 using System.Collections;
+using DG.Tweening;
 
 public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDirectionMessage>
 {
     public Player Initialize()
     {
+        this.colorRGBComponent = GetComponent<_2dxFX_ColorRGB>();
         this.ownRigidbody = GetComponent<Rigidbody2D>();
         this.timer = GetComponent<TimerComponent>();
         this.gameObject.transform.position = PlayerConfig.InitialPosition;
@@ -50,6 +52,11 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         {
             particle.Stop();
         }
+
+        DOTween.Kill("InvulnerableAnimationColor");
+        colorRGBComponent._ColorR = 0;
+        colorRGBComponent._ColorG = 0;
+        colorRGBComponent._ColorB = 0;
         return this;
     }
 
@@ -187,6 +194,28 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
             {
                 particle.Play();
             }
+
+            /*Action<float, float, float> AnimateInvulnerabilityColor = (colorChannel, value, animationTime) =>
+            {
+                DOTween.To(() => colorChannel, x => colorChannel = x, value, time)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetId("InvulnerableAnimationColor");
+            };
+
+            AnimateInvulnerabilityColor(colorRGBComponent._ColorR, 1, 0.2f);
+            AnimateInvulnerabilityColor(colorRGBComponent._ColorG, 1, 0.2f);
+            AnimateInvulnerabilityColor(colorRGBComponent._ColorB, 1, 0.2f);*/
+
+            DOTween.To(() => colorRGBComponent._ColorR, x => colorRGBComponent._ColorR = x, 1, 0.2f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetId("InvulnerableAnimationColor");
+            DOTween.To(() => colorRGBComponent._ColorG, x => colorRGBComponent._ColorG = x, 1, 0.2f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetId("InvulnerableAnimationColor");
+            DOTween.To(() => colorRGBComponent._ColorB, x => colorRGBComponent._ColorB = x, 1, 0.2f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetId("InvulnerableAnimationColor");
+
         }       
         this.timer.StartTimer(time, () =>
         {
@@ -223,4 +252,6 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
     [SerializeField]
     private AnimationCurve speedCurve;
     private ParticleSystem[] invulneravilityParticles;
+
+    private _2dxFX_ColorRGB colorRGBComponent;
 }

@@ -6,9 +6,9 @@ using System.Linq;
 
 public class Level : MonoBehaviour
 {
-    public Level Initialize(Action onLevelCleared)
+    public Level Initialize(Block[,] blockLayout)
     {
-        this.onLevelCleared = onLevelCleared;
+        this.blockLayout = blockLayout;
         int index = 0;
         Dictionary<TypeSafe.PrefabResource, int> pickups = GetPickups();
         this.blocks = GetComponentsInChildren<Block>().Select(block =>
@@ -24,6 +24,12 @@ public class Level : MonoBehaviour
             index++;
             return block.gameObject;
         }).ToArray();
+        return this;
+    }
+
+    public Level SetLevelCleared(Action onLevelCleared)
+    {
+        this.onLevelCleared = onLevelCleared;
         return this;
     }
 
@@ -83,6 +89,7 @@ public class Level : MonoBehaviour
     }
 
     private GameObject[] blocks;
+    private Block[,] blockLayout;
     private List<GameObject> pickUps = new List<GameObject>();
     private Action onLevelCleared;
 }

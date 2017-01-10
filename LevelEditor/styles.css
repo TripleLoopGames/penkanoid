@@ -1,0 +1,72 @@
+body{
+  font-size: 30px;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.level{
+  width: 754px;
+  height: 471px;
+  display: flex;
+  justify-content: center;
+  background-image: url("./images/Walls.png"),url("./images/Background.jpg");
+  background-size: cover;
+}
+
+.table{
+      border-spacing: 0px;
+      margin-top: 87px;
+}
+.block{
+  width: 42px;
+  height: 22px;
+  background-image: url("./images/iceBlock.png");
+  background-size: cover;  
+}
+
+.options{
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.basicOptions{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.title{
+     align-self: center;
+}
+
+.button {
+  font-size:20px;
+
+  border-width: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
+
+  padding: 10px;
+  
+  background-color: #2ecc71;
+  color: #ecf0f1;
+}
+
+.holder { 
+  border: 10px dashed #ccc;
+  width: 250px; 
+  height: 150px; 
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.holder.hover {
+  border: 10px dashed #333;
+}

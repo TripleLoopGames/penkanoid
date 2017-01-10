@@ -18,20 +18,15 @@ body{
 }
 
 .table{
-      border-spacing: 0px;
-      margin-top: 87px;
+  border-spacing: 0px;
+  margin-top: 87px;
 }
+
 .block{
   width: 42px;
   height: 22px;
-  background-image: url("./images/IceBlock.png");
+  background-image: url("./images/blocks/ice.png");
   background-size: cover;  
-}
-
-.options{
-  display: flex;
-  flex-direction: column;
-  width: 400px;
 }
 
 .basicOptions{
@@ -40,8 +35,24 @@ body{
   justify-content: space-around;
 }
 
+.blockList{
+  list-style-type: none;
+}
+
+.options{
+  display: flex;
+  flex-direction: column;
+  width: 756px;
+}
+
+.blockChoose{
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+}
+
 .title{
-     align-self: center;
+  align-self: center;
 }
 
 .button {

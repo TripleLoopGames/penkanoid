@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 95247405619559212}
   - component: {fileID: 114256368222737782}
   - component: {fileID: 60711733500004764}
+  - component: {fileID: 114075375963471870}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -59,6 +60,7 @@ GameObject:
   - component: {fileID: 4075964748895802}
   - component: {fileID: 198737202131392092}
   - component: {fileID: 199312934076241358}
+  - component: {fileID: 114053862999105416}
   m_Layer: 0
   m_Name: Invincibility
   m_TagString: Untagged
@@ -177,6 +179,35 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114053862999105416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1921529810252406}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0493ee1ebf09c394ea809af773d8af72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114075375963471870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1881070687228388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1f3183e74f9c74895e0e5ecc62b35d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ForceMaterial: {fileID: 0}
+  ActiveChange: 1
+  _Alpha: 1
+  _ColorR: 0
+  _ColorG: 0
+  _ColorB: 0
+  ShaderChange: 0
 --- !u!114 &114256368222737782
 MonoBehaviour:
   m_ObjectHideFlags: 1

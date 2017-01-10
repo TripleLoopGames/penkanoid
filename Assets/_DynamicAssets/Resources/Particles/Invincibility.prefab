@@ -10,6 +10,7 @@ GameObject:
   - component: {fileID: 485024}
   - component: {fileID: 19830296}
   - component: {fileID: 19923696}
+  - component: {fileID: 114798466950663462}
   m_Layer: 0
   m_Name: Invincibility
   m_TagString: Untagged
@@ -5248,3 +5249,14 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174800}
   m_IsPrefabParent: 1
+--- !u!114 &114798466950663462
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 174800}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0493ee1ebf09c394ea809af773d8af72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -118,7 +118,8 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.5f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
-        ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform));
+        GameObject particleBall = this.ballParticlePool.Spawn(SRResources.Particles.Fireball).gameObject;
+        ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform), particleBall);
         SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);
         Messenger.Publish(new PlayEffectMessage(playShoot));
         ball.Shoot(randomDirection, 2, BallConfig.lifetime);
@@ -127,6 +128,12 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
     public Player SetBallPool(SpawnPool ballPool)
     {
         this.ballPool = ballPool;
+        return this;
+    }
+
+    public Player SetBallParticlePool(SpawnPool ballParticlePool)
+    {
+        this.ballParticlePool = ballParticlePool;
         return this;
     }
 
@@ -247,6 +254,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
     private Rigidbody2D ownRigidbody;
     private TimerComponent timer;
     private SpawnPool ballPool;
+    private SpawnPool ballParticlePool;
     private int health;
     #pragma warning disable 0649 // variable assinged in the inspector.
     [SerializeField]

@@ -25,6 +25,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
+        .InitializeBallParticlePool()
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
@@ -152,6 +153,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         this.gameUI.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
+        this.player.SetBallParticlePool(this.ballParticlePool);
         return this;
     }
 
@@ -263,6 +265,14 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool InitializeBallParticlePool()
+    {
+        this.ballParticlePool = Resources.BallParticlePool.Instantiate().GetComponent<SpawnPool>();
+        this.ballParticlePool.name = "BallParticlePool";
+        this.ballParticlePool.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
     private BreakoutCool InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
@@ -295,6 +305,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private Camera mainCamera;
     private Player player;
     private SpawnPool ballPool;
+    private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
     private DataController dataController;
 }

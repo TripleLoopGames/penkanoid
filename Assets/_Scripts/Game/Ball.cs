@@ -8,12 +8,23 @@ public class Ball : MonoBehaviourEx
        base.Awake();
        this.ownRigidbody = GetComponent<Rigidbody2D>();
        this.timerComponent = GetComponent<TimerComponent>();
+       
     }
 
-    public Ball Initialize(Vector2 position, Action despawnBall)
+    public Ball Initialize(Vector2 position, Action despawnBall, GameObject childParticleBall)
     {
+        childParticleBall.transform.SetParent(this.transform);
+        this.ballParticles = childParticleBall.GetComponent<ParticleSystem>();
+
         this.gameObject.transform.position = position;
-        this.despawnOwn = despawnBall;
+        this.despawnOwn = () =>
+        {
+            ballParticles.Stop();
+            ballParticles.gameObject.transform.SetParent(null);
+            despawnBall();
+        };
+
+        this.ballParticles.Play();
         return this;
     }
 
@@ -53,4 +64,5 @@ public class Ball : MonoBehaviourEx
     private Action despawnOwn;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timerComponent;
+    private ParticleSystem ballParticles;
 }

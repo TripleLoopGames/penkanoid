@@ -19,6 +19,7 @@ const volkanoidEditor = function () {
           this.hide();
           return this;
         }
+        this.setType(currentBlockType);
         this.show();
         return this;
       });
@@ -30,13 +31,18 @@ const volkanoidEditor = function () {
           this.hide();
           return this;
         }
+        this.setType(currentBlockType);
         this.show();
         return this;
       });
       return this;
     },
+    setType: function (type) {
+      this.block.style.backgroundImage = `url("./images/blocks/${type}.png")`;
+      this.type = type;
+      return this;
+    },
     show: function () {
-      this.block.style.backgroundImage = `url("./images/blocks/${currentBlockType}.png")`;
       this.block.style.opacity = 1;
       this.visible = true;
       return this;
@@ -52,7 +58,7 @@ const volkanoidEditor = function () {
       return {
         row,
         column,
-        type: currentBlockType
+        type: this.type
       }
     },
     isVisible: function () {
@@ -60,6 +66,12 @@ const volkanoidEditor = function () {
     }
   }
 
+  const radios = [...document.querySelectorAll('input[type=radio][name="block"]')]
+    .map(radio => {
+      radio.addEventListener('change', () => {
+        currentBlockType = radio.value;
+      });
+    });
 
   const blocks = [...document.querySelectorAll('[class~=block]')]
     .map((block) => {
@@ -85,13 +97,6 @@ const volkanoidEditor = function () {
         return link;
       }
       return link;
-    });
-
-  const radios = [...document.querySelectorAll('input[type=radio][name="block"]')]
-    .map(radio => {
-      radio.addEventListener('change', () => {
-        currentBlockType = radio.value;
-      });
     });
 
   const holder = document.querySelector('[data-name="holder"]');

@@ -73,6 +73,16 @@ const volkanoidEditor = function () {
       });
     });
 
+  const blockSelectors = [...document.querySelectorAll('[data-name~=typeSelector]')]
+    .map(blockSelector => {
+      const type = blockSelector.getAttribute('data-type');
+      blockSelector.querySelector('input').addEventListener('change', () => {
+        currentBlockType = type;
+      });
+      const backPicInfo = blockSelector.querySelector('[class~=blockInfoPic]');
+      backPicInfo.style.backgroundImage = `url("./images/blocks/${type}.png")`;
+    });
+
   const blocks = [...document.querySelectorAll('[class~=block]')]
     .map((block) => {
       const myBlock = Object.create(wrapperBlock);

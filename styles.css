@@ -29,6 +29,11 @@ body{
   background-size: cover;  
 }
 
+.blockInfoPic{
+ width: 46px;
+ background-size: cover;
+}
+
 .basicOptions{
   display: flex;
   align-items: center;

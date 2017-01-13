@@ -13,7 +13,7 @@ body{
   height: 471px;
   display: flex;
   justify-content: center;
-  background-image: url("./images/Walls.png"),url("./images/Background.jpg");
+  background-image: url("./images/walls/basic.png"),url("./images/backgrounds/basic.jpg");
   background-size: cover;
 }
 

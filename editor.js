@@ -4,6 +4,7 @@ const volkanoidEditor = function () {
   let mouseDown = false;
   let clearing = true;
   let currentBlockType = 'ice';
+  let backgroundAndWallType = 'basic';
 
   document.addEventListener('mouseup', () => mouseDown = false);
 
@@ -66,12 +67,14 @@ const volkanoidEditor = function () {
     }
   }
 
-  const radios = [...document.querySelectorAll('input[type=radio][name="block"]')]
-    .map(radio => {
-      radio.addEventListener('change', () => {
-        currentBlockType = radio.value;
-      });
-    });
+  const backgroundAndWall = document.querySelector('[class~=level]');
+
+  const backgroundAndWallSelector = document.querySelector('[name~=backgroundAndWallSelect]')
+  backgroundAndWallSelector.addEventListener('change', (e) => {
+    const type = e.target.value;
+    backgroundAndWall.style.backgroundImage = `url('./images/walls/${type}.png'),url('./images/backgrounds/${type}.jpg')`;
+    backgroundAndWallType = type;
+  });
 
   const blockSelectors = [...document.querySelectorAll('[data-name~=typeSelector]')]
     .map(blockSelector => {
@@ -98,7 +101,8 @@ const volkanoidEditor = function () {
           const toSave = {
             layout: blocks
               .filter((block) => block.isVisible())
-              .map((block) => block.getBlockData())
+              .map((block) => block.getBlockData()),
+            backgroundAndWall: backgroundAndWallType
           }
           const json = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toSave));
           link.href = `data:${json}`;

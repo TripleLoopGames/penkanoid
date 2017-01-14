@@ -32,9 +32,9 @@ MonoBehaviour:
   - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
     Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
       PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_3.json
+  - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_2.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_1.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_2.json
+  - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_3.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

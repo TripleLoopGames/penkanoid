@@ -11,6 +11,10 @@ public class Block : MonoBehaviourEx
         this.id = id;
         this.parent = GetComponentInParent<Level>();
         this.onBlockDeactivation = onBlockDeactivation;
+        if (this.Invisible)
+        {
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
         return this;
     }
 
@@ -31,6 +35,10 @@ public class Block : MonoBehaviourEx
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (this.Indestructible)
+        {
+            return;
+        }
         if (this.ignoreCollisionResult)
         {
             return;
@@ -39,6 +47,11 @@ public class Block : MonoBehaviourEx
         bool hasCollidedWithBall = collidedGameobject.CompareTag(SRTags.Ball);
         if (hasCollidedWithBall)
         {
+            LifeAmount--;
+            if (LifeAmount > 0)
+            {
+                return;
+            }
             if (this.itemOnHit != null)
             {
                 SpawnItem();
@@ -67,6 +80,11 @@ public class Block : MonoBehaviourEx
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
     private Level parent;
+
+    public bool Indestructible;
+    public bool Invisible;
+    public int LifeAmount;
+
 }
 
 

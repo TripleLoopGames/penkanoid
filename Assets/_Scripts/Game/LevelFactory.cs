@@ -11,7 +11,7 @@ public class LevelFactory : MonoBehaviour
         TextAsset jsonLevel = Resources.Load($"Game/Levels/World_{worldId}/Level_{levelId}") as TextAsset;
         if (jsonLevel == null)
         {
-            Debug.LogError("Level not Found!");
+            Debug.LogError("Level Resource not Found!");
             return null;
         }
         LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevel.text);
@@ -24,7 +24,13 @@ public class LevelFactory : MonoBehaviour
             Vector2 position = LocalConfig.InitialPosition;
             position.x += blockData.column * LocalConfig.OffsetColumns;
             position.y -= blockData.row * LocalConfig.OffsetRows;
-            Block block = BuildingResources.Block.Instantiate(position).GetComponent<Block>();
+            GameObject blockResource = Resources.Load($"Game/Building/Blocks/{blockData.type}") as GameObject;
+            if (blockResource == null)
+            {
+                Debug.LogError("Block Resource not found!");
+                return null;
+            }
+            Block block = Instantiate(blockResource, position, Quaternion.identity).GetComponent<Block>();
             block.transform.SetParent(level.transform, false);
             blockLayout[blockData.row, blockData.column] = block;
             return block;

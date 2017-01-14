@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using ResourcesPickups = SRResources.Game.Pickups;
+using ResourcesPickups = SRResources.Game.Building.Pickups;
 using System.Linq;
 
 public class Level : MonoBehaviour
@@ -81,9 +81,9 @@ public class Level : MonoBehaviour
     private Dictionary<TypeSafe.PrefabResource, int> GetPickups()
     {
         Dictionary<TypeSafe.PrefabResource, int> pickups = new Dictionary<TypeSafe.PrefabResource, int>();
-        pickups.Add(ResourcesPickups.Heart, 3);
-        pickups.Add(ResourcesPickups.Clock, 3);
-        pickups.Add(ResourcesPickups.Star, 3);
+        pickups.Add(ResourcesPickups.heart, 3);
+        pickups.Add(ResourcesPickups.clock, 3);
+        pickups.Add(ResourcesPickups.star, 3);
         pickups.Add(ResourcesPickups.EmptyPickup, 91);
         return pickups;
     }

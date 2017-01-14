@@ -17,6 +17,10 @@ body{
   background-size: cover;
 }
 
+.mainSection{
+  display:flex;
+}
+
 .table{
   border-spacing: 0px;
   margin-top: 87px;

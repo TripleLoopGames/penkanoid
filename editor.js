@@ -4,6 +4,7 @@ const volkanoidEditor = function () {
   let mouseDown = false;
   let clearing = true;
   let currentBlockType = 'ice';
+  let currentBlockContentType = 'empty';
   let backgroundAndWallType = 'basic';
 
   document.addEventListener('mouseup', () => mouseDown = false);
@@ -20,7 +21,7 @@ const volkanoidEditor = function () {
           this.hide();
           return this;
         }
-        this.setType(currentBlockType);
+        this.setType(currentBlockType, currentBlockContentType);
         this.show();
         return this;
       });
@@ -32,14 +33,23 @@ const volkanoidEditor = function () {
           this.hide();
           return this;
         }
-        this.setType(currentBlockType);
+        this.setType(currentBlockType, currentBlockContentType);
         this.show();
         return this;
       });
       return this;
     },
-    setType: function (type) {
-      this.block.style.backgroundImage = `url("./images/blocks/${type}.png")`;
+    setType: function (type, content) {
+      const buildblockBackground = function (type, content) {
+        const typeUrl = `url("./images/blocks/${type}.png")`;
+        if (content === 'empty') {
+          return `${typeUrl}`;
+        }
+        const contentUrl = `url("./images/contents/${content}.png")`;
+        return `${contentUrl},${typeUrl}`;
+      }
+      this.block.style.backgroundImage = buildblockBackground(type, content);
+      this.content = content;
       this.type = type;
       return this;
     },
@@ -56,10 +66,13 @@ const volkanoidEditor = function () {
     getBlockData: function () {
       const row = Number.parseInt(this.block.getAttribute('data-row'), 10);
       const column = Number.parseInt(this.block.getAttribute('data-column'), 10);
+      // TODO: only add if not empty!
+      const content = this.content;
       return {
         row,
         column,
-        type: this.type
+        type: this.type,
+        content
       }
     },
     isVisible: function () {
@@ -76,10 +89,37 @@ const volkanoidEditor = function () {
     backgroundAndWallType = type;
   });
 
+  const blockContentSelector = document.querySelector('[name~=blockContentSelect]');
+  blockContentSelector.addEventListener('change', (e) => {
+    // only prize blocks can have content
+    if (currentBlockType !== 'prize') {
+      blockContentSelector.value = 'empty'
+      currentBlockContentType = 'empty';
+      return this;
+    }
+    const content = e.target.value;
+    // prize blocks cannot be empty
+    if (content === 'empty') {
+      blockContentSelector.value = 'star';
+      currentBlockContentType = 'star';
+      return this;
+    }
+    currentBlockContentType = content;
+    return this;
+  });
+
   const blockSelectors = [...document.querySelectorAll('[data-name~=typeSelector]')]
     .map(blockSelector => {
       const type = blockSelector.getAttribute('data-type');
       blockSelector.querySelector('input').addEventListener('change', () => {
+        // only prize blocks can have content
+        if (type !== 'prize') {
+          blockContentSelector.value = 'empty';
+          currentBlockContentType = 'empty';
+        } else {
+          blockContentSelector.value = 'star';
+          currentBlockContentType = 'star';
+        }
         currentBlockType = type;
       });
       const backPicInfo = blockSelector.querySelector('[class~=blockInfoPic]');

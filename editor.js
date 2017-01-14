@@ -12,6 +12,7 @@ const volkanoidEditor = function () {
   const wrapperBlock = {
     initialize: function (element) {
       this.block = element;
+      this.setType(currentBlockType, currentBlockContentType);
       this.show();
       this.block.addEventListener('mousedown', (event) => {
         event.preventDefault();
@@ -66,14 +67,16 @@ const volkanoidEditor = function () {
     getBlockData: function () {
       const row = Number.parseInt(this.block.getAttribute('data-row'), 10);
       const column = Number.parseInt(this.block.getAttribute('data-column'), 10);
-      // TODO: only add if not empty!
-      const content = this.content;
-      return {
+      const blockData = {
         row,
         column,
         type: this.type,
-        content
       }
+      if (this.content === 'empty') {
+        return blockData;
+      }
+      blockData.content = this.content
+      return blockData;
     },
     isVisible: function () {
       return this.visible;
@@ -139,10 +142,10 @@ const volkanoidEditor = function () {
       if (name === 'save') {
         link.addEventListener('click', () => {
           const toSave = {
+            backgroundAndWall: backgroundAndWallType,
             layout: blocks
               .filter((block) => block.isVisible())
-              .map((block) => block.getBlockData()),
-            backgroundAndWall: backgroundAndWallType
+              .map((block) => block.getBlockData())
           }
           const json = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(toSave));
           link.href = `data:${json}`;

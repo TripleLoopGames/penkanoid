@@ -115,6 +115,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         StartCoroutine(ShootCooldown());
         GetComponent<Animator>().SetTrigger("Shoot");
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
+        Vector2 moveDirectionVector = new Vector2(this.direction/10, 0);
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.5f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
@@ -124,7 +125,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
         SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);
         Messenger.Publish(new PlayEffectMessage(playShoot));
-        ball.Shoot(randomDirection, 2, BallConfig.lifetime);
+        ball.Shoot(randomDirection+moveDirectionVector, 2, BallConfig.lifetime);
     }
 
     public Player SetBallPool(SpawnPool ballPool)

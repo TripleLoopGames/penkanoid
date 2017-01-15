@@ -200,7 +200,9 @@ const volkanoidEditor = function () {
             console.log("Block not found!")
             return originBlockData;
           }
-          foundBlock.show();
+          const content =  originBlockData.content === void 0 ? 'empty' : originBlockData.content;
+          foundBlock.setType(originBlockData.type, content);
+          foundBlock.show()
           return foundBlock;
         })
       }

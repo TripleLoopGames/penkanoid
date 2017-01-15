@@ -69,7 +69,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Indestructible: 0
   Invisible: 1
-  LifeAmount: 1
+  LifeAmount: 2
+  LifeSprites:
+  - {fileID: 21300000, guid: cdf11fe115f230f428e58ce485afd66b, type: 3}
+  - {fileID: 21300000, guid: 15a396a509426bb4baa63246f242d875, type: 3}
 --- !u!212 &212929357544104320
 SpriteRenderer:
   m_ObjectHideFlags: 1

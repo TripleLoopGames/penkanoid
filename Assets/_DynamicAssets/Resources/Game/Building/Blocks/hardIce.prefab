@@ -70,6 +70,9 @@ MonoBehaviour:
   Indestructible: 0
   Invisible: 0
   LifeAmount: 2
+  LifeSprites:
+  - {fileID: 21300000, guid: a16e6e42313836140a39a95e555e4183, type: 3}
+  - {fileID: 21300000, guid: e7a47421f8751c24e96649b60b50028c, type: 3}
 --- !u!212 &212320206271546604
 SpriteRenderer:
   m_ObjectHideFlags: 1

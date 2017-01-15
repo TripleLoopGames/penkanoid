@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Security.AccessControl;
+using DG.Tweening;
 using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviourEx
@@ -10,10 +12,8 @@ public class Block : MonoBehaviourEx
         this.name = $"Block_{name}_{ownId}";
         this.ownId = ownId;
         this.onBlockDeactivation = onBlockDeactivation;
-        if (this.Invisible)
-        {
-            GetComponent<SpriteRenderer>().enabled = false;
-        }
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.spriteRenderer.sprite = this.LifeSprites[this.LifeAmount - 1];
         return this;
     }
 
@@ -54,6 +54,12 @@ public class Block : MonoBehaviourEx
             LifeAmount--;
             if (LifeAmount > 0)
             {
+                this.spriteRenderer.sprite = LifeSprites[LifeAmount - 1];
+                // custom behaviour for cloak blocks
+                if (this.Invisible)
+                {
+                    this.spriteRenderer.DOFade(0f, 1f);
+                }
                 return;
             }
             if (this.itemOnHit != null)
@@ -79,14 +85,16 @@ public class Block : MonoBehaviourEx
         return this;
     }
 
-    private bool ignoreCollisionResult; 
+    private bool ignoreCollisionResult;
     private int ownId;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
+    private SpriteRenderer spriteRenderer;
 
     public bool Indestructible;
     public bool Invisible;
     public int LifeAmount;
+    public Sprite[] LifeSprites;
 
 }
 

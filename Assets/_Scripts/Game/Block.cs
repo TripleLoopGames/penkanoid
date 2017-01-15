@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Security.AccessControl;
+using DG.Tweening;
 using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviourEx
 {
-    public Block Initialize(int id, Action<int> onBlockDeactivation)
+    public Block Initialize(int ownId, string name, Action<int> onBlockDeactivation)
     {
-        this.name = "Block_" + id;
-        this.id = id;
-        this.parent = GetComponentInParent<Level>();
+        this.name = $"Block_{name}_{ownId}";
+        this.ownId = ownId;
         this.onBlockDeactivation = onBlockDeactivation;
+        this.spriteRenderer = GetComponent<SpriteRenderer>();
+        this.spriteRenderer.sprite = this.LifeSprites[this.LifeAmount - 1];
         return this;
     }
 
@@ -29,8 +32,17 @@ public class Block : MonoBehaviourEx
         return this;
     }
 
+    public int GetId()
+    {
+        return ownId;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (this.Indestructible)
+        {
+            return;
+        }
         if (this.ignoreCollisionResult)
         {
             return;
@@ -39,13 +51,24 @@ public class Block : MonoBehaviourEx
         bool hasCollidedWithBall = collidedGameobject.CompareTag(SRTags.Ball);
         if (hasCollidedWithBall)
         {
+            LifeAmount--;
+            if (LifeAmount > 0)
+            {
+                this.spriteRenderer.sprite = LifeSprites[LifeAmount - 1];
+                // custom behaviour for cloak blocks
+                if (this.Invisible)
+                {
+                    this.spriteRenderer.DOFade(0f, 1f);
+                }
+                return;
+            }
             if (this.itemOnHit != null)
             {
                 SpawnItem();
             }
             SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
             Messenger.Publish(new PlayEffectMessage(playIceBreak));
-            this.onBlockDeactivation(this.id);
+            this.onBlockDeactivation(this.ownId);
             this.gameObject.SetActive(false);
 
             GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
@@ -57,16 +80,22 @@ public class Block : MonoBehaviourEx
 
     private Block SpawnItem()
     {
-        this.itemOnHit.transform.SetParent(this.parent.transform);
+        this.itemOnHit.transform.SetParent(this.transform.parent);
         this.itemOnHit.SetActive(true);
         return this;
     }
 
-    private bool ignoreCollisionResult; 
-    private int id;
+    private bool ignoreCollisionResult;
+    private int ownId;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
-    private Level parent;
+    private SpriteRenderer spriteRenderer;
+
+    public bool Indestructible;
+    public bool Invisible;
+    public int LifeAmount;
+    public Sprite[] LifeSprites;
+
 }
 
 

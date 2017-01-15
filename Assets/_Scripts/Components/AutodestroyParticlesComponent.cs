@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class AutodestroyParticlesComponent : MonoBehaviour {
 	void Start ()
 	{
 	    this.selfParticle = this.GetComponent<ParticleSystem>();
+	    deactivateMethod = () => Destroy(gameObject);
 	}
 	
 	// Update is called once per frame
@@ -21,5 +23,12 @@ public class AutodestroyParticlesComponent : MonoBehaviour {
         }
     }
 
+    public AutodestroyParticlesComponent SetDeactivateMethod(Action newDeactivateMethod)
+    {
+        deactivateMethod = newDeactivateMethod;
+        return this;
+    }
+
     private ParticleSystem selfParticle;
+    private Action deactivateMethod;
 }

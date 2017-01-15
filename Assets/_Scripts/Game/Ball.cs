@@ -11,16 +11,18 @@ public class Ball : MonoBehaviourEx
        
     }
 
-    public Ball Initialize(Vector2 position, Action despawnBall, GameObject childParticleBall)
+    public Ball Initialize(Vector2 position, Action despawnBall, GameObject childParticleBall, Action despawnParticleBall)
     {
         childParticleBall.transform.SetParent(this.transform);
         this.ballParticles = childParticleBall.GetComponent<ParticleSystem>();
+        this.autodestroyParticlesComponent = childParticleBall.GetComponent<AutodestroyParticlesComponent>();
 
         this.gameObject.transform.position = position;
         this.despawnOwn = () =>
         {
             ballParticles.Stop();
             ballParticles.gameObject.transform.SetParent(null);
+            autodestroyParticlesComponent.SetDeactivateMethod(despawnParticleBall);
             despawnBall();
         };
 
@@ -65,4 +67,5 @@ public class Ball : MonoBehaviourEx
     private Rigidbody2D ownRigidbody;
     private TimerComponent timerComponent;
     private ParticleSystem ballParticles;
+    private AutodestroyParticlesComponent autodestroyParticlesComponent;
 }

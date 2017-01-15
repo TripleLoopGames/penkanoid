@@ -6,24 +6,10 @@ using System.Linq;
 
 public class Level : MonoBehaviour
 {
-    public Level Initialize(Block[,] blockLayout)
+    public Level Initialize(Block[,] blockLayout, Block[] blocks)
     {
         this.blockLayout = blockLayout;
-        int index = 0;
-        Dictionary<TypeSafe.PrefabResource, int> pickups = GetPickups();
-        this.blocks = GetComponentsInChildren<Block>().Select(block =>
-        {
-            block.Initialize(index, (id) => OnBlockDestroyed(id));
-            TypeSafe.PrefabResource choosen = Utils.RandomWeightedChooser(pickups);
-            if (choosen.Name != "EmptyPickup")
-            {
-                GameObject pickUp = choosen.Instantiate();
-                block.SetItemOnHit(pickUp);
-                this.pickUps.Add(pickUp);
-            }
-            index++;
-            return block.gameObject;
-        }).ToArray();
+        this.blocks = blocks;
         return this;
     }
 
@@ -35,7 +21,8 @@ public class Level : MonoBehaviour
 
     public Level EnableIgnoreCollisionResult()
     {
-        this.blocks.ToList().ForEach(block => {
+        this.blocks.ToList().ForEach(block =>
+        {
             block.GetComponent<Block>().EnableIgnoreCollisionResult();
         });
         return this;
@@ -62,13 +49,27 @@ public class Level : MonoBehaviour
         return this;
     }
 
-    private Level OnBlockDestroyed(int blockId)
+    // public so it can be set up externaly
+    public Level OnBlockDestroyed(int blockId)
     {
-        int index = 0;
-        bool finished = Array.TrueForAll(this.blocks, block => {
-            bool isNotActive = !block.activeInHierarchy || blockId == index;
-            index++;
-            return isNotActive;
+        bool finished = Array.TrueForAll(this.blocks, block =>
+        {
+            // if not active should not count towards total
+            if (!block.gameObject.activeInHierarchy)
+            {
+                return true;
+            }
+            // if it's the same as if activated should not count towards total
+            if (blockId == block.GetId())
+            {
+                return true;
+            }
+            // if it's indestructible should not count towards total
+            if (block.Indestructible)
+            {
+                return true;
+            }
+            return false;
         });
         if (!finished)
         {
@@ -88,8 +89,8 @@ public class Level : MonoBehaviour
         return pickups;
     }
 
-    private GameObject[] blocks;
     private Block[,] blockLayout;
+    private Block[] blocks;
     private List<GameObject> pickUps = new List<GameObject>();
     private Action onLevelCleared;
 }

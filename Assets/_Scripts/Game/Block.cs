@@ -5,10 +5,10 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviourEx
 {
-    public Block Initialize(int id, Action<int> onBlockDeactivation)
+    public Block Initialize(int ownId, string name, Action<int> onBlockDeactivation)
     {
-        this.name = "Block_" + id;
-        this.id = id;
+        this.name = $"Block_{name}_{ownId}";
+        this.ownId = ownId;
         this.parent = GetComponentInParent<Level>();
         this.onBlockDeactivation = onBlockDeactivation;
         if (this.Invisible)
@@ -31,6 +31,11 @@ public class Block : MonoBehaviourEx
         this.itemOnHit.transform.SetParent(this.gameObject.transform);
         this.itemOnHit.SetActive(false);
         return this;
+    }
+
+    public int GetId()
+    {
+        return ownId;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -58,7 +63,7 @@ public class Block : MonoBehaviourEx
             }
             SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
             Messenger.Publish(new PlayEffectMessage(playIceBreak));
-            this.onBlockDeactivation(this.id);
+            this.onBlockDeactivation(this.ownId);
             this.gameObject.SetActive(false);
 
             GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
@@ -76,7 +81,7 @@ public class Block : MonoBehaviourEx
     }
 
     private bool ignoreCollisionResult; 
-    private int id;
+    private int ownId;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
     private Level parent;

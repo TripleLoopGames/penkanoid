@@ -339,27 +339,20 @@ public sealed class SRResources {
                     }
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> level {
+                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_1 {
                     get {
                         return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[1]));
                     }
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_1 {
+                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_2 {
                     get {
                         return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[2]));
                     }
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_2 {
-                    get {
-                        return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[3]));
-                    }
-                }
-                
                 private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                             new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_3", "Game/Levels/World_1/Level_3"),
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("level", "Game/Levels/World_1/level"),
                             new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_1", "Game/Levels/World_1/Level_1"),
                             new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_2", "Game/Levels/World_1/Level_2")});
                 

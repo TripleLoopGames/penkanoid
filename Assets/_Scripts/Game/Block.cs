@@ -9,7 +9,6 @@ public class Block : MonoBehaviourEx
     {
         this.name = $"Block_{name}_{ownId}";
         this.ownId = ownId;
-        this.parent = GetComponentInParent<Level>();
         this.onBlockDeactivation = onBlockDeactivation;
         if (this.Invisible)
         {
@@ -75,7 +74,7 @@ public class Block : MonoBehaviourEx
 
     private Block SpawnItem()
     {
-        this.itemOnHit.transform.SetParent(this.parent.transform);
+        this.itemOnHit.transform.SetParent(this.transform.parent);
         this.itemOnHit.SetActive(true);
         return this;
     }
@@ -84,7 +83,6 @@ public class Block : MonoBehaviourEx
     private int ownId;
     private Action<int> onBlockDeactivation;
     private GameObject itemOnHit;
-    private Level parent;
 
     public bool Indestructible;
     public bool Invisible;

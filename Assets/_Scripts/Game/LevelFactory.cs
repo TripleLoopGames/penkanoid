@@ -39,12 +39,13 @@ public class LevelFactory : MonoBehaviour
             //create and set content (if there is any)
             if (blockData.content != null)
             {
-                GameObject pickUp = Resources.Load($"Game/Building/Pickups/{blockData.content}") as GameObject;
-                if (pickUp == null)
+                GameObject pickUpResource = Resources.Load($"Game/Building/Pickups/{blockData.content}") as GameObject;
+                if (pickUpResource == null)
                 {
                     Debug.LogError("Block content Resource not found!");
                     return null;
                 }
+                GameObject pickUp = Instantiate(pickUpResource);
                 block.SetItemOnHit(pickUp);
             }
             blockLayout[blockData.row, blockData.column] = block;

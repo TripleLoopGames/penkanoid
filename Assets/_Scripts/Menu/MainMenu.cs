@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
+        .InitializeBallParticlePool()
         .InitializeStartBlock()
         .SetReferences()
         .SetCollisionsBetweenLayers()
@@ -89,6 +90,15 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
+    private MainMenu InitializeBallParticlePool()
+    {
+        this.ballParticlePool = SRResources.Game.BallParticlePool.Instantiate().GetComponent<SpawnPool>();
+        this.ballParticlePool.name = "BallParticlePool";
+        this.ballParticlePool.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+
     private MainMenu InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
@@ -118,6 +128,7 @@ public class MainMenu : MonoBehaviour
     {
         this.ui.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
+        this.player.SetBallParticlePool(this.ballParticlePool);
         return this;
     }
 
@@ -144,6 +155,7 @@ public class MainMenu : MonoBehaviour
     private MenuUi ui;
     private Camera mainCamera;
     private SpawnPool ballPool;
+    private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
 
 }

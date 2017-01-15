@@ -119,7 +119,9 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         spawnPosition.y += 1.5f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
         GameObject particleBall = this.ballParticlePool.Spawn(SRResources.Particles.Fireball).gameObject;
-        ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform), particleBall);
+        ball.Initialize(spawnPosition, () => this.ballPool.Despawn(ball.transform), particleBall, () => this.ballParticlePool.Despawn(particleBall.transform));
+
+
         SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);
         Messenger.Publish(new PlayEffectMessage(playShoot));
         ball.Shoot(randomDirection, 2, BallConfig.lifetime);

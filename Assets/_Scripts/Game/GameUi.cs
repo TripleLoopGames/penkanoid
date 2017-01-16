@@ -97,13 +97,13 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     public GameUi ShowWinLevel()
     {
-        this.winLevel.SetActive(true);
+        this.winLevel.Show();
         return this;
     }
 
     public GameUi HideWinLevel()
     {
-        this.winLevel.SetActive(false);
+        this.winLevel.Hide();
         return this;
     }
 
@@ -145,9 +145,10 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private GameUi InitializeWinLevel(Action nextLevel)
     {
-        this.winLevel = Resources.WinLevel.Instantiate();
-        this.winLevel.name = "WinLevel";
-        this.winLevel.transform.SetParent(this.gameObject.transform, false);
+        this.winLevel = Resources.WinLevel.Instantiate().GetComponent<WinLevel>();
+        Utils.SetNameAndParent("WinLevel", this.winLevel.gameObject, this.gameObject);
+        this.winLevel.Initialize();
+        this.winLevel.Hide();
 
         Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
         buttons = buttons.Select(button =>
@@ -219,7 +220,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private CanvasGroup canvasGroup;
     private GameOverScreen gameOverScreen;
-    private GameObject winLevel;
+    private WinLevel winLevel;
     private WinGameScreen winGameScreen;
     private GameObject health;
     private TimerComponent timer;

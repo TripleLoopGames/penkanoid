@@ -49,9 +49,68 @@ public class Level : MonoBehaviour
         return this;
     }
 
-    // public so it can be set up externaly
-    public Level OnBlockDestroyed(int blockId, bool explosive)
+    public Block[] GetAdjecentBlocks(Vector2 position, Block[,] blocksMatrix)
     {
+        Vector2[] directions = new Vector2[] {
+            new Vector2(-1, -1),
+            new Vector2(-1, 0),
+            new Vector2(-1, 1),
+            new Vector2(0, -1),
+            new Vector2(0, 1),
+            new Vector2(1, -1),
+            new Vector2(1, 0),
+            new Vector2(1, 1)
+        };
+
+        int maxLength = blocksMatrix.GetLength(0);
+        int maxWidth = blocksMatrix.GetLength(1);
+
+        Func<Vector2, bool> isDirectionAvailable = (direction) =>
+        {
+            Vector2 result = direction + position;
+            if (result.x > maxLength || result.y > maxWidth)
+            {
+                return false;
+            }
+            if (result.x < 0 || (int)result.y < 0)
+            {
+                return false;
+            }
+            Block foundBlock = blocksMatrix[(int)result.x, (int)result.y];
+            if (foundBlock == null)
+            {
+                return false;
+            }
+            if (!foundBlock.enabled)
+            {
+                return false;
+            }
+            return true;
+        };
+       
+
+        Func<Vector2, Block> getBlock = direction =>
+        {
+            Vector2 result = direction + position;
+            return blocksMatrix[(int)result.x, (int)result.y];
+        };
+
+        Block[] adjecentBlocks = directions
+            .Where(isDirectionAvailable)
+            .Select(getBlock)
+            .ToArray();
+        return adjecentBlocks;
+    }
+
+    // public so it can be set up externaly
+    public Level OnBlockDestroyed(string blockId, bool explosive)
+    {
+        if (explosive)
+        {
+            Block targetBlock = Array.Find(this.blocks, block => block.GetId() == blockId);
+            Block[] blocksToDestroy = GetAdjecentBlocks(targetBlock.GetMatrixPosition(), this.blockLayout);
+            Block[] blocksDestroyed = blocksToDestroy.Select(block => block.Kill()).ToArray();
+        }
         bool finished = Array.TrueForAll(this.blocks, block =>
         {
             // if not active should not count towards total
@@ -93,4 +152,5 @@ public class Level : MonoBehaviour
     private Block[] blocks;
     private List<GameObject> pickUps = new List<GameObject>();
     private Action onLevelCleared;
+
 }

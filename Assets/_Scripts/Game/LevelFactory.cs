@@ -33,7 +33,8 @@ public class LevelFactory : MonoBehaviour
                 return null;
             }
             Block block = Instantiate(blockResource, position, Quaternion.identity).GetComponent<Block>();
-            block.Initialize(blockCount, blockData.type, (id, explosive) => level.OnBlockDestroyed(id, explosive));
+            string blockId = $"{blockData.row}_{ blockData.column}";
+            block.Initialize(blockId, new Vector2(blockData.row, blockData.column),  blockData.type, (id, explosive) => level.OnBlockDestroyed(id, explosive));
             block.transform.SetParent(level.transform, false);
 
             //create and set content (if there is any)

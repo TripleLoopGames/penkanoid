@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Indestructible: 0
+  Explosive: 1
   Invisible: 0
   LifeAmount: 1
   LifeSprites:

@@ -7,13 +7,14 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviourEx
 {
-    public Block Initialize(int ownId, string name, Action<int, bool> onBlockDeactivation)
+    public Block Initialize(string ownId, Vector2 matrixPosition, string name, Action<string, bool> onBlockDeactivation)
     {
         this.name = $"Block_{name}_{ownId}";
         this.ownId = ownId;
         this.onBlockDeactivation = onBlockDeactivation;
         this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.spriteRenderer.sprite = this.LifeSprites[this.LifeAmount - 1];
+        this.matrixPosition = matrixPosition;
         return this;
     }
 
@@ -32,9 +33,40 @@ public class Block : MonoBehaviourEx
         return this;
     }
 
-    public int GetId()
+    public string GetId()
     {
         return ownId;
+    }
+
+    public Vector2 GetMatrixPosition()
+    {
+        return matrixPosition;
+    }
+
+    public Block Kill()
+    {
+        if (destroyed)
+        {
+            return this;
+        }
+        if (this.itemOnHit != null)
+        {
+            SpawnItem();
+        }
+        destroyed = true;
+
+        SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
+        Messenger.Publish(new PlayEffectMessage(playIceBreak));
+
+        GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
+        breakParticle.name = "IceBreak_Particle";
+        breakParticle.transform.SetParent(this.gameObject.transform.parent, false);
+        breakParticle.transform.position = this.gameObject.transform.position;
+
+        // custom behaviour for Explosive blocks
+        this.onBlockDeactivation(this.ownId, this.Explosive);
+        this.gameObject.SetActive(false);
+        return this;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -62,20 +94,7 @@ public class Block : MonoBehaviourEx
                 }
                 return;
             }
-            if (this.itemOnHit != null)
-            {
-                SpawnItem();
-            }
-            SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
-            Messenger.Publish(new PlayEffectMessage(playIceBreak));
-            // custom behaviour for Explosive blocks
-            this.onBlockDeactivation(this.ownId, this.Explosive);
-            this.gameObject.SetActive(false);
-
-            GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
-            breakParticle.name = "IceBreak_Particle";
-            breakParticle.transform.SetParent(this.gameObject.transform.parent, false);
-            breakParticle.transform.position = this.gameObject.transform.position;
+            Kill();
         }
     }
 
@@ -87,10 +106,12 @@ public class Block : MonoBehaviourEx
     }
 
     private bool ignoreCollisionResult;
-    private int ownId;
-    private Action<int, bool> onBlockDeactivation;
+    private string ownId;
+    private Action<string, bool> onBlockDeactivation;
     private GameObject itemOnHit;
     private SpriteRenderer spriteRenderer;
+    private Vector2 matrixPosition;
+    private bool destroyed;
 
     public bool Indestructible;
     public bool Explosive;

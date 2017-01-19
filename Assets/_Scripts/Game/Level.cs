@@ -50,7 +50,7 @@ public class Level : MonoBehaviour
     }
 
     // public so it can be set up externaly
-    public Level OnBlockDestroyed(int blockId)
+    public Level OnBlockDestroyed(int blockId, bool explosive)
     {
         bool finished = Array.TrueForAll(this.blocks, block =>
         {

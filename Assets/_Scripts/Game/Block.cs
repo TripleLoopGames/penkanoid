@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviourEx
 {
-    public Block Initialize(int ownId, string name, Action<int> onBlockDeactivation)
+    public Block Initialize(int ownId, string name, Action<int, bool> onBlockDeactivation)
     {
         this.name = $"Block_{name}_{ownId}";
         this.ownId = ownId;
@@ -68,7 +68,8 @@ public class Block : MonoBehaviourEx
             }
             SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
             Messenger.Publish(new PlayEffectMessage(playIceBreak));
-            this.onBlockDeactivation(this.ownId);
+            // custom behaviour for Explosive blocks
+            this.onBlockDeactivation(this.ownId, this.Explosive);
             this.gameObject.SetActive(false);
 
             GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
@@ -87,11 +88,12 @@ public class Block : MonoBehaviourEx
 
     private bool ignoreCollisionResult;
     private int ownId;
-    private Action<int> onBlockDeactivation;
+    private Action<int, bool> onBlockDeactivation;
     private GameObject itemOnHit;
     private SpriteRenderer spriteRenderer;
 
     public bool Indestructible;
+    public bool Explosive;
     public bool Invisible;
     public int LifeAmount;
     public Sprite[] LifeSprites;

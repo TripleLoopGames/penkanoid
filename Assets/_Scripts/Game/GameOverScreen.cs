@@ -37,7 +37,7 @@ public class GameOverScreen : MonoBehaviourEx
         int activatedAmount = activated.Where(element => element).Count();
         if (activatedAmount != 3)
         {
-            Debug.LogWarning("Cound not find proper amount of elements");
+            Debug.LogError("Cound not find proper amount of elements");
         }
         return this;
     }

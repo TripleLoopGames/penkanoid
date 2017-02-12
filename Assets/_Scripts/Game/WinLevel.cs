@@ -20,9 +20,9 @@ public class WinLevel : MonoBehaviourEx {
             return false;
         }).ToArray();
         int activatedAmount = activated.Where(element => element).Count();
-        if (activatedAmount != 4)
+        if (activatedAmount != 1)
         {
-            Debug.LogWarning("Cound not find proper amount of elements");
+            Debug.LogError("Cound not find proper amount of elements");
         }
         return this;
     }

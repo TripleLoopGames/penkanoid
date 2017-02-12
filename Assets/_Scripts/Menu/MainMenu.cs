@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
-        this.sceneTransition.Enter(() => StartMenu());
+        this.sceneTransition.Enter().Then(() => StartMenu());
         return this;
     }
 
@@ -140,7 +140,7 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu SetExitAction()
     {
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit(onEnd));
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
         return this;
     }
 

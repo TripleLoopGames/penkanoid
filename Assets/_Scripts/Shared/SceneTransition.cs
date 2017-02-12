@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSG;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,19 +14,17 @@ public class SceneTransition : MonoBehaviour
         return this;
     }
 
-    public SceneTransition Enter(Action onEnd)
+    public IPromise Enter()
     {
-        StartCoroutine(AnimateEnter(onEnd));
-        return this;
+        return new Promise((resolve, reject) => StartCoroutine(AnimateEnter(resolve, reject)));
     }
 
-    public SceneTransition Exit(Action onEnd)
+    public IPromise Exit()
     {
-        StartCoroutine(AnimateExit(onEnd));
-	    return this;
-	}
+        return new Promise((resolve, reject) => StartCoroutine(AnimateExit(resolve, reject)));
+    }
 
-    IEnumerator AnimateEnter(Action afterAnimation)
+    IEnumerator AnimateEnter(Action resolve, Action<Exception> reject)
     {
         float currentValue = this.holeMaterial.GetFloat("_Radius");
         while (currentValue < 1.2f)
@@ -35,10 +34,10 @@ public class SceneTransition : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         this.holeMaterial.SetFloat("_Radius", 1.2f);
-        afterAnimation();
+        resolve();
     }
 
-    IEnumerator AnimateExit(Action afterAnimation)
+    IEnumerator AnimateExit(Action resolve, Action<Exception> reject)
     {
         float currentValue = this.holeMaterial.GetFloat("_Radius");
         while (currentValue > 0)
@@ -48,7 +47,7 @@ public class SceneTransition : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         this.holeMaterial.SetFloat("_Radius", 0);
-        afterAnimation();
+        resolve();
     }
 
     private Material holeMaterial;

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Random = UnityEngine.Random;
 using Resources = SRResources.Game;
 using PathologicalGames;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using DG.Tweening;
+using RSG;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelFactory))]
@@ -35,7 +32,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // change this.currentLevelId for id in unity prefs
         this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
 
-        this.sceneTransition.Enter(() => StartNewGame());
+        this.sceneTransition.Enter().Then(() => StartNewGame());
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -91,7 +88,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             this.dataController.ResetPlayerGameTries();
             this.gameUI.SetWinGameInfo(timeSpent, tries);
             this.gameUI.ShowWinGame();
-        }       
+        }
         return this;
     }
 
@@ -168,7 +165,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool SetExitAction()
     {
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit(onEnd));
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
         return this;
     }
 
@@ -188,13 +185,16 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Action nextLevelFlow = () =>
         {
             this.gameUI.MakeNonInteractable();
-            this.sceneTransition.Exit(() =>
+            this.sceneTransition.Exit()
+            .Then(() =>
             {
                 LoadNextLevel();
-                this.sceneTransition.Enter(() => {
-                    this.gameUI.MakeInteractable();
-                    StartNewLevel();
-                });
+                return this.sceneTransition.Enter();
+            })
+            .Then(() =>
+            {
+                this.gameUI.MakeInteractable();
+                StartNewLevel();
             });
         };
 

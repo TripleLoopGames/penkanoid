@@ -1,25 +1,21 @@
 ﻿using DG.Tweening;
+using RSG;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class WinGameScreen : MonoBehaviourEx
 {
 
-    public WinGameScreen Initialize(Action restart)
+    public WinGameScreen Initialize()
     {
         Transform[] transforms = GetComponentsInChildren<Transform>();
         bool[] activated = transforms.Select(currentTransform =>
         {
             if (currentTransform.name == "PlayAgain")
             {
-                this.playAgain = currentTransform.gameObject.GetComponent<Button>();
-                this.playAgain.onClick.AddListener(() =>
-                {
-                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                    Messenger.Publish(new PlayEffectMessage(playRestart));
-                    restart();
-                });
+                this.playAgain = currentTransform.gameObject.GetComponent<Button>();              
                 return true;
             }
             if (currentTransform.name == "Title")
@@ -47,7 +43,7 @@ public class WinGameScreen : MonoBehaviourEx
         return this;
     }
 
-    public WinGameScreen Show()
+    public IPromise Show()
     {
         this.playAgain.gameObject.SetActive(true);
         this.info.gameObject.SetActive(true);
@@ -67,7 +63,23 @@ public class WinGameScreen : MonoBehaviourEx
         mySequence.Insert(0, tweenWinFactory(this.info));
         mySequence.Insert(0, tweenWinFactory(this.title));
         mySequence.OnComplete(() => this.playAgain.interactable = true);
-        return this;
+        Promise promise = new Promise();
+        UnityAction onClick = () =>
+        {
+            SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+            Messenger.Publish(new PlayEffectMessage(playRestart));
+            promise.Resolve();
+        };
+        promise.Then(() =>
+        {
+            Promise playAgainPromise = new Promise();
+            this.playAgain.onClick.RemoveListener(onClick);
+            return playAgainPromise;
+        });
+
+        this.playAgain.onClick.AddListener(onClick);
+      
+        return promise;
     }
 
     public WinGameScreen Hide()

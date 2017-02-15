@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RSG;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
@@ -13,7 +14,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         .InitializeTimer(startTime)
         .InitializeGameOverScreen(restart)
         .InitializeWinLevel(nextLevel)
-        .InitializeWinGame(restart);
+        .InitializeWinGame();
         return this;
     }
 
@@ -107,10 +108,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public GameUi ShowWinGame()
+    public IPromise ShowWinGame()
     {
-        this.winGameScreen.Show();
-        return this;
+        return this.winGameScreen.Show();
     }
 
     public GameUi HideWinGame()
@@ -163,12 +163,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeWinGame(Action restart)
+    private GameUi InitializeWinGame()
     {
         this.winGameScreen = Resources.WinGameScreen.Instantiate().GetComponent<WinGameScreen>();
         this.winGameScreen.name = "WinGame";
         this.winGameScreen.transform.SetParent(this.gameObject.transform, false);
-        this.winGameScreen.Initialize(restart);
+        this.winGameScreen.Initialize();
         this.winGameScreen.Hide();
         return this;
     }

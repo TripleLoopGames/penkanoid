@@ -13,6 +13,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private void Initialize()
     {
         InitializeCamera()
+        .InitializeBackendProxy()
         .InitializeTransition()
         .InitializeUI()
         .InitializeLevelCreator()
@@ -87,7 +88,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             // reset so when player tries again tries re-start
             this.dataController.ResetPlayerGameTries();
             this.gameUI.SetWinGameInfo(timeSpent, tries);
-            this.gameUI.ShowWinGame();
+            Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
+                .Then(() => this.backendProxy.ShowLeaderboard())
+                .Then(() => this.ReStart());
         }
         return this;
     }
@@ -257,6 +260,14 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool InitializeBackendProxy()
+    {
+        // TODO: should only be called once per game!
+        this.backendProxy = GetComponent<BackendProxy>();
+        this.backendProxy.Initialize();
+        return this;
+    }
+
     private BreakoutCool InitializeBallPool()
     {
         this.ballPool = Resources.BallPool.Instantiate().GetComponent<SpawnPool>();
@@ -284,10 +295,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private Level GenerateAndAddLevel(int id)
     {
-        currentLevel = this.levelFactory.CreateLevel(id, 1);
-        currentLevel.SetLevelCleared(() => LevelCleared());
-        currentLevel.transform.SetParent(this.gameObject.transform, false);
-        return currentLevel;
+        this.currentLevel = this.levelFactory.CreateLevel(id, 1);
+        this.currentLevel.SetLevelCleared(() => LevelCleared());
+        this.currentLevel.transform.SetParent(this.gameObject.transform, false);
+        return this.currentLevel;
     }
 
     private void Start()
@@ -307,4 +318,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
     private DataController dataController;
+    private BackendProxy backendProxy;
 }

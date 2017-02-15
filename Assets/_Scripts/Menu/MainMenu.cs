@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     private MainMenu Initialize()
     {
         InitializeCamera()
+        .InitializeBackendProxy()
         .InitializeTransition()
         .InitializeUI()
         .InitializeInputDetector()
@@ -21,7 +22,9 @@ public class MainMenu : MonoBehaviour
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
-        this.sceneTransition.Enter().Then(() => StartMenu());
+        this.backendProxy.Authenticate()
+        .Then(() => this.sceneTransition.Enter())
+        .Then(() => StartMenu());
         return this;
     }
 
@@ -98,7 +101,6 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-
     private MainMenu InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
@@ -121,6 +123,14 @@ public class MainMenu : MonoBehaviour
         GameObject scenario = Resources.StartBlock.Instantiate();
         scenario.name = "startBlock";
         scenario.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private MainMenu InitializeBackendProxy()
+    {
+        // TODO: should only be called once per game!
+        this.backendProxy = GetComponent<BackendProxy>();
+        this.backendProxy.Initialize();
         return this;
     }
 
@@ -157,5 +167,6 @@ public class MainMenu : MonoBehaviour
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
+    private BackendProxy backendProxy;
 
 }

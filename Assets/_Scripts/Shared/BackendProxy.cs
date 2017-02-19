@@ -2,27 +2,43 @@
 using GooglePlayGames;
 using UnityEngine;
 using RSG;
+using System.Collections;
 
 public class BackendProxy : MonoBehaviour
 {
 #if UNITY_STANDALONE
-    public void LogUser(Action<bool> callback)
+    public IPromise Authenticate()
     {
-        callback(true);
+        return new Promise((resolve, reject) =>
+        {
+            // fake wait to simulate mobile delay
+            StartCoroutine(DelayedExecution(resolve, 10));
+        });
     }
 
-    public void PublishScore(int score, Action<bool> callback)
+    public IPromise PublishScore(int score, string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
     {
-        callback(true);
+        return new Promise((resolve, reject) =>
+        {
+            // fake wait to simulate mobile delay
+            StartCoroutine(DelayedExecution(resolve));
+        });
     }
 
-    public void ShowLeaderboard()
+    public void ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
     {
+        return;
     }
 
     public BackendProxy Initialize()
-    {
+    {        
         return this;
+    }
+
+    IEnumerator DelayedExecution(Action action, float time = 1f)
+    {
+        yield return new WaitForSeconds(time);
+        action();
     }
 #endif
 

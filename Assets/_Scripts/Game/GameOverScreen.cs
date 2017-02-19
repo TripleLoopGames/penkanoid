@@ -1,25 +1,21 @@
 ﻿using DG.Tweening;
+using RSG;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviourEx
 {
 
-    public GameOverScreen Initialize(Action restart)
+    public GameOverScreen Initialize()
     {
         Transform[] transforms = GetComponentsInChildren<Transform>();
         bool[] activated = transforms.Select(currentTransform =>
         {
             if (currentTransform.name == "Restart")
             {
-                this.tryAgain = currentTransform.gameObject.GetComponent<Button>();
-                this.tryAgain.onClick.AddListener(() =>
-                {
-                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                    Messenger.Publish(new PlayEffectMessage(playRestart));
-                    restart();
-                });
+                this.tryAgain = currentTransform.gameObject.GetComponent<Button>();               
                 return true;
             }
             if (currentTransform.name == "Title")
@@ -42,7 +38,7 @@ public class GameOverScreen : MonoBehaviourEx
         return this;
     }
 
-    public GameOverScreen Show()
+    public IPromise Show()
     {
         this.background.GetComponent<Image>().enabled = true;
         this.tryAgain.gameObject.SetActive(true);
@@ -58,7 +54,20 @@ public class GameOverScreen : MonoBehaviourEx
             .From()
             .SetEase(Ease.OutElastic, 0.4f));     
         mySequence.OnComplete(() => this.tryAgain.interactable = true);
-        return this;
+
+        return new Promise((resolve, reject) =>
+        {
+            UnityAction onClick = null;
+            onClick = () =>
+            {
+                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                Messenger.Publish(new PlayEffectMessage(playRestart));
+                this.tryAgain.onClick.RemoveListener(onClick);
+                resolve();
+            };
+            this.tryAgain.onClick.AddListener(onClick);
+
+        });
     }
 
     public GameOverScreen Hide()

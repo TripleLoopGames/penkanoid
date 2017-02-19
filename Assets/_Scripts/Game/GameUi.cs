@@ -6,13 +6,13 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
-    public GameUi Initialize(Action restart, int initialHealth, int startTime)
+    public GameUi Initialize(int initialHealth, int startTime)
     {
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
         .InitializeTimer(startTime)
-        .InitializeGameOverScreen(restart)
+        .InitializeGameOverScreen()
         .InitializeWinLevel()
         .InitializeWinGame();
         return this;
@@ -84,10 +84,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this.timer.GetTimeSpent();
     }
 
-    public GameUi ShowEnd()
+    public IPromise ShowEnd()
     {
-        this.gameOverScreen.Show();
-        return this;
+        return this.gameOverScreen.Show();
     }
 
     public GameUi HideEnd()
@@ -133,11 +132,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeGameOverScreen(Action restart)
+    private GameUi InitializeGameOverScreen()
     {
         this.gameOverScreen = Resources.GameOverScreen.Instantiate().GetComponent<GameOverScreen>();
         Utils.SetNameAndParent("GameOverScreen", this.gameOverScreen.gameObject, this.gameObject);
-        this.gameOverScreen.Initialize(restart);
+        this.gameOverScreen.Initialize();
         this.gameOverScreen.Hide();
         return this;
     }

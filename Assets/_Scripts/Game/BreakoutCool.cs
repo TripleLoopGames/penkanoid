@@ -120,8 +120,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.currentLevel.DestroyPickUps();
         this.player.BlockInteractions();
         this.player.StopInvulerability();
-        this.gameUI.ShowEnd();
         this.gameUI.StopCountDown();
+        this.gameUI.ShowEnd()
+            .Then(() => ReStart());
+      
         return this;
     }
 
@@ -202,7 +204,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.gameUI = canvas.GetComponent<GameUi>();
-        this.gameUI.Initialize(() => ReStart(), Config.Player.InitialHealth, Config.GameFlow.countDownTime);
+        this.gameUI.Initialize(Config.Player.InitialHealth, Config.GameFlow.countDownTime);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();

@@ -63,23 +63,18 @@ public class WinGameScreen : MonoBehaviourEx
         mySequence.Insert(0, tweenWinFactory(this.info));
         mySequence.Insert(0, tweenWinFactory(this.title));
         mySequence.OnComplete(() => this.playAgain.interactable = true);
-        Promise promise = new Promise();
-        UnityAction onClick = () =>
-        {
-            SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-            Messenger.Publish(new PlayEffectMessage(playRestart));
-            promise.Resolve();
-        };
-        promise.Then(() =>
-        {
-            Promise playAgainPromise = new Promise();
-            this.playAgain.onClick.RemoveListener(onClick);
-            return playAgainPromise;
-        });
 
-        this.playAgain.onClick.AddListener(onClick);
-      
-        return promise;
+        return new Promise((resolve, rejection) =>
+        {
+            UnityAction resolvePromise = null;
+            resolvePromise = () => {               
+                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                Messenger.Publish(new PlayEffectMessage(playRestart));
+                this.playAgain.onClick.RemoveListener(resolvePromise);
+                resolve();
+            };
+            this.playAgain.onClick.AddListener(resolvePromise);
+        });
     }
 
     public WinGameScreen Hide()

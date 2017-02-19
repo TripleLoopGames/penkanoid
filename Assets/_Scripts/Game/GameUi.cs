@@ -6,14 +6,14 @@ using Resources = SRResources.Game.Ui;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
-    public GameUi Initialize(Action restart, Action nextLevel, int initialHealth, int startTime)
+    public GameUi Initialize(Action restart, int initialHealth, int startTime)
     {
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
         .InitializeTimer(startTime)
         .InitializeGameOverScreen(restart)
-        .InitializeWinLevel(nextLevel)
+        .InitializeWinLevel()
         .InitializeWinGame();
         return this;
     }
@@ -96,10 +96,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public GameUi ShowWinLevel()
+    public IPromise ShowWinLevel()
     {
-        this.winLevel.Show();
-        return this;
+         return this.winLevel.Show();
     }
 
     public GameUi HideWinLevel()
@@ -143,23 +142,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeWinLevel(Action nextLevel)
+    private GameUi InitializeWinLevel()
     {
         this.winLevel = Resources.WinLevel.Instantiate().GetComponent<WinLevel>();
         Utils.SetNameAndParent("WinLevel", this.winLevel.gameObject, this.gameObject);
         this.winLevel.Initialize();
         this.winLevel.Hide();
-
-        Button[] buttons = this.winLevel.GetComponentsInChildren<Button>();
-        buttons = buttons.Select(button =>
-        {
-            if (button.name == "NextLevel")
-            {
-                button.onClick.AddListener(() => nextLevel());
-            }
-            return button;
-        }).ToArray();
-        HideWinLevel();
         return this;
     }
 

@@ -75,7 +75,21 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // dirty check last level
         if (this.currentLevelId < 3)
         {
-            this.gameUI.ShowWinLevel();
+            this.gameUI.ShowWinLevel()
+                .Then(() => {
+                    this.gameUI.MakeNonInteractable();
+                    return this.sceneTransition.Exit();
+                })
+                .Then(() =>
+                {
+                    LoadNextLevel();
+                    return this.sceneTransition.Enter();
+                })
+                .Then(() =>
+                {
+                    this.gameUI.MakeInteractable();
+                    StartNewLevel();
+                });
         }
         else
         {
@@ -184,28 +198,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool InitializeUI()
     {
-        //TODO Callback Hell :(
-        Action nextLevelFlow = () =>
-        {
-            this.gameUI.MakeNonInteractable();
-            this.sceneTransition.Exit()
-            .Then(() =>
-            {
-                LoadNextLevel();
-                return this.sceneTransition.Enter();
-            })
-            .Then(() =>
-            {
-                this.gameUI.MakeInteractable();
-                StartNewLevel();
-            });
-        };
-
         GameObject canvas = SRResources.Game.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.gameUI = canvas.GetComponent<GameUi>();
-        this.gameUI.Initialize(() => ReStart(), nextLevelFlow, Config.Player.InitialHealth, Config.GameFlow.countDownTime);
+        this.gameUI.Initialize(() => ReStart(), Config.Player.InitialHealth, Config.GameFlow.countDownTime);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();

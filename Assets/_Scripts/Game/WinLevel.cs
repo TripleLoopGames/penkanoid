@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
+using RSG;
+using UnityEngine.Events;
 
 public class WinLevel : MonoBehaviourEx {
 
@@ -17,17 +19,22 @@ public class WinLevel : MonoBehaviourEx {
                 this.image = currentTransform.gameObject;
                 return true;
             }
+            if (currentTransform.name == "NextLevel")
+            {
+                this.nextLevel = currentTransform.GetComponent<Button>();
+                return true;
+            }
             return false;
         }).ToArray();
         int activatedAmount = activated.Where(element => element).Count();
-        if (activatedAmount != 1)
+        if (activatedAmount != 2)
         {
             Debug.LogError("Cound not find proper amount of elements");
         }
         return this;
     }
 
-    public WinLevel Show()
+    public IPromise Show()
     {
         this.gameObject.SetActive(true);
 
@@ -40,7 +47,17 @@ public class WinLevel : MonoBehaviourEx {
         Sequence mySequence = DOTween.Sequence();
 
         mySequence.Append(tweenWinFactory(this.image.gameObject));
-        return this;
+
+        return new Promise((resolve, rejection) =>
+        {
+            UnityAction resolvePromise = null;
+            resolvePromise = () => {
+                this.nextLevel.onClick.RemoveListener(resolvePromise);
+                resolve();
+            };          
+            this.nextLevel.onClick.AddListener(resolvePromise);            
+        });
+        
     }
 
     public WinLevel Hide()
@@ -50,5 +67,6 @@ public class WinLevel : MonoBehaviourEx {
     }
 
     private GameObject image;
+    private Button nextLevel;
 
 }

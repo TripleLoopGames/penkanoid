@@ -37,4 +37,9 @@ public static class Config
     {
         public const int lifetime = 10;
     }
+
+    public static class WorldProgress
+    {
+        public const int lifetime = 10;
+    }    
 }

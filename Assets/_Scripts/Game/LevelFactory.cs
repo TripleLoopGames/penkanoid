@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
-using System.Linq;
 using LocalConfig = Config.LevelFactory;
-using LevelResources = SRResources.Game.Levels;
 using BuildingResources = SRResources.Game.Building;
 
 public class LevelFactory : MonoBehaviour
 {
-    public Level CreateLevel(int levelId, int worldId)
+    public Level CreateLevel(WorldStage worldstage)
     {
-        TextAsset jsonLevel = Resources.Load($"Game/Levels/World_{worldId}/Level_{levelId}") as TextAsset;
+        TextAsset jsonLevel = Resources.Load($"Game/Worlds/{worldstage.world}/Level_{worldstage.level}") as TextAsset;
         if (jsonLevel == null)
         {
             Debug.LogError("Level Resource not Found!");
@@ -17,7 +15,7 @@ public class LevelFactory : MonoBehaviour
         LevelData levelData = JsonUtility.FromJson<LevelData>(jsonLevel.text);
         Block[,] blockLayout = new Block[LocalConfig.Rows, LocalConfig.Columns];
         Level level = BuildingResources.Level.Instantiate(new Vector2(0.25f,-0.25f)).GetComponent<Level>();
-        level.name = $"Level_{worldId}_{levelId}";
+        level.name = $"Level_{worldstage.world}_{worldstage.level}";
 
         int blockCount = 0;
         // it's easier to operate trough normal array

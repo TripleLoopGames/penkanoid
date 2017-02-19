@@ -300,37 +300,16 @@ public sealed class SRResources {
                     new global::TypeSafe.PrefabResource("Player", "Game/Player"),
                     new global::TypeSafe.PrefabResource("Ball", "Game/Ball")});
         
-        public sealed class Levels {
+        public sealed class Worlds {
             
-            private Levels() {
+            private Worlds() {
             }
             
-            public static global::TypeSafe.PrefabResource Level_3 {
-                get {
-                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[0]));
-                }
-            }
+            private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[0]);
             
-            public static global::TypeSafe.PrefabResource Level_1 {
-                get {
-                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
-                }
-            }
-            
-            public static global::TypeSafe.PrefabResource Level_2 {
-                get {
-                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
-                }
-            }
-            
-            private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("Level_3", "Game/Levels/Level_3"),
-                        new global::TypeSafe.PrefabResource("Level_1", "Game/Levels/Level_1"),
-                        new global::TypeSafe.PrefabResource("Level_2", "Game/Levels/Level_2")});
-            
-            public sealed class World_1 {
+            public sealed class stone {
                 
-                private World_1() {
+                private stone() {
                 }
                 
                 public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_3 {
@@ -352,9 +331,9 @@ public sealed class SRResources {
                 }
                 
                 private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_3", "Game/Levels/World_1/Level_3"),
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_1", "Game/Levels/World_1/Level_1"),
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_2", "Game/Levels/World_1/Level_2")});
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_3", "Game/Worlds/stone/Level_3"),
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_1", "Game/Worlds/stone/Level_1"),
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_2", "Game/Worlds/stone/Level_2")});
                 
                 /// <summary>
                 /// Return a list of all resources in this folder.
@@ -439,7 +418,7 @@ public sealed class SRResources {
                 }
                 global::System.Collections.Generic.List<global::TypeSafe.IResource> tmp = new global::System.Collections.Generic.List<global::TypeSafe.IResource>();
                 tmp.AddRange(GetContents());
-                tmp.AddRange(World_1.GetContentsRecursive());
+                tmp.AddRange(stone.GetContentsRecursive());
                 __ts_internal_recursiveLookupCache = tmp;
                 return __ts_internal_recursiveLookupCache;
             }
@@ -908,7 +887,7 @@ public sealed class SRResources {
             }
             global::System.Collections.Generic.List<global::TypeSafe.IResource> tmp = new global::System.Collections.Generic.List<global::TypeSafe.IResource>();
             tmp.AddRange(GetContents());
-            tmp.AddRange(Levels.GetContentsRecursive());
+            tmp.AddRange(Worlds.GetContentsRecursive());
             tmp.AddRange(Ui.GetContentsRecursive());
             tmp.AddRange(Building.GetContentsRecursive());
             __ts_internal_recursiveLookupCache = tmp;

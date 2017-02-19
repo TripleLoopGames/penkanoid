@@ -31,7 +31,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         DOTween.Init();
 
         // change this.currentLevelId for id in unity prefs
-        this.currentLevel = this.GenerateAndAddLevel(this.currentLevelId);
+        this.worldProgress = new WorldProgress();
+        this.worldStage = this.worldProgress.GetFirstStage("stone");
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
 
         this.sceneTransition.Enter().Then(() => StartNewGame());
     }
@@ -72,11 +74,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.gameUI.StopCountDown();
         this.player.StopInvulerability();
         this.player.BlockInteractions();
-        // dirty check last level
-        if (this.currentLevelId < 3)
+        if (!this.worldStage.isLast)
         {
             this.gameUI.ShowWinLevel()
-                .Then(() => {
+                .Then(() =>
+                {
                     this.gameUI.MakeNonInteractable();
                     return this.sceneTransition.Exit();
                 })
@@ -90,22 +92,20 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                     this.gameUI.MakeInteractable();
                     StartNewLevel();
                 });
+            return this;
         }
-        else
-        {
-            SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
-            Messenger.Publish(new StopMusicMessage(stopVulkanoid));
-            SoundData playVictory = new SoundData(GetInstanceID(), SRResources.Audio.Music.VictoryTheme);
-            Messenger.Publish(new PlayMusicMessage(playVictory));
-            int timeSpent = this.gameUI.GetTimeSpent();
-            int tries = this.dataController.GetPlayerGameTries();
-            // reset so when player tries again tries re-start
-            this.dataController.ResetPlayerGameTries();
-            this.gameUI.SetWinGameInfo(timeSpent, tries);
-            Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
-                .Then(() => this.backendProxy.ShowLeaderboard())
-                .Then(() => this.ReStart());
-        }
+        SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
+        Messenger.Publish(new StopMusicMessage(stopVulkanoid));
+        SoundData playVictory = new SoundData(GetInstanceID(), SRResources.Audio.Music.VictoryTheme);
+        Messenger.Publish(new PlayMusicMessage(playVictory));
+        int timeSpent = this.gameUI.GetTimeSpent();
+        int tries = this.dataController.GetPlayerGameTries();
+        // reset so when player tries again tries re-start
+        this.dataController.ResetPlayerGameTries();
+        this.gameUI.SetWinGameInfo(timeSpent, tries);
+        Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
+            .Then(() => this.backendProxy.ShowLeaderboard())
+            .Then(() => this.ReStart());
         return this;
     }
 
@@ -123,7 +123,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.gameUI.StopCountDown();
         this.gameUI.ShowEnd()
             .Then(() => ReStart());
-      
+
         return this;
     }
 
@@ -131,8 +131,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         FullReset();
         // we start always at lvl 1 when we restart
-        this.currentLevelId = 1;
-        this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
+        this.worldStage = this.worldProgress.GetFirstStage("stone");
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewGame();
         return this;
     }
@@ -140,8 +140,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool LoadNextLevel()
     {
         NextLevelReset();
-        this.currentLevelId++;
-        this.currentLevel = GenerateAndAddLevel(this.currentLevelId);
+        this.worldProgress.GetNextStage(this.worldStage);
+        this.currentLevel = GenerateAndAddLevel(this.worldStage);
         return this;
     }
 
@@ -292,9 +292,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private Level GenerateAndAddLevel(int id)
+    private Level GenerateAndAddLevel(WorldStage worldStage)
     {
-        this.currentLevel = this.levelFactory.CreateLevel(id, 1);
+        this.currentLevel = this.levelFactory.CreateLevel(worldStage);
         this.currentLevel.SetLevelCleared(() => LevelCleared());
         this.currentLevel.transform.SetParent(this.gameObject.transform, false);
         return this.currentLevel;
@@ -305,7 +305,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         Initialize();
     }
 
-    private int currentLevelId = 1;
     private GameUi gameUI;
     private SoundCentralPool soundCentralPool;
     private InputDetector inputDetector;
@@ -318,4 +317,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SceneTransition sceneTransition;
     private DataController dataController;
     private BackendProxy backendProxy;
+    private WorldProgress worldProgress;
+    private WorldStage worldStage;
 }

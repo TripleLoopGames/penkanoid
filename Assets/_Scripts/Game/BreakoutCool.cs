@@ -8,6 +8,9 @@ using RSG;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelFactory))]
+[RequireComponent(typeof(ChangeSceneComponent))]
+[RequireComponent(typeof(DataController))]
+[RequireComponent(typeof(BackendProxy))]
 public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 {
     private void Initialize()
@@ -26,15 +29,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeBallParticlePool()
         .SetReferences()
         .SetCollisionsBetweenLayers()
+        .InitializeWorldProgress()
         .SetExitAction();
 
         DOTween.Init();
-
-        // change this.currentLevelId for id in unity prefs
-        this.worldProgress = new WorldProgress();
-        this.worldStage = this.worldProgress.GetFirstStage("stone");
-        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
-
         this.sceneTransition.Enter().Then(() => StartNewGame());
     }
 
@@ -74,7 +72,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.gameUI.StopCountDown();
         this.player.StopInvulerability();
         this.player.BlockInteractions();
-        if (!this.worldStage.isLast)
+        if (!this.worldStage.IsLast)
         {
             this.gameUI.ShowWinLevel()
                 .Then(() =>
@@ -130,7 +128,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool ReStart()
     {
         FullReset();
-        // we start always at lvl 1 when we restart
         this.worldStage = this.worldProgress.GetFirstStage("stone");
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewGame();
@@ -140,7 +137,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool LoadNextLevel()
     {
         NextLevelReset();
-        this.worldProgress.GetNextStage(this.worldStage);
+        this.worldStage = this.worldProgress.GetNextStage(this.worldStage);
         this.currentLevel = GenerateAndAddLevel(this.worldStage);
         return this;
     }
@@ -292,12 +289,20 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool InitializeWorldProgress()
+    {
+        this.worldProgress = new WorldProgress();
+        this.worldStage = this.worldProgress.GetFirstStage("stone");
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+        return this;
+    }
+
     private Level GenerateAndAddLevel(WorldStage worldStage)
     {
-        this.currentLevel = this.levelFactory.CreateLevel(worldStage);
-        this.currentLevel.SetLevelCleared(() => LevelCleared());
-        this.currentLevel.transform.SetParent(this.gameObject.transform, false);
-        return this.currentLevel;
+        Level currentLevel = this.levelFactory.CreateLevel(worldStage);
+        currentLevel.SetLevelCleared(() => LevelCleared());
+        currentLevel.transform.SetParent(this.gameObject.transform, false);
+        return currentLevel;
     }
 
     private void Start()

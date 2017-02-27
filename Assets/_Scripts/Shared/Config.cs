@@ -10,7 +10,7 @@ public static class Config
         public const float OffsetRows = 0.60f;
         public const float OffsetColumns = 1.22f;
         public static readonly Vector2 InitialPosition = new Vector2(-8.78f, 3.51f);
-        
+
     }
 
     public static class SoundPlayer
@@ -40,6 +40,14 @@ public static class Config
 
     public static class WorldProgress
     {
-        public const int lifetime = 10;
-    }    
+        public static readonly WorldData[] worldsData = new WorldData[]
+        {
+           new WorldData("stone", new LevelData[]
+           {
+              new LevelData { name="level_1"},
+              new LevelData { name="level_2"},
+              new LevelData { name="level_3"},
+           })
+        };
+    }
 }

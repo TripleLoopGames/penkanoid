@@ -105,7 +105,7 @@ Material:
       second: 0.02
     - first:
         name: _Radius
-      second: 0.90000015
+      second: 1.2
     - first:
         name: _Shape
       second: 100

@@ -312,28 +312,28 @@ public sealed class SRResources {
                 private stone() {
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_3 {
+                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> level_3 {
                     get {
                         return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[0]));
                     }
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_1 {
+                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> level_1 {
                     get {
                         return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[1]));
                     }
                 }
                 
-                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> Level_2 {
+                public static global::TypeSafe.Resource<global::UnityEngine.TextAsset> level_2 {
                     get {
                         return ((global::TypeSafe.Resource<global::UnityEngine.TextAsset>)(__ts_internal_resources[2]));
                     }
                 }
                 
                 private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_3", "Game/Worlds/stone/Level_3"),
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_1", "Game/Worlds/stone/Level_1"),
-                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("Level_2", "Game/Worlds/stone/Level_2")});
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("level_3", "Game/Worlds/stone/level_3"),
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("level_1", "Game/Worlds/stone/level_1"),
+                            new global::TypeSafe.Resource<global::UnityEngine.TextAsset>("level_2", "Game/Worlds/stone/level_2")});
                 
                 /// <summary>
                 /// Return a list of all resources in this folder.

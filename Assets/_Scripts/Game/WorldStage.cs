@@ -1,13 +1,15 @@
 ﻿public class WorldStage {
 
-    public string world;
-    public int level;
-    public bool isLast;
+    public int Id { get; }
+    public string World { get; }
+    public string Level { get; }
+    public bool IsLast { get; }
 
-    public WorldStage(string world, int level, bool last)
+    public WorldStage(int id ,string world, string level, bool last)
     {
-        this.world = world;
-        this.level = level;
-        this.isLast = last;
+        this.Id = id;
+        this.World = world;
+        this.Level = level;
+        this.IsLast = last;
     }
 }

@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "linebreak-style": 0,
+    "no-void": 0,
+    "comma-dangle": 1,
+    "import/prefer-default-export": 1,
+    "import/no-extraneous-dependencies": 1,
+    "import/no-named-as-default": 1,
+    "react/prefer-stateless-function": 1
+  },
+  "globals": {
+    "document": true,
+    "window": true
+  }
+}

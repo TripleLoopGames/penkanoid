@@ -23,7 +23,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeInputDetector()
         .InitializeDataController()
         .InitializeSoundCentralPool()
-        .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
         .InitializeBallParticlePool()
@@ -224,14 +223,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.player.name = "player";
         this.player.transform.SetParent(this.gameObject.transform, false);
         this.player.Initialize();
-        return this;
-    }
-
-    private BreakoutCool InitializeScenario()
-    {
-        GameObject scenario = Resources.Scenario.Instantiate();
-        scenario.name = "scenario";
-        scenario.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 

@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
         .InitializeUI()
         .InitializeInputDetector()
         .InitializeSoundCentralPool()
+        .InitializeLevelFactory()
         .InitializeScenario()
         .InitializePlayer()
         .InitializeBallPool()
@@ -112,9 +113,14 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu InitializeScenario()
     {
-        GameObject scenario = Resources.Scenario.Instantiate();
-        scenario.name = "scenario";
+        GameObject scenario = this.levelFactory.CreateSceneario("basic","basic");
         scenario.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private MainMenu InitializeLevelFactory()
+    {
+        this.levelFactory = GetComponent<LevelFactory>();
         return this;
     }
 
@@ -168,5 +174,6 @@ public class MainMenu : MonoBehaviour
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
     private BackendProxy backendProxy;
+    private LevelFactory levelFactory;
 
 }

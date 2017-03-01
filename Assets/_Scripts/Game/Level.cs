@@ -9,7 +9,7 @@ public class Level : MonoBehaviour
     public Level Initialize(Block[,] blockLayout, Block[] blocks)
     {
         this.blockLayout = blockLayout;
-        this.blocks = blocks;
+        this.blocks = blocks;    
         return this;
     }
 

@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 891423132}
   - component: {fileID: 891423131}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Breakout Cool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -91,16 +91,16 @@ const volkanoidEditor = function execute() {
 
   const backgroundAndWall = document.querySelector('[class~=level]');
 
-  const backgroundAndWallSelector = document.querySelector(
-    '[name~=backgroundAndWallSelect]',
-  );
-
   const setBackgroundAndWall = (back, wally) => {
     backgroundAndWall.style.backgroundImage = `url('./images/walls/${wally}.png'),url('./images/backgrounds/${back}.jpg')`;
     background = back;
     wall = wally;
     return this;
   };
+
+  const backgroundAndWallSelector = document.querySelector(
+    '[name~=backgroundAndWallSelect]',
+  );
 
   backgroundAndWallSelector.addEventListener('change', (e) => {
     const type = e.target.value;
@@ -207,8 +207,13 @@ const volkanoidEditor = function execute() {
         blocks.map(block => block.hide());
         // temp for old maps
         if (blocksData.backgroundAndWall) {
-          setBackgroundAndWall(blocksData.backgroundAndWall, blocksData.backgroundAndWall);
+          backgroundAndWallSelector.value = blocksData.backgroundAndWall;
+          setBackgroundAndWall(
+            blocksData.backgroundAndWall,
+            blocksData.backgroundAndWall,
+          );
         } else {
+          backgroundAndWallSelector.value = blocksData.background;
           setBackgroundAndWall(blocksData.background, blocksData.wall);
         }
         blocksData.layout.map((originBlockData) => {

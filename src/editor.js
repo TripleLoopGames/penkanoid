@@ -69,10 +69,7 @@ const volkanoidEditor = function execute() {
     },
     getBlockData() {
       const row = Number.parseInt(this.block.getAttribute('data-row'), 10);
-      const column = Number.parseInt(
-        this.block.getAttribute('data-column'),
-        10,
-      );
+      const column = Number.parseInt(this.block.getAttribute('data-column'), 10);
       const blockData = {
         row,
         column,
@@ -98,18 +95,14 @@ const volkanoidEditor = function execute() {
     return this;
   };
 
-  const backgroundAndWallSelector = document.querySelector(
-    '[name~=backgroundAndWallSelect]',
-  );
+  const backgroundAndWallSelector = document.querySelector('[name~=backgroundAndWallSelect]');
 
   backgroundAndWallSelector.addEventListener('change', (e) => {
     const type = e.target.value;
     setBackgroundAndWall(type, type);
   });
 
-  const blockContentSelector = document.querySelector(
-    '[name~=blockContentSelect]',
-  );
+  const blockContentSelector = document.querySelector('[name~=blockContentSelect]');
   blockContentSelector.addEventListener('change', (e) => {
     // only prize blocks can have content
     if (currentBlockType !== 'prize') {
@@ -165,9 +158,7 @@ const volkanoidEditor = function execute() {
             .filter(block => block.isVisible())
             .map(block => block.getBlockData()),
         };
-        const json = `text/json;charset=utf-8,${encodeURIComponent(
-          JSON.stringify(toSave),
-        )}`;
+        const json = `text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(toSave))}`;
         link.href = `data:${json}`;
         link.download = 'level.json';
       });
@@ -208,10 +199,7 @@ const volkanoidEditor = function execute() {
         // temp for old maps
         if (blocksData.backgroundAndWall) {
           backgroundAndWallSelector.value = blocksData.backgroundAndWall;
-          setBackgroundAndWall(
-            blocksData.backgroundAndWall,
-            blocksData.backgroundAndWall,
-          );
+          setBackgroundAndWall(blocksData.backgroundAndWall, blocksData.backgroundAndWall);
         } else {
           backgroundAndWallSelector.value = blocksData.background;
           setBackgroundAndWall(blocksData.background, blocksData.wall);

@@ -23,8 +23,10 @@ public class MainMenu : MonoBehaviour
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction();
-        this.backendProxy.Authenticate()
-        .Then(() => this.sceneTransition.Enter())
+        //this.backendProxy.Authenticate()
+        //.Then(() => this.sceneTransition.Enter())
+        //.Then(() => StartMenu());
+        this.sceneTransition.Enter()
         .Then(() => StartMenu());
         return this;
     }
@@ -113,7 +115,7 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu InitializeScenario()
     {
-        GameObject scenario = this.levelFactory.CreateSceneario("basic","basic");
+        GameObject scenario = this.levelFactory.CreateSceneario("basic", "basic");
         scenario.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
@@ -135,8 +137,8 @@ public class MainMenu : MonoBehaviour
     private MainMenu InitializeBackendProxy()
     {
         // TODO: should only be called once per game!
-        this.backendProxy = GetComponent<BackendProxy>();
-        this.backendProxy.Initialize();
+        // this.backendProxy = GetComponent<BackendProxy>();
+        // this.backendProxy.Initialize();
         return this;
     }
 
@@ -173,7 +175,7 @@ public class MainMenu : MonoBehaviour
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
-    private BackendProxy backendProxy;
+    // private BackendProxy backendProxy;
     private LevelFactory levelFactory;
 
 }

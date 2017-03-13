@@ -16,7 +16,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private void Initialize()
     {
         InitializeCamera()
-        .InitializeBackendProxy()
+        //.InitializeBackendProxy()
         .InitializeTransition()
         .InitializeUI()
         .InitializeLevelCreator()
@@ -100,9 +100,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // reset so when player tries again tries re-start
         this.dataController.ResetPlayerGameTries();
         this.gameUI.SetWinGameInfo(timeSpent, tries);
-        Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
-            .Then(() => this.backendProxy.ShowLeaderboard())
-            .Then(() => this.ReStart());
+        //Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
+        //    .Then(() => this.backendProxy.ShowLeaderboard())
+        //    .Then(() => this.ReStart());
+        this.gameUI.ShowWinGame()
+          .Then(() => this.ReStart());
         return this;
     }
 
@@ -120,14 +122,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.gameUI.StopCountDown();
         this.gameUI.ShowEnd()
             .Then(() => ReStart());
-
         return this;
     }
 
     private BreakoutCool ReStart()
     {
         FullReset();
-        this.worldStage = this.worldProgress.GetFirstStage("stone");
+        this.worldStage = this.worldProgress.GetFirstStage("coolWorld");
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewGame();
         return this;
@@ -137,7 +138,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         NextLevelReset();
         this.worldStage = this.worldProgress.GetNextStage(this.worldStage);
-        this.currentLevel = GenerateAndAddLevel(this.worldStage);
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         return this;
     }
 
@@ -250,8 +251,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeBackendProxy()
     {
         // TODO: should only be called once per game!
-        this.backendProxy = GetComponent<BackendProxy>();
-        this.backendProxy.Initialize();
+        // this.backendProxy = GetComponent<BackendProxy>();
+        // this.backendProxy.Initialize();
         return this;
     }
 
@@ -283,7 +284,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeWorldProgress()
     {
         this.worldProgress = new WorldProgress();
-        this.worldStage = this.worldProgress.GetFirstStage("stone");
+        this.worldStage = this.worldProgress.GetFirstStage("coolWorld");
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         return this;
     }
@@ -312,7 +313,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
     private DataController dataController;
-    private BackendProxy backendProxy;
+    // private BackendProxy backendProxy;
     private WorldProgress worldProgress;
     private WorldStage worldStage;
 }

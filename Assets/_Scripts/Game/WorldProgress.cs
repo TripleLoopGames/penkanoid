@@ -3,9 +3,10 @@ using Localconfig = Config.WorldProgress;
 
 public class WorldProgress
 {
+    // TODO: fix silent crash!
     public WorldStage GetFirstStage(string worldName)
     {
-        WorldData worldData = FindWorldData(worldName);
+        WorldData worldData = FindWorldData(worldName);        
         int levelId = 0;
         LevelData firstLevel = worldData.levelsData[levelId];
         bool isLast = worldData.levelsData.Length == levelId + 1;

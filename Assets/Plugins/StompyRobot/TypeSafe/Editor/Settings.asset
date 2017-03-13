@@ -38,9 +38,13 @@ MonoBehaviour:
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_2.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/stone/level_2.json
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S02_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/stone/level_3.json
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S03_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/stone/level_1.json
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S01_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S05_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S04_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

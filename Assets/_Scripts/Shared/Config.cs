@@ -42,11 +42,13 @@ public static class Config
     {
         public static readonly WorldData[] worldsData = new WorldData[]
         {
-           new WorldData("stone", new LevelData[]
+           new WorldData("coolWorld", new LevelData[]
            {
-              new LevelData { name="level_1"},
-              new LevelData { name="level_2"},
-              new LevelData { name="level_3"},
+              new LevelData { name="W01_S01_level"},
+              new LevelData { name="W01_S02_level"},
+              new LevelData { name="W01_S03_level"},
+              new LevelData { name="W01_S04_level"},
+              new LevelData { name="W01_S05_level"},
            })
         };
     }

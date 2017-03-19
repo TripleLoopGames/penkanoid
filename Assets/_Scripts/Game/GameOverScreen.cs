@@ -10,6 +10,8 @@ public class GameOverScreen : MonoBehaviourEx
 
     public GameOverScreen Initialize()
     {
+
+        this.easeScaleAnimation = GetComponent<TweenEaseAnimationScaleComponent>();
         Transform[] transforms = GetComponentsInChildren<Transform>();
         bool[] activated = transforms.Select(currentTransform =>
         {
@@ -47,12 +49,8 @@ public class GameOverScreen : MonoBehaviourEx
         this.tryAgain.interactable = false;
 
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(this.tryAgain.transform.DOScale(0, 1.2f)
-            .From()
-            .SetEase(Ease.OutElastic, 0.4f));
-        mySequence.Insert(0, this.title.transform.DOScale(0, 1.2f)
-            .From()
-            .SetEase(Ease.OutElastic, 0.4f));     
+        mySequence.Append(easeScaleAnimation.createTweenEaseAnimation(this.tryAgain.gameObject));
+        mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.title.gameObject));     
         mySequence.OnComplete(() => this.tryAgain.interactable = true);
 
         return new Promise((resolve, reject) =>
@@ -81,4 +79,6 @@ public class GameOverScreen : MonoBehaviourEx
     private Button tryAgain;
     private GameObject title;
     private GameObject background;
+
+    private TweenEaseAnimationScaleComponent easeScaleAnimation;
 }

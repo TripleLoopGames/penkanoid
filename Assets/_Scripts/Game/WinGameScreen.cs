@@ -10,6 +10,7 @@ public class WinGameScreen : MonoBehaviourEx
 
     public WinGameScreen Initialize()
     {
+        this.easeScaleAnimation = GetComponent<TweenEaseAnimationScaleComponent>();
         Transform[] transforms = GetComponentsInChildren<Transform>();
         bool[] activated = transforms.Select(currentTransform =>
         {
@@ -52,16 +53,10 @@ public class WinGameScreen : MonoBehaviourEx
 
         this.playAgain.interactable = false;
 
-        Func<GameObject, Tween> tweenWinFactory = (GameObject targetObject) =>
-       {
-           return targetObject.transform.DOScale(0, 1.2f)
-           .From()
-           .SetEase(Ease.OutElastic, 0.4f);
-       };
         Sequence mySequence = DOTween.Sequence();
-        mySequence.Append(tweenWinFactory(this.playAgain.gameObject));
-        mySequence.Insert(0, tweenWinFactory(this.info));
-        mySequence.Insert(0, tweenWinFactory(this.title));
+        mySequence.Append(easeScaleAnimation.createTweenEaseAnimation(this.playAgain.gameObject));
+        mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.info));
+        mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.title));
         mySequence.OnComplete(() => this.playAgain.interactable = true);
 
         return new Promise((resolve, rejection) =>
@@ -98,4 +93,5 @@ public class WinGameScreen : MonoBehaviourEx
     private GameObject title;
     private GameObject background;
 
+    private TweenEaseAnimationScaleComponent easeScaleAnimation;
 }

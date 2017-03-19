@@ -1,5 +1,6 @@
 ﻿using RSG;
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
@@ -8,6 +9,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 {
     public GameUi Initialize(int initialHealth, int startTime)
     {
+        this.easeScaleAnimation = GetComponent<TweenEaseAnimationScaleComponent>();
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
@@ -191,9 +193,18 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private GameUi SetHearts(int health)
     {
+        Sequence mySequence = DOTween.Sequence();
+        float insertAnimationTime = 0;
+
         for (int index = 0; index < this.hearts.Length; index++)
         {
+            bool isActive = this.hearts[index].activeSelf;
             this.hearts[index].SetActive(index < health);
+            if (isActive != this.hearts[index].activeSelf)
+            {
+                mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.hearts[index].gameObject));
+                insertAnimationTime += 0.05f;
+            }
         }
         return this;
     }
@@ -202,6 +213,8 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     {
         int timeLeft = this.timer.GetTimeLeft();
         this.timer.SetTimeLeft(timeLeft + time);
+        Sequence mySequence = DOTween.Sequence();
+        mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.timer.gameObject));
         return this;
     }
 
@@ -214,4 +227,6 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     private Text timeText;
     private GameObject[] hearts;
     private int initialHealth;
+
+    private TweenEaseAnimationScaleComponent easeScaleAnimation;
 }

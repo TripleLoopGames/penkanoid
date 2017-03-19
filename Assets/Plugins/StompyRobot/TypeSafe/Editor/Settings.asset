@@ -29,9 +29,6 @@ MonoBehaviour:
   TriggerOnSceneChange: 1
   Whitelist: []
   TypeCache:
-  - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
-    Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
-      PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_3.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Levels/World_1/Level_1.json
@@ -40,11 +37,14 @@ MonoBehaviour:
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S02_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S03_level.json
-    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S01_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S05_level.json
-    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S04_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/DOTweenSettings.asset
+    Type: DG.Tweening.Core.DOTweenSettings, DOTween, Version=1.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S03_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/coolWorld/W01_S05_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

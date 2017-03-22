@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 222699056439992482}
   - component: {fileID: 114236274617516762}
   - component: {fileID: 114902819270749444}
+  - component: {fileID: 114489227180204392}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
@@ -91,6 +92,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114489227180204392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1903806641525574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f16bf95c16367044790ea0cff25a11e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114597076030343160
 MonoBehaviour:
   m_ObjectHideFlags: 1

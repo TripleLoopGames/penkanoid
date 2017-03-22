@@ -199,10 +199,12 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         for (int index = 0; index < this.hearts.Length; index++)
         {
             bool isActive = this.hearts[index].activeSelf;
+
             this.hearts[index].SetActive(index < health);
+
             if (isActive != this.hearts[index].activeSelf)
             {
-                mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.hearts[index].gameObject));
+                mySequence.Insert(insertAnimationTime, easeScaleAnimation.createTweenEaseAnimation(this.hearts[index].gameObject));
                 insertAnimationTime += 0.05f;
             }
         }

@@ -5,6 +5,7 @@ using Resources = SRResources.Game;
 using PathologicalGames;
 using DG.Tweening;
 using RSG;
+using Exceptions = Config.Exceptions;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelFactory))]
@@ -16,7 +17,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private void Initialize()
     {
         InitializeCamera()
-        //.InitializeBackendProxy()
+        .InitializeBackendProxy()
         .InitializeTransition()
         .InitializeUI()
         .InitializeLevelCreator()
@@ -100,11 +101,26 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // reset so when player tries again tries re-start
         this.dataController.ResetPlayerGameTries();
         this.gameUI.SetWinGameInfo(timeSpent, tries);
-        //Promise.All(this.backendProxy.PublishScore(timeSpent), this.gameUI.ShowWinGame())
-        //    .Then(() => this.backendProxy.ShowLeaderboard())
-        //    .Then(() => this.ReStart());
-        this.gameUI.ShowWinGame()
-          .Then(() => this.ReStart());
+        Promise.All(new Promise((resolve, reject) =>{
+            this.backendProxy.PublishScore(timeSpent)
+            .Then(() => resolve())
+            .Catch((exception) =>
+            {
+                string exceptionName = exception.Message;
+                if (exceptionName == Exceptions.FailedPublishScore)
+                {
+                    resolve();
+                    return;
+                }
+                if (exceptionName == Exceptions.RefusedLogin)
+                {
+                    resolve();
+                    return;
+                }
+                Debug.Log($"Unknown error {exceptionName}");
+            });
+        }), this.gameUI.ShowWinGame())
+            .Then(() => this.ReStart());      
         return this;
     }
 
@@ -250,9 +266,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool InitializeBackendProxy()
     {
-        // TODO: should only be called once per game!
-        // this.backendProxy = GetComponent<BackendProxy>();
-        // this.backendProxy.Initialize();
+        this.backendProxy = GetComponent<BackendProxy>();
+        this.backendProxy.Initialize();
         return this;
     }
 
@@ -313,7 +328,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
     private DataController dataController;
-    // private BackendProxy backendProxy;
+    private BackendProxy backendProxy;
     private WorldProgress worldProgress;
     private WorldStage worldStage;
 }

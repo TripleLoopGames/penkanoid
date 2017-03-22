@@ -1,18 +1,30 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class DataController : MonoBehaviour
 {
-    private PlayerProgress playerProgress;
-
     public DataController Initialize()
     {
         this.LoadPlayerProgress();
+        this.LoadLoginStatus();
         return this;
     }
 
     public int GetPlayerGameTries()
     {
         return this.playerProgress.gameTries;
+    }
+
+    public LoginStatus GetLoginStatus()
+    {
+        return this.loginStatus.Copy();
+    }
+
+    public DataController SetLoginStatus(LoginStatus loginStatus)
+    {
+        this.loginStatus.Merge(loginStatus);
+        SaveLoginStatus(this.loginStatus);
+        return this;
     }
 
     public DataController AddPlayerGameTries(int tries)
@@ -39,9 +51,40 @@ public class DataController : MonoBehaviour
         return this;
     }
 
+    private DataController LoadLoginStatus()
+    {
+        this.loginStatus = new LoginStatus();
+        if (PlayerPrefs.HasKey("loginActivated"))
+        {
+            this.loginStatus.ServicesActivated = PlayerPrefs.GetInt("loginActivated") != 0;
+        }
+        if (PlayerPrefs.HasKey("loggedIn"))
+        {
+            this.loginStatus.LoggedIn = PlayerPrefs.GetInt("loggedIn") != 0;
+        }
+        if (PlayerPrefs.HasKey("refusedLogIn"))
+        {
+            this.loginStatus.RefusedLogIn = PlayerPrefs.GetInt("loggedIn") != 0;
+        }
+        return this;
+    }
+
     private DataController SavePlayerProgress(PlayerProgress playerProgress)
     {
         PlayerPrefs.SetInt("gameTries", playerProgress.gameTries);
         return this;
     }
+
+    private DataController SaveLoginStatus(LoginStatus loginStatus)
+    {
+        Func<bool, int> boolToInt = boolean => boolean ? 1 : 0;
+
+        PlayerPrefs.SetInt("loginActivated", boolToInt(loginStatus.ServicesActivated));
+        PlayerPrefs.SetInt("loggedIn", boolToInt(loginStatus.LoggedIn));
+        PlayerPrefs.SetInt("refusedLogIn", boolToInt(loginStatus.RefusedLogIn));
+        return this;
+    }
+
+    private PlayerProgress playerProgress;
+    private LoginStatus loginStatus;
 }

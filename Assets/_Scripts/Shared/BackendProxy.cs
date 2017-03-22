@@ -3,6 +3,7 @@ using GooglePlayGames;
 using UnityEngine;
 using RSG;
 using System.Collections;
+using Exceptions = Config.Exceptions;
 
 public class BackendProxy : MonoBehaviour
 {
@@ -47,6 +48,17 @@ public class BackendProxy : MonoBehaviour
     {
         return new Promise((resolve, reject) =>
         {
+            LoginStatus loginStatus = this.dataController.GetLoginStatus();
+            if (loginStatus.LoggedIn)
+            {
+                resolve();
+                return;
+            }
+            if (loginStatus.RefusedLogIn)
+            {
+                reject(new Exception(Exceptions.RefusedLogin));
+                return;
+            }
             Social.localUser.Authenticate((sucess) =>
             {
                 if (sucess)
@@ -54,7 +66,7 @@ public class BackendProxy : MonoBehaviour
                     resolve();
                     return;
                 }
-                reject(new Exception($"Failed authenticating the user"));
+                reject(new Exception(Exceptions.FailedLogin));
             });
         });
     }
@@ -63,6 +75,12 @@ public class BackendProxy : MonoBehaviour
     {
         return new Promise((resolve, reject) =>
         {
+            LoginStatus loginStatus = this.dataController.GetLoginStatus();
+            if (loginStatus.RefusedLogIn)
+            {
+                reject(new Exception(Exceptions.RefusedLogin));
+                return;
+            }
             Social.ReportScore(score, leaderBoardId, (sucess) =>
             {
                 if (sucess)
@@ -70,7 +88,7 @@ public class BackendProxy : MonoBehaviour
                     resolve();
                     return;
                 }
-                reject(new Exception($"Failed publishing score to leaderboard"));
+                reject(new Exception(Exceptions.FailedPublishScore));
             });
         });
     }
@@ -81,11 +99,21 @@ public class BackendProxy : MonoBehaviour
     }
 
     public BackendProxy Initialize()
-    {
-        PlayGamesPlatform.Activate();
+    {       
         return this;
     }
 
+    public BackendProxy SetDataController(DataController dataController)
+    {
+        this.dataController = dataController;
+        LoginStatus loginStatus = this.dataController.GetLoginStatus();
+        if (loginStatus.ServicesActivated)
+        {
+            return this;
+        }
+        PlayGamesPlatform.Activate();
+        return this;
+    }
 #endif
-
+    private DataController dataController;
 }

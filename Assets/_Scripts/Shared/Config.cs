@@ -52,4 +52,11 @@ public static class Config
            })
         };
     }
+
+    public static class Exceptions
+    {
+        public const string RefusedLogin = "User Refused Login";
+        public const string FailedLogin = "User Login has Failed";
+        public const string FailedPublishScore = "Publish score has Failed"; 
+    }
 }

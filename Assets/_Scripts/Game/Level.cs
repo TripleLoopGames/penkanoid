@@ -152,5 +152,4 @@ public class Level : MonoBehaviour
     private Block[] blocks;
     private List<GameObject> pickUps = new List<GameObject>();
     private Action onLevelCleared;
-
 }

@@ -1,14 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using Resources = SRResources.Menu;
+using Exceptions = Config.Exceptions;
 using PathologicalGames;
+using RSG;
 
 [RequireComponent(typeof(ChangeSceneComponent))]
+[RequireComponent(typeof(InputDetector))]
+[RequireComponent(typeof(LevelFactory))]
+[RequireComponent(typeof(DataController))]
+[RequireComponent(typeof(BackendProxy))]
 public class MainMenu : MonoBehaviour
 {
     private MainMenu Initialize()
     {
         InitializeCamera()
+        .InitializeDataController()
         .InitializeBackendProxy()
         .InitializeTransition()
         .InitializeUI()
@@ -22,20 +29,38 @@ public class MainMenu : MonoBehaviour
         .InitializeStartBlock()
         .SetReferences()
         .SetCollisionsBetweenLayers()
-        .SetExitAction();
-        //this.backendProxy.Authenticate()
-        //.Then(() => this.sceneTransition.Enter())
-        //.Then(() => StartMenu());
-        this.sceneTransition.Enter()
-        .Then(() => StartMenu());
+        .SetExitAction()
+        .MenuProcess();       
         return this;
     }
 
-    private MainMenu StartMenu()
+    private IPromise MenuProcess()
     {
-        this.inputDetector.EnableInput();
-        this.player.BlockInteractions();
-        return this;
+        return new Promise((resolve, reject) => {
+            this.backendProxy.Authenticate()
+            .Then(()=> resolve())
+            .Catch((exception) =>
+            {
+                string exceptionName = exception.Message;
+                if (exceptionName == Exceptions.FailedLogin)
+                {
+                    resolve();
+                    return;
+                }
+                if (exceptionName == Exceptions.RefusedLogin)
+                {
+                    resolve();
+                    return;
+                }
+                Debug.Log($"Unknown error Main Menu {exceptionName}");
+            });
+        })
+        .Then(() => this.sceneTransition.Enter())
+        .Then(() =>
+        {
+            this.inputDetector.EnableInput();
+            this.player.BlockInteractions();
+        });    
     }
 
     private MainMenu InitializeTransition()
@@ -137,8 +162,15 @@ public class MainMenu : MonoBehaviour
     private MainMenu InitializeBackendProxy()
     {
         // TODO: should only be called once per game!
-        // this.backendProxy = GetComponent<BackendProxy>();
-        // this.backendProxy.Initialize();
+        this.backendProxy = GetComponent<BackendProxy>();
+        this.backendProxy.Initialize();
+        return this;
+    }
+
+    private MainMenu InitializeDataController()
+    {
+        this.dataController = GetComponent<DataController>();
+        this.dataController.Initialize();
         return this;
     }
 
@@ -147,6 +179,7 @@ public class MainMenu : MonoBehaviour
         this.ui.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
         this.player.SetBallParticlePool(this.ballParticlePool);
+        this.backendProxy.SetDataController(this.dataController);
         return this;
     }
 
@@ -175,7 +208,8 @@ public class MainMenu : MonoBehaviour
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
     private SceneTransition sceneTransition;
-    // private BackendProxy backendProxy;
+    private BackendProxy backendProxy;
     private LevelFactory levelFactory;
+    private DataController dataController;
 
 }

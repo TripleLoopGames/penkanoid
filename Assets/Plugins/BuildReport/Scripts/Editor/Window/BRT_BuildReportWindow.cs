@@ -1,6 +1,7 @@
 //#define BRT_SHOW_MINOR_WARNINGS
 
 #if UNITY_EDITOR
+using System;
 using UnityEngine;
 using UnityEditor;
 using System.Threading;
@@ -83,7 +84,7 @@ public class BRT_BuildReportWindow : EditorWindow
 	{
 		var deltaTime = EditorApplication.timeSinceStartup - _lastTime;
 		_lastTime = EditorApplication.timeSinceStartup;
-
+		
 		_usedAssetsScreen.Update(EditorApplication.timeSinceStartup, deltaTime, _buildInfo);
 		_unusedAssetsScreen.Update(EditorApplication.timeSinceStartup, deltaTime, _buildInfo);
 
@@ -490,14 +491,19 @@ public class BRT_BuildReportWindow : EditorWindow
 
 	bool IsCurrentlyOpeningAFile
 	{
-		get { return _currentBuildReportFileLoadThread != null && _currentBuildReportFileLoadThread.ThreadState != ThreadState.Running; }
+		get { return _currentBuildReportFileLoadThread != null && _currentBuildReportFileLoadThread.ThreadState == ThreadState.Running; }
 	}
 
 	void ForceStopFileLoadThread()
 	{
 		if (IsCurrentlyOpeningAFile)
 		{
-			try { _currentBuildReportFileLoadThread.Abort(); }
+			try
+			{
+				//Debug.LogFormat(this, "Build Report Tool: Stopping file load background thread...");
+				_currentBuildReportFileLoadThread.Abort();
+				Debug.LogFormat(this, "Build Report Tool: File load background thread stopped.");
+			}
 			catch (ThreadStateException) { }
 		}
 	}
@@ -509,38 +515,27 @@ public class BRT_BuildReportWindow : EditorWindow
 			return;
 		}
 
-		_currentBuildReportFileLoadThread = new Thread(() => _OpenBuildInfo(filepath));
-		_currentBuildReportFileLoadThread.Start();
+		if (!BuildReportTool.Options.UseThreadedFileLoading)
+		{
+			_OpenBuildInfo(filepath);
+		}
+		else
+		{
+			if (_currentBuildReportFileLoadThread != null && _currentBuildReportFileLoadThread.ThreadState == ThreadState.Running)
+			{
+				ForceStopFileLoadThread();
+			}
+			_currentBuildReportFileLoadThread = new Thread(() => LoadThread(filepath));
+			_currentBuildReportFileLoadThread.Start();
+			Debug.LogFormat(this, "Build Report Tool: Started new load background thread...");
+		}
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	void LoadThread(string filepath)
+	{
+		_OpenBuildInfo(filepath);
+		Debug.LogFormat(this, "Build Report Tool: Load background thread finished.");
+	}
 
 
 	void DrawCentralMessage(string msg)

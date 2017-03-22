@@ -18,12 +18,14 @@
 #define UNITY_5_3_AND_LESSER
 #endif
 
+#if UNITY_4 || UNITY_5_0 || UNITY_5_1 || UNITY_5_2 || UNITY_5_3 || UNITY_5_4 || UNITY_5_5
+#define UNITY_5_5_AND_LESSER
+#endif
 
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 namespace BuildReportTool
 {
@@ -292,13 +294,15 @@ public static class UnityBuildSettingsUtility
 
 
 		settings.StrippingLevelUsed = PlayerSettings.strippingLevel.ToString();
-
+		
+#if UNITY_5_5_AND_LESSER
 		settings.NETApiCompatibilityLevel = PlayerSettings.apiCompatibilityLevel.ToString();
+#else
+		settings.NETApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(EditorUserBuildSettings.selectedBuildTargetGroup).ToString();
+#endif
 
 		settings.AOTOptions = PlayerSettings.aotOptions;
-#if UNITY_5_4_OR_NEWER
 		settings.LocationUsageDescription = PlayerSettings.iOS.locationUsageDescription;
-#endif
 
 
 
@@ -776,7 +780,11 @@ public static class UnityBuildSettingsUtility
 		settings.XboxOneTitleId = PlayerSettings.XboxOne.TitleId;
 		settings.XboxOneContentId = PlayerSettings.XboxOne.ContentId;
 		settings.XboxOneProductId = PlayerSettings.XboxOne.ProductId;
+
+#if UNITY_5_5_AND_LESSER
 		settings.XboxOneSandboxId = PlayerSettings.XboxOne.SandboxId;
+#endif
+
 		settings.XboxOneServiceConfigId = PlayerSettings.XboxOne.SCID;
 		settings.XboxOneVersion = PlayerSettings.XboxOne.Version;
 		settings.XboxOneIsContentPackage = PlayerSettings.XboxOne.IsContentPackage;

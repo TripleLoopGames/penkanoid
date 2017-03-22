@@ -1,5 +1,5 @@
 =====================
-SRDebugger - (C) Stompy Robot LTD 2016
+SRDebugger - (C) Stompy Robot LTD 2017
 =====================
 
 Visit https://www.stompyrobot.uk/tools/srdebugger/documentation for more detailed documentation.
@@ -46,6 +46,21 @@ For documentation on other features, including the options tab, bug reporter, pr
 - Source Code Pro font provided by Adobe (github.com/adobe-fonts/source-code-pro) (Open Font License 1.1)
 
 # Change Log
+
+1.6.0
+----------
+
+New:
+- Cursor is automatically shown when debug panel is opened. (can be disabled in settings)
+- Added an API for converting the debug panel into a world object that can be positioned in the scene (useful for VR). See docs for information.
+   ^ This is an advanced feature that is not officially supported but provided for users who know how to use it.
+
+Changed:
+- Use Rect sprite packing for SRDebugger UI assets to prevent rendering artifacts.
+
+Fixed:
+- OnPropertyChanged in SROptions having no effect.
+- Cameras disabled during the frame preventing profiler from recording frames. (Google VR compatibility)
 
 1.5.1
 ----------

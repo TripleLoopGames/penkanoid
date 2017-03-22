@@ -6,6 +6,8 @@
     using SRF.Service;
     using UnityEngine;
     using Object = UnityEngine.Object;
+    using SRF.UI;
+    using UnityEngine.UI;
 
     [Service(typeof (IDebugService))]
     public class SRDebugService : IDebugService
@@ -19,6 +21,7 @@
         private bool _entryCodeEnabled;
         private bool _hasAuthorised;
         private DefaultTabs? _queuedTab;
+        private RectTransform _worldSpaceTransform;
 
         public SRDebugService()
         {
@@ -263,6 +266,32 @@
 
                         _queuedTab = null;
                     });
+        }
+
+        public RectTransform EnableWorldSpaceMode()
+        {
+            if (_worldSpaceTransform != null)
+            {
+                return _worldSpaceTransform;
+            }
+
+            if (Settings.Instance.UseDebugCamera)
+            {
+                throw new InvalidOperationException("UseDebugCamera cannot be enabled at the same time as EnableWorldSpaceMode.");
+            }
+            
+            _debugPanelService.IsVisible = true;
+
+            var root = ((DebugPanelServiceImpl) _debugPanelService).RootObject;
+            root.Canvas.gameObject.RemoveComponentIfExists<SRRetinaScaler>();
+            root.Canvas.gameObject.RemoveComponentIfExists<CanvasScaler>();
+            root.Canvas.renderMode = RenderMode.WorldSpace;
+
+            var rectTransform = root.Canvas.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(1024, 768);
+            rectTransform.position = Vector3.zero;
+
+            return _worldSpaceTransform = rectTransform;
         }
     }
 }

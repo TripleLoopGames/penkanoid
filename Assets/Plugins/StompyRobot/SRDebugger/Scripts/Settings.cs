@@ -489,6 +489,14 @@
             set { _enableEventSystemCreation = value; }
         }
 
+        public bool AutomaticallyShowCursor
+        {
+            get { return _automaticShowCursor; }
+#if UNITY_EDITOR
+            set { _automaticShowCursor = value; }
+#endif
+        }
+
         #endregion
 
         #region Serialization
@@ -554,6 +562,8 @@
         [SerializeField] private int _maximumConsoleEntries = 1500;
 
         [SerializeField] private bool _enableEventSystemCreation = true;
+
+        [SerializeField] private bool _automaticShowCursor = true;
 
         #endregion
 

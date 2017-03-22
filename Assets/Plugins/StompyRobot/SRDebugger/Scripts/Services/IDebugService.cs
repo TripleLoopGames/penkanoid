@@ -7,6 +7,8 @@
 
 namespace SRDebugger.Services
 {
+    using UnityEngine;
+
     public interface IDebugService
     {
         /// <summary>
@@ -116,5 +118,15 @@ namespace SRDebugger.Services
         /// Event invoked whenever the debug panel opens or closes
         /// </summary>
         event VisibilityChangedDelegate PanelVisibilityChanged;
+
+        /// <summary>
+        /// ADVANCED FEATURE. This will convert the debug panel to a world space object and return the RectTransform.
+        /// This can be used to position the SRDebugger panel somewhere in your scene.
+        /// This feature is for advanced users online who know what they are doing. Only limited support will be provided
+        /// for this method.
+        /// The debug panel will be made visible if it is not already.
+        /// </summary>
+        /// <returns>The debug panel RectTransform.</returns>
+        RectTransform EnableWorldSpaceMode();
     }
 }

@@ -3,8 +3,6 @@ guid: 2ccea1a2a1be59649956a168449bdb9f
 labels:
 - Icons8
 - See_Readme_License
-timeCreated: 1476976717
-licenseType: Store
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
@@ -25,9 +23,6 @@ TextureImporter:
   isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
-  cubemapConvolution: 0
-  cubemapConvolutionSteps: 8
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 1024
@@ -38,7 +33,6 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
@@ -52,7 +46,5 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites: []
-  spritePackingTag: srdebugger_default
+  spritePackingTag: '[RECT]srdebugger_default'
   userData: 
-  assetBundleName: 
-  assetBundleVariant: 

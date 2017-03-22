@@ -13,7 +13,6 @@
         private readonly SRList<ProfilerCameraListener> _cameraListeners = new SRList<ProfilerCameraListener>();
         private readonly CircularBuffer<ProfilerFrame> _frameBuffer = new CircularBuffer<ProfilerFrame>(FrameBufferSize);
         private Camera[] _cameraCache = new Camera[6];
-        private int _expectedCameraCount;
         //private double _lateUpdateDuration;
 
         private ProfilerLateUpdateListener _lateUpdateListener;
@@ -97,19 +96,6 @@
             _reportedCameras = 0;
 
             CameraCheck();
-
-            _expectedCameraCount = 0;
-
-            for (var i = 0; i < _cameraListeners.Count; i++)
-            {
-                if (!_cameraListeners[i].isActiveAndEnabled || !_cameraListeners[i].Camera.isActiveAndEnabled)
-                {
-                    continue;
-                }
-
-                _expectedCameraCount++;
-            }
-
             _stopwatch.Start();
         }
 
@@ -155,10 +141,27 @@
 
             _renderDuration = _stopwatch.Elapsed.TotalSeconds - _updateDuration - _updateToRenderDuration;
 
-            if (_reportedCameras >= _expectedCameraCount)
+            if (_reportedCameras >= GetExpectedCameraCount())
             {
                 EndFrame();
             }
+        }
+
+        private int GetExpectedCameraCount()
+        {
+            var expectedCameraCount
+                = 0;
+            for (var i = 0; i < _cameraListeners.Count; i++)
+            {
+                if (!_cameraListeners[i].isActiveAndEnabled || !_cameraListeners[i].Camera.isActiveAndEnabled)
+                {
+                    continue;
+                }
+
+                expectedCameraCount++;
+            }
+
+            return expectedCameraCount;
         }
 
         private void CameraCheck()

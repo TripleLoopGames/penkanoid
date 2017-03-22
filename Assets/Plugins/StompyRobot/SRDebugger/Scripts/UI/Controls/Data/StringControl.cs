@@ -29,13 +29,13 @@
         {
             base.OnBind(propertyName, t);
             Title.text = propertyName;
-
+            InputField.text = "";
             InputField.interactable = !IsReadOnly;
         }
 
         protected override void OnValueUpdated(object newValue)
         {
-            var value = (string) newValue;
+            var value = newValue == null ? "" : (string) newValue;
             InputField.text = value;
         }
 

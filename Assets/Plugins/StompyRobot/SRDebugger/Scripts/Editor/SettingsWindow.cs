@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using SRDebugger.Internal;
-using SRDebugger.Internal.Editor;
-using SRF;
-using UnityEditor;
-using UnityEditorInternal;
-using UnityEngine;
-
-namespace SRDebugger.Editor
+﻿namespace SRDebugger.Editor
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using SRDebugger.Internal;
+    using SRDebugger.Internal.Editor;
+    using SRF;
+    using UnityEditor;
+    using UnityEditorInternal;
+    using UnityEngine;
+
     public class SRDebuggerSettingsWindow : EditorWindow
     {
         private enum ProfilerAlignment
@@ -256,6 +256,12 @@ namespace SRDebugger.Editor
             }
 
             EditorGUI.EndDisabledGroup();
+
+            Settings.Instance.AutomaticallyShowCursor =
+                EditorGUILayout.Toggle(
+                    new GUIContent("Show Cursor",
+                        "Automatically set the cursor to visible when the debug panel is opened, and revert when closed."),
+                    Settings.Instance.AutomaticallyShowCursor);
 
             // Expand content area to fit all available space
             GUILayout.FlexibleSpace();

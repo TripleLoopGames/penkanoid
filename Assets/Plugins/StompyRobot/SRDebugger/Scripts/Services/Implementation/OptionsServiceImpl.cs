@@ -27,6 +27,7 @@
             _optionsReadonly = new ReadOnlyCollection<OptionDefinition>(_options);
 
             Scan(SROptions.Current);
+            SROptions.Current.PropertyChanged += OnSROptionsPropertyChanged;
         }
 
         public void Scan(object obj)
@@ -86,6 +87,10 @@
             {
                 OptionsValueUpdated(this, propertyChangedEventArgs);
             }
+        }
+        private void OnSROptionsPropertyChanged(object sender, string propertyName)
+        {
+            OnPropertyChanged(sender, new PropertyChangedEventArgs(propertyName));
         }
 
         private void OnOptionsUpdated()

@@ -22,7 +22,10 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
     public Player Damage()
     {
-        if (this.invulnerable || this.damageInvulnerable ||  this.interactionsBlocked)
+        if (this.invulnerable
+            || this.damageInvulnerable
+            || this.interactionsBlocked
+            || SROptions.Current.GodMode)
         {
             return this;
         }
@@ -30,7 +33,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         GetComponent<Animator>().SetTrigger("Damage");
         SoundData playDamage = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Damage);
         Messenger.Publish(new PlayEffectMessage(playDamage));
-        StartCoroutine(DamageInvulnerability());        
+        StartCoroutine(DamageInvulnerability());
         if (this.health <= 0)
         {
             this.timer.StopTimer();
@@ -115,7 +118,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         StartCoroutine(ShootCooldown());
         GetComponent<Animator>().SetTrigger("Shoot");
         Vector2 randomDirection = new Vector2(Random.Range(-0.2f, 0.2f), 1);
-        Vector2 moveDirectionVector = new Vector2(this.direction/10, 0);
+        Vector2 moveDirectionVector = new Vector2(this.direction / 10, 0);
         Vector2 spawnPosition = this.gameObject.transform.position;
         spawnPosition.y += 1.5f;
         Ball ball = this.ballPool.Spawn(SRResources.Game.Ball).GetComponent<Ball>();
@@ -125,7 +128,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
         SoundData playShoot = new SoundData(GetInstanceID(), SRResources.Audio.Effects.VolcanoShot);
         Messenger.Publish(new PlayEffectMessage(playShoot));
-        ball.Shoot(randomDirection+moveDirectionVector, 2, BallConfig.lifetime);
+        ball.Shoot(randomDirection + moveDirectionVector, 2, BallConfig.lifetime);
     }
 
     public Player SetBallPool(SpawnPool ballPool)
@@ -159,7 +162,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
     private void FixedUpdate()
     {
-       this.ownRigidbody.MovePosition(new Vector2 (this.transform.position.x + this.direction * this.speed * Time.fixedDeltaTime, this.transform.position.y));
+        this.ownRigidbody.MovePosition(new Vector2(this.transform.position.x + this.direction * this.speed * Time.fixedDeltaTime, this.transform.position.y));
     }
 
     private Player ProcessStats(ItemStats stats)
@@ -199,7 +202,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
             this.invulnerable = true;
             SoundData playInvencibility = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Invincibility, true);
             Messenger.Publish(new PlayEffectMessage(playInvencibility));
-            
+
             foreach (ParticleSystem particle in invulneravilityParticles)
             {
                 particle.Play();
@@ -226,7 +229,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
                     .SetLoops(-1, LoopType.Yoyo)
                     .SetId("InvulnerableAnimationColor");
 
-        }       
+        }
         this.timer.StartTimer(time, () =>
         {
             StopInvulerability();
@@ -259,7 +262,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
     private int health;
-    #pragma warning disable 0649 // variable assinged in the inspector.
+#pragma warning disable 0649 // variable assinged in the inspector.
     [SerializeField]
     private AnimationCurve speedCurve;
     private ParticleSystem[] invulneravilityParticles;

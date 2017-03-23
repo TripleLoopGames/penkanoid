@@ -7,6 +7,7 @@ public class DataController : MonoBehaviour
     {
         this.LoadPlayerProgress();
         this.LoadLoginStatus();
+        this.LoadWorldStatus();
         return this;
     }
 
@@ -18,6 +19,11 @@ public class DataController : MonoBehaviour
     public LoginStatus GetLoginStatus()
     {
         return this.loginStatus.Copy();
+    }
+
+    public string GetCurrentWorldName()
+    {
+        return this.worldStatus.currentWorldName;
     }
 
     public DataController SetLoginStatus(LoginStatus loginStatus)
@@ -69,6 +75,16 @@ public class DataController : MonoBehaviour
         return this;
     }
 
+    private DataController LoadWorldStatus()
+    {
+        this.worldStatus = new WorldStatus();
+        if (PlayerPrefs.HasKey("currentWorldName"))
+        {
+            this.worldStatus.currentWorldName = PlayerPrefs.GetString("currentWorldName");
+        }      
+        return this;
+    }
+
     private DataController SavePlayerProgress(PlayerProgress playerProgress)
     {
         PlayerPrefs.SetInt("gameTries", playerProgress.gameTries);
@@ -87,4 +103,5 @@ public class DataController : MonoBehaviour
 
     private PlayerProgress playerProgress;
     private LoginStatus loginStatus;
+    private WorldStatus worldStatus;
 }

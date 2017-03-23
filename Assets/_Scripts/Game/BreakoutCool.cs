@@ -32,6 +32,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeWorldProgress()
         .SetExitAction();
 
+        // create world
+        this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+        // Init (ingored if multipel times)
         DOTween.Init();
         this.sceneTransition.Enter().Then(() => StartNewGame());
     }
@@ -101,7 +105,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         // reset so when player tries again tries re-start
         this.dataController.ResetPlayerGameTries();
         this.gameUI.SetWinGameInfo(timeSpent, tries);
-        Promise.All(new Promise((resolve, reject) =>{
+        Promise.All(new Promise((resolve, reject) =>
+        {
             this.backendProxy.PublishScore(timeSpent)
             .Then(() => resolve())
             .Catch((exception) =>
@@ -120,7 +125,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 Debug.Log($"Unknown error {exceptionName}");
             });
         }), this.gameUI.ShowWinGame())
-            .Then(() => this.ReStart());      
+            .Then(() => this.ReStart());
         return this;
     }
 
@@ -144,7 +149,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool ReStart()
     {
         FullReset();
-        this.worldStage = this.worldProgress.GetFirstStage("basic");
+        this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewGame();
         return this;
@@ -299,8 +304,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeWorldProgress()
     {
         this.worldProgress = new WorldProgress();
-        this.worldStage = this.worldProgress.GetFirstStage("basic");
-        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         return this;
     }
 

@@ -38,8 +38,9 @@ public static class Config
         public const int lifetime = 10;
     }
 
-    public static class WorldProgress
+    public static class WorldStatus
     {
+        public const string defaultWorld = "basic";
         public static readonly WorldData[] worldsData = new WorldData[]
         {
            new WorldData("basic", new LevelData[]

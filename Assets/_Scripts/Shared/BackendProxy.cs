@@ -13,7 +13,7 @@ public class BackendProxy : MonoBehaviour
         return new Promise((resolve, reject) =>
         {
             // fake wait to simulate mobile delay
-            StartCoroutine(DelayedExecution(resolve, 10));
+            StartCoroutine(DelayedExecution(resolve, 5));
         });
     }
 

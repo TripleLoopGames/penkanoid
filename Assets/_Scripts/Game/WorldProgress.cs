@@ -1,5 +1,5 @@
 ﻿using System;
-using Localconfig = Config.WorldProgress;
+using Localconfig = Config.WorldStatus;
 
 public class WorldProgress
 {

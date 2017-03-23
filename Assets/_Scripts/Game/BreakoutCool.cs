@@ -144,7 +144,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool ReStart()
     {
         FullReset();
-        this.worldStage = this.worldProgress.GetFirstStage("coolWorld");
+        this.worldStage = this.worldProgress.GetFirstStage("basic");
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewGame();
         return this;
@@ -299,7 +299,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool InitializeWorldProgress()
     {
         this.worldProgress = new WorldProgress();
-        this.worldStage = this.worldProgress.GetFirstStage("coolWorld");
+        this.worldStage = this.worldProgress.GetFirstStage("basic");
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         return this;
     }

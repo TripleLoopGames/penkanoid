@@ -41,6 +41,11 @@ public class BackendProxy : MonoBehaviour
         yield return new WaitForSeconds(time);
         action();
     }
+
+    public BackendProxy SetDataController(DataController dataController)
+    {
+        return this;
+    }
 #endif
 
 #if UNITY_ANDROID

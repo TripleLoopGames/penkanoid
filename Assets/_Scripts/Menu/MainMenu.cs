@@ -153,9 +153,10 @@ public class MainMenu : MonoBehaviour
 
     private MainMenu InitializeStartBlock()
     {
-        GameObject scenario = Resources.StartBlock.Instantiate();
-        scenario.name = "startBlock";
-        scenario.transform.SetParent(this.gameObject.transform, false);
+        StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
+        startBlock.Initialize();
+        startBlock.name = "startBlock";
+        startBlock.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class StartBlock : MonoBehaviourEx
 {
     public StartBlock Initialize()
     {
+        this.ownCollider = GetComponent<Collider2D>();
         this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.spriteRenderer.sprite = this.BlockSprites[this.ballHits];
         return this;
@@ -18,19 +17,29 @@ public class StartBlock : MonoBehaviourEx
         bool hasCollidedWithBall = collidedGameobject.CompareTag(SRTags.Ball);
         if (!hasCollidedWithBall)
         {
-            return;        
+            return;
         }
         this.ballHits++;
         if (this.ballHits < 3)
         {
             this.spriteRenderer.sprite = this.BlockSprites[this.ballHits];
             return;
-        }        
+        }
+        SoundData playIceBreak = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Icebreak);
+        Messenger.Publish(new PlayEffectMessage(playIceBreak));
+
+        GameObject breakParticle = SRResources.Particles.IceBreak.Instantiate();
+        breakParticle.name = "IceBreak_Particle";
+        breakParticle.transform.SetParent(this.gameObject.transform.parent, false);
+        breakParticle.transform.position = this.gameObject.transform.position;
+
+        this.spriteRenderer.DOFade(0f, 0.3f);
+        this.ownCollider.enabled = false;
         Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
-        this.gameObject.SetActive(false);
-    }  
+    }
 
     private int ballHits = 0;
     public Sprite[] BlockSprites;
     private SpriteRenderer spriteRenderer;
+    private Collider2D ownCollider;
 }

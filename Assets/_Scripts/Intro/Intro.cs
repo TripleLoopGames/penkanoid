@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using Resources = SRResources.Menu;
+using Resources = SRResources.Intro;
 using Exceptions = Config.Exceptions;
 using PathologicalGames;
 using RSG;
@@ -10,9 +10,9 @@ using RSG;
 [RequireComponent(typeof(LevelFactory))]
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
-public class MainMenu : MonoBehaviour
+public class Intro : MonoBehaviour
 {
-    private MainMenu Initialize()
+    private Intro Initialize()
     {
         InitializeCamera()
         .InitializeDataController()
@@ -63,7 +63,7 @@ public class MainMenu : MonoBehaviour
         });    
     }
 
-    private MainMenu InitializeTransition()
+    private Intro InitializeTransition()
     {
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
@@ -73,12 +73,12 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeUI()
+    private Intro InitializeUI()
     {
         GameObject canvas = Resources.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.ui = canvas.GetComponent<MenuUi>();
+        this.ui = canvas.GetComponent<IntroUi>();
         this.ui.Initialize();
         if (EventSystem.current == null)
         {
@@ -89,7 +89,7 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeCamera()
+    private Intro InitializeCamera()
     {
         this.mainCamera = Resources.Main_Camera.Instantiate().GetComponent<Camera>();
         this.mainCamera.name = "mainCamera";
@@ -97,7 +97,7 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializePlayer()
+    private Intro InitializePlayer()
     {
         this.player = SRResources.Game.Player.Instantiate(new Vector2()).GetComponent<Player>();
         this.player.name = "player";
@@ -106,14 +106,14 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeInputDetector()
+    private Intro InitializeInputDetector()
     {
         this.inputDetector = GetComponent<InputDetector>();
         this.inputDetector.Initialize();
         return this;
     }
 
-    private MainMenu InitializeBallPool()
+    private Intro InitializeBallPool()
     {
         this.ballPool = SRResources.Game.BallPool.Instantiate().GetComponent<SpawnPool>();
         this.ballPool.name = "BallPool";
@@ -121,7 +121,7 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeBallParticlePool()
+    private Intro InitializeBallParticlePool()
     {
         this.ballParticlePool = SRResources.Game.BallParticlePool.Instantiate().GetComponent<SpawnPool>();
         this.ballParticlePool.name = "BallParticlePool";
@@ -129,7 +129,7 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeSoundCentralPool()
+    private Intro InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
         this.soundCentralPool.name = "SoundCentralPool";
@@ -138,20 +138,20 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeScenario()
+    private Intro InitializeScenario()
     {
         GameObject scenario = this.levelFactory.CreateSceneario("basic", "basic");
         scenario.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
-    private MainMenu InitializeLevelFactory()
+    private Intro InitializeLevelFactory()
     {
         this.levelFactory = GetComponent<LevelFactory>();
         return this;
     }
 
-    private MainMenu InitializeStartBlock()
+    private Intro InitializeStartBlock()
     {
         StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
         startBlock.Initialize();
@@ -160,7 +160,7 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeBackendProxy()
+    private Intro InitializeBackendProxy()
     {
         // TODO: should only be called once per game!
         this.backendProxy = GetComponent<BackendProxy>();
@@ -168,14 +168,14 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu InitializeDataController()
+    private Intro InitializeDataController()
     {
         this.dataController = GetComponent<DataController>();
         this.dataController.Initialize();
         return this;
     }
 
-    private MainMenu SetReferences()
+    private Intro SetReferences()
     {
         this.ui.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
@@ -184,13 +184,13 @@ public class MainMenu : MonoBehaviour
         return this;
     }
 
-    private MainMenu SetCollisionsBetweenLayers()
+    private Intro SetCollisionsBetweenLayers()
     {
         Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
         return this;
     }
 
-    private MainMenu SetExitAction()
+    private Intro SetExitAction()
     {
         GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
         return this;
@@ -204,7 +204,7 @@ public class MainMenu : MonoBehaviour
     private SoundCentralPool soundCentralPool;
     private Player player;
     private InputDetector inputDetector;
-    private MenuUi ui;
+    private IntroUi ui;
     private Camera mainCamera;
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;

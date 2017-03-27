@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Resources = SRResources.Menu.Ui;
+using Resources = SRResources.Intro.Ui;
 
-public class MenuUi : MonoBehaviourEx
+public class IntroUi : MonoBehaviourEx
 {
-    public MenuUi Initialize()
+    public IntroUi Initialize()
     {
         InitializeTitle();
         return this;
     }
 
-    public MenuUi SetCamera(Camera camera)
+    public IntroUi SetCamera(Camera camera)
     {
         Canvas canvas = GetComponent<Canvas>();
         canvas.worldCamera = camera;
@@ -19,7 +19,7 @@ public class MenuUi : MonoBehaviourEx
         return this;
     }
 
-    private MenuUi InitializeTitle()
+    private IntroUi InitializeTitle()
     {
         GameObject title = Resources.Title.Instantiate();
         title.name = "title";

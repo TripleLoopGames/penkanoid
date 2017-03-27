@@ -9,7 +9,6 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 {
     public GameUi Initialize(int initialHealth, int startTime)
     {
-        this.easeScaleAnimation = GetComponent<TweenEaseAnimationScaleComponent>();
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
@@ -171,6 +170,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
                             .Select((Transform heartTransform) => heartTransform.gameObject)
                             .Where(heart => heart.CompareTag(SRTags.UiHeart))
                             .ToArray();
+        foreach (var heart in hearts)
+        {
+            heart.SetActive(false);
+        }
+        
         SetHearts(initialHealth);
         return this;
     }
@@ -193,21 +197,37 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private GameUi SetHearts(int health)
     {
-        Sequence mySequence = DOTween.Sequence();
-        float insertAnimationTime = 0;
+        GameObject[] changedHearts = {};
+        int countArray = 0;
 
-        for (int index = 0; index < this.hearts.Length; index++)
+        changedHearts = this.hearts.Select((heart) =>
         {
-            bool isActive = this.hearts[index].activeSelf;
+            bool heartState = heart.activeSelf;
 
-            this.hearts[index].SetActive(index < health);
+            heart.SetActive(countArray < health);
 
-            if (isActive != this.hearts[index].activeSelf)
+            countArray++;
+
+            if (heart.activeSelf != heartState && countArray <= health)
             {
-                mySequence.Insert(insertAnimationTime, easeScaleAnimation.createTweenEaseAnimation(this.hearts[index].gameObject));
-                insertAnimationTime += 0.05f;
+                return heart;
             }
+            return null;
+        })
+        .Where((heart) => heart != null)
+        .ToArray();
+
+        if (changedHearts != null)
+        {
+            animateHearts(changedHearts);
         }
+        
+        return this;
+    }
+
+    private GameUi animateHearts(GameObject[] copyHearts)
+    {
+        TweenEaseAnimationScaleComponent.CreateSequence("hearts", copyHearts, null, 0.5f);
         return this;
     }
 
@@ -215,8 +235,8 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     {
         int timeLeft = this.timer.GetTimeLeft();
         this.timer.SetTimeLeft(timeLeft + time);
-        Sequence mySequence = DOTween.Sequence();
-        mySequence.Insert(0, easeScaleAnimation.createTweenEaseAnimation(this.timer.gameObject));
+        TweenEaseAnimationScaleComponent.CreateSequence("timer", new GameObject[] { this.timer.gameObject });
+
         return this;
     }
 
@@ -229,6 +249,4 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     private Text timeText;
     private GameObject[] hearts;
     private int initialHealth;
-
-    private TweenEaseAnimationScaleComponent easeScaleAnimation;
 }

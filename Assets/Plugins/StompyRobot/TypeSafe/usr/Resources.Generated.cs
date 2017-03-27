@@ -37,9 +37,9 @@ public sealed class SRResources {
                 new global::TypeSafe.PrefabResource("EventSystem", "EventSystem"),
                 new global::TypeSafe.Resource<global::DG.Tweening.Core.DOTweenSettings>("DOTweenSettings", "DOTweenSettings")});
     
-    public sealed class Menu {
+    public sealed class Intro {
         
-        private Menu() {
+        private Intro() {
         }
         
         public static global::TypeSafe.PrefabResource StartBlock {
@@ -48,7 +48,7 @@ public sealed class SRResources {
             }
         }
         
-        public static global::TypeSafe.PrefabResource MainMenu {
+        public static global::TypeSafe.PrefabResource _Intro {
             get {
                 return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[1]));
             }
@@ -61,9 +61,9 @@ public sealed class SRResources {
         }
         
         private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                    new global::TypeSafe.PrefabResource("StartBlock", "Menu/StartBlock"),
-                    new global::TypeSafe.PrefabResource("MainMenu", "Menu/MainMenu"),
-                    new global::TypeSafe.PrefabResource("Main Camera", "Menu/Main Camera")});
+                    new global::TypeSafe.PrefabResource("StartBlock", "Intro/StartBlock"),
+                    new global::TypeSafe.PrefabResource("_Intro", "Intro/Intro"),
+                    new global::TypeSafe.PrefabResource("Main Camera", "Intro/Main Camera")});
         
         public sealed class Ui {
             
@@ -107,12 +107,12 @@ public sealed class SRResources {
             }
             
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
-                        new global::TypeSafe.PrefabResource("EventSystem", "Menu/Ui/EventSystem"),
-                        new global::TypeSafe.PrefabResource("Background", "Menu/Ui/Background"),
-                        new global::TypeSafe.PrefabResource("Canvas", "Menu/Ui/Canvas"),
-                        new global::TypeSafe.PrefabResource("Title", "Menu/Ui/Title"),
-                        new global::TypeSafe.PrefabResource("WinGame", "Menu/Ui/WinGame"),
-                        new global::TypeSafe.PrefabResource("MainPanel", "Menu/Ui/MainPanel")});
+                        new global::TypeSafe.PrefabResource("EventSystem", "Intro/Ui/EventSystem"),
+                        new global::TypeSafe.PrefabResource("Background", "Intro/Ui/Background"),
+                        new global::TypeSafe.PrefabResource("Canvas", "Intro/Ui/Canvas"),
+                        new global::TypeSafe.PrefabResource("Title", "Intro/Ui/Title"),
+                        new global::TypeSafe.PrefabResource("WinGame", "Intro/Ui/WinGame"),
+                        new global::TypeSafe.PrefabResource("MainPanel", "Intro/Ui/MainPanel")});
             
             /// <summary>
             /// Return a list of all resources in this folder.
@@ -1959,7 +1959,7 @@ public sealed class SRResources {
         }
         global::System.Collections.Generic.List<global::TypeSafe.IResource> tmp = new global::System.Collections.Generic.List<global::TypeSafe.IResource>();
         tmp.AddRange(GetContents());
-        tmp.AddRange(Menu.GetContentsRecursive());
+        tmp.AddRange(Intro.GetContentsRecursive());
         tmp.AddRange(Game.GetContentsRecursive());
         tmp.AddRange(Audio.GetContentsRecursive());
         tmp.AddRange(Core.GetContentsRecursive());

@@ -16,13 +16,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 {
     private void Initialize()
     {
-        InitializeCamera()
-        .InitializeBackendProxy()
+        InitializeCamera();
+        DataController dataController = InitializeDataController();
+        InitializeBackendProxy(dataController)
         .InitializeTransition()
         .InitializeUI()
         .InitializeLevelCreator()
         .InitializeInputDetector()
-        .InitializeDataController()
         .InitializeSoundCentralPool()
         .InitializePlayer()
         .InitializeBallPool()
@@ -118,6 +118,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                     return;
                 }
                 if (exceptionName == Exceptions.RefusedLogin)
+                {
+                    resolve();
+                    return;
+                }
+                if (exceptionName == Exceptions.NotLoggedIn)
                 {
                     resolve();
                     return;
@@ -232,11 +237,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private BreakoutCool InitializeDataController()
+    private DataController InitializeDataController()
     {
         this.dataController = GetComponent<DataController>();
-        this.dataController.Initialize();
-        return this;
+        return this.dataController.Initialize();
     }
 
     private BreakoutCool InitializePlayer()
@@ -269,10 +273,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private BreakoutCool InitializeBackendProxy()
+    private BreakoutCool InitializeBackendProxy(DataController dataController)
     {
         this.backendProxy = GetComponent<BackendProxy>();
-        this.backendProxy.Initialize();
+        this.backendProxy.Initialize(dataController);
         return this;
     }
 

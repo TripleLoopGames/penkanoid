@@ -33,9 +33,16 @@ public sealed class SRScenes {
         }
     }
     
+    public static global::TypeSafe.Scene Intro {
+        get {
+            return __all[2];
+        }
+    }
+    
     private static global::System.Collections.Generic.IList<global::TypeSafe.Scene> __all = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.Scene>(new global::TypeSafe.Scene[] {
                 new global::TypeSafe.Scene("Menu", 0),
-                new global::TypeSafe.Scene("Game", 1)});
+                new global::TypeSafe.Scene("Game", 1),
+                new global::TypeSafe.Scene("Intro", 2)});
     
     public static global::System.Collections.Generic.IList<global::TypeSafe.Scene> All {
         get {

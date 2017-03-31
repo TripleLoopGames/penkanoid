@@ -31,7 +31,7 @@ public class BackendProxy : MonoBehaviour
         return;
     }
 
-    public BackendProxy Initialize()
+    public BackendProxy Initialize(DataController dataController)
     {        
         return this;
     }
@@ -42,10 +42,6 @@ public class BackendProxy : MonoBehaviour
         action();
     }
 
-    public BackendProxy SetDataController(DataController dataController)
-    {
-        return this;
-    }
 #endif
 
 #if UNITY_ANDROID
@@ -68,10 +64,15 @@ public class BackendProxy : MonoBehaviour
             {
                 if (sucess)
                 {
+                    loginStatus.LoggedIn = true;
+                    this.dataController.SetLoginStatus(loginStatus);
                     resolve();
                     return;
                 }
+                loginStatus.RefusedLogIn = true;
+                this.dataController.SetLoginStatus(loginStatus);
                 reject(new Exception(Exceptions.FailedLogin));
+                return;
             });
         });
     }
@@ -84,6 +85,11 @@ public class BackendProxy : MonoBehaviour
             if (loginStatus.RefusedLogIn)
             {
                 reject(new Exception(Exceptions.RefusedLogin));
+                return;
+            }
+            if (!loginStatus.LoggedIn)
+            {
+                reject(new Exception(Exceptions.NotLoggedIn));
                 return;
             }
             Social.ReportScore(score, leaderBoardId, (sucess) =>
@@ -103,22 +109,22 @@ public class BackendProxy : MonoBehaviour
         ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderBoardId);
     }
 
-    public BackendProxy Initialize()
+    public BackendProxy Initialize(DataController dataController)
     {       
-        return this;
-    }
-
-    public BackendProxy SetDataController(DataController dataController)
-    {
         this.dataController = dataController;
         LoginStatus loginStatus = this.dataController.GetLoginStatus();
         if (loginStatus.ServicesActivated)
         {
+            Debug.Log("Nope only once");
             return this;
         }
+        Debug.Log("Called Once");
         PlayGamesPlatform.Activate();
+        loginStatus.ServicesActivated = true;       
+        this.dataController.SetLoginStatus(loginStatus);
         return this;
     }
+    
 #endif
     private DataController dataController;
 }

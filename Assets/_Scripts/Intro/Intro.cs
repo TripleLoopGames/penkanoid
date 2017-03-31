@@ -15,8 +15,9 @@ public class Intro : MonoBehaviour
     private Intro Initialize()
     {
         InitializeCamera()
-        .InitializeDataController()
-        .InitializeBackendProxy()
+        .InitializeDataController();
+        DataController dataController = InitializeDataController();
+        InitializeBackendProxy(dataController)
         .InitializeTransition()
         .InitializeUI()
         .InitializeInputDetector()
@@ -30,15 +31,16 @@ public class Intro : MonoBehaviour
         .SetReferences()
         .SetCollisionsBetweenLayers()
         .SetExitAction()
-        .MenuProcess();       
+        .IntroStartProcess();
         return this;
     }
 
-    private IPromise MenuProcess()
+    private IPromise IntroStartProcess()
     {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) =>
+        {
             this.backendProxy.Authenticate()
-            .Then(()=> resolve())
+            .Then(() => resolve())
             .Catch((exception) =>
             {
                 string exceptionName = exception.Message;
@@ -60,7 +62,7 @@ public class Intro : MonoBehaviour
         {
             this.inputDetector.EnableInput();
             this.player.BlockInteractions();
-        });    
+        });
     }
 
     private Intro InitializeTransition()
@@ -160,19 +162,19 @@ public class Intro : MonoBehaviour
         return this;
     }
 
-    private Intro InitializeBackendProxy()
+    private Intro InitializeBackendProxy(DataController dataController)
     {
         // TODO: should only be called once per game!
         this.backendProxy = GetComponent<BackendProxy>();
-        this.backendProxy.Initialize();
+        this.backendProxy.Initialize(dataController);
         return this;
     }
 
-    private Intro InitializeDataController()
+    private DataController InitializeDataController()
     {
         this.dataController = GetComponent<DataController>();
         this.dataController.Initialize();
-        return this;
+        return this.dataController;
     }
 
     private Intro SetReferences()
@@ -180,7 +182,6 @@ public class Intro : MonoBehaviour
         this.ui.SetCamera(this.mainCamera);
         this.player.SetBallPool(this.ballPool);
         this.player.SetBallParticlePool(this.ballParticlePool);
-        this.backendProxy.SetDataController(this.dataController);
         return this;
     }
 

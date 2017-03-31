@@ -192,7 +192,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     private void OnMenu()
     {
-        Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu));
+        Messenger.Publish(new ChangeSceneMessage(SRScenes.Intro));
     }
 
     private GameUi SetHearts(int health)

@@ -60,10 +60,7 @@ public class DataController : MonoBehaviour
     private DataController LoadLoginStatus()
     {
         this.loginStatus = new LoginStatus();
-        if (PlayerPrefs.HasKey("loginActivated"))
-        {
-            this.loginStatus.ServicesActivated = PlayerPrefs.GetInt("loginActivated") != 0;
-        }
+        this.loginStatus.ServicesActivated = servicesActivated;
         if (PlayerPrefs.HasKey("loggedIn"))
         {
             this.loginStatus.LoggedIn = PlayerPrefs.GetInt("loggedIn") != 0;
@@ -95,7 +92,7 @@ public class DataController : MonoBehaviour
     {
         Func<bool, int> boolToInt = boolean => boolean ? 1 : 0;
 
-        PlayerPrefs.SetInt("loginActivated", boolToInt(loginStatus.ServicesActivated));
+        servicesActivated = loginStatus.ServicesActivated;
         PlayerPrefs.SetInt("loggedIn", boolToInt(loginStatus.LoggedIn));
         PlayerPrefs.SetInt("refusedLogIn", boolToInt(loginStatus.RefusedLogIn));
         return this;
@@ -104,4 +101,5 @@ public class DataController : MonoBehaviour
     private PlayerProgress playerProgress;
     private LoginStatus loginStatus;
     private WorldStatus worldStatus;
+    private static bool servicesActivated;
 }

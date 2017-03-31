@@ -66,6 +66,7 @@ public static class Config
     {
         public const string RefusedLogin = "User Refused Login";
         public const string FailedLogin = "User Login has Failed";
-        public const string FailedPublishScore = "Publish score has Failed"; 
+        public const string NotLoggedIn = "User Not Login";
+        public const string FailedPublishScore = "Publish score has Failed";
     }
 }

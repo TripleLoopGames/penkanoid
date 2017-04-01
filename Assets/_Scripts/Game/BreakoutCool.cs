@@ -127,7 +127,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                     resolve();
                     return;
                 }
-                Debug.Log($"Unknown error {exceptionName}");
+                Debug.Log("Unknown error " + exceptionName);
             });
         }), this.gameUI.ShowWinGame())
             .Then(() => this.ReStart());

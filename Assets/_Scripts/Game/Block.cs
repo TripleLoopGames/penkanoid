@@ -9,7 +9,7 @@ public class Block : MonoBehaviourEx
 {
     public Block Initialize(string ownId, Vector2 matrixPosition, string name, Action<string, bool> onBlockDeactivation)
     {
-        this.name = $"Block_{name}_{ownId}";
+        this.name = String.Format("Block_{0}_{1}", name, ownId);
         this.ownId = ownId;
         this.onBlockDeactivation = onBlockDeactivation;
         this.spriteRenderer = GetComponent<SpriteRenderer>();

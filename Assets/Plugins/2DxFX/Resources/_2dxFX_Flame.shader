@@ -1,4 +1,6 @@
-﻿//////////////////////////////////////////////
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+//////////////////////////////////////////////
 /// 2DxFX - 2D SPRITE FX - by VETASOFT 2015 //
 /// http://unity3D.vetasoft.com/            //
 //////////////////////////////////////////////
@@ -75,7 +77,7 @@ fixed4 _Color;
 v2f vert(appdata_t IN)
 {
 v2f OUT;
-OUT.vertex = mul(UNITY_MATRIX_MVP, IN.vertex);
+OUT.vertex = UnityObjectToClipPos(IN.vertex);
 OUT.texcoord = IN.texcoord;
 OUT.color = IN.color;
 return OUT;

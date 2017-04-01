@@ -1,4 +1,6 @@
-﻿Shader "HoleThing" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "HoleThing" {
  
  Properties {
      _Center ("Hole Center", Vector) = (.5, .5, 0 , 0)
@@ -26,7 +28,7 @@
          uniform half4 _MainTex_ST;
          v2f vert(appdata i) {
              v2f o;
-             o.position_clip = mul(UNITY_MATRIX_MVP, i.position);
+             o.position_clip = UnityObjectToClipPos(i.position);
              o.position_uv = _MainTex_ST.xy * i.texCoord + _MainTex_ST.zw;
              return o;
          }

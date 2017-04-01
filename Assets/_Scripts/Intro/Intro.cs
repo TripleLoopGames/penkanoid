@@ -54,7 +54,7 @@ public class Intro : MonoBehaviour
                     resolve();
                     return;
                 }
-                Debug.Log($"Unknown error Main Menu {exceptionName}");
+                Debug.Log("Unknown error Main Menu" + exceptionName);
             });
         })
         .Then(() => this.sceneTransition.Enter())

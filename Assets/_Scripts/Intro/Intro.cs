@@ -10,7 +10,7 @@ using RSG;
 [RequireComponent(typeof(LevelFactory))]
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
-public class Intro : MonoBehaviour
+public class Intro : MonoBehaviourEx
 {
     private Intro Initialize()
     {
@@ -156,7 +156,7 @@ public class Intro : MonoBehaviour
     private Intro InitializeStartBlock()
     {
         StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
-        startBlock.Initialize();
+        startBlock.Initialize(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Game)));
         startBlock.name = "startBlock";
         startBlock.transform.SetParent(this.gameObject.transform, false);
         return this;

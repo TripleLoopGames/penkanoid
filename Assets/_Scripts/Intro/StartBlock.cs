@@ -1,13 +1,15 @@
 ﻿using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class StartBlock : MonoBehaviourEx
 {
-    public StartBlock Initialize()
+    public StartBlock Initialize(Action onDestroy)
     {
         this.ownCollider = GetComponent<Collider2D>();
         this.spriteRenderer = GetComponent<SpriteRenderer>();
         this.spriteRenderer.sprite = this.BlockSprites[this.ballHits];
+        this.onDestroy = onDestroy;
         return this;
     }
 
@@ -35,11 +37,12 @@ public class StartBlock : MonoBehaviourEx
 
         this.spriteRenderer.DOFade(0f, 0.3f);
         this.ownCollider.enabled = false;
-        Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
+        this.onDestroy();
     }
 
     private int ballHits = 0;
     public Sprite[] BlockSprites;
     private SpriteRenderer spriteRenderer;
     private Collider2D ownCollider;
+    private Action onDestroy;
 }

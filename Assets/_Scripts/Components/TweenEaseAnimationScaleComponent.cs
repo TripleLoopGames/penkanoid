@@ -24,14 +24,14 @@ public static class TweenEaseAnimationScaleComponent
         .SetEase(Ease.OutElastic, 0.4f);
     }
 
-    public static void CreateSequence(string sequenceId, GameObject[] targetObjects, Action afterCompleteAnimation = null, float timeBetweenAnimations = 0)
+    public static void CreateSequence(string sequenceId, GameObject[] targetObjects, Action afterCompleteAnimation = null, float timeBetweenAnimations = 0, float delay = 0)
     {
         if (DOTween.TweensById(sequenceId, true) != null)
         {
             return;
         }
 
-        float currentTime = 0;
+        float currentTime = 0 + delay;
 
         Sequence mySequence = DOTween.Sequence();
         mySequence.SetId(sequenceId);

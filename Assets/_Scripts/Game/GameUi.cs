@@ -1,6 +1,9 @@
 ﻿using RSG;
 using System;
+using System.Collections;
+using System.Threading;
 using DG.Tweening;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
@@ -26,7 +29,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
     public void Handle(PlayerChangeHealthMessage message)
     {
-        SetHearts(message.Health);
+        SetHearts(message.Health, true);
     }
 
     public GameUi MakeInteractable()
@@ -195,7 +198,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         Messenger.Publish(new ChangeSceneMessage(SRScenes.Intro));
     }
 
-    private GameUi SetHearts(int health)
+    private GameUi SetHearts(int health, bool pickHeart = false)
     {
         GameObject[] changedHearts = {};
         int countArray = 0;
@@ -219,15 +222,22 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
 
         if (changedHearts != null)
         {
-            animateHearts(changedHearts);
+            if (!pickHeart)
+            {
+                animateHearts(changedHearts, 1.0f);
+            }
+            else
+            {
+                animateHearts(changedHearts);
+            }
         }
         
         return this;
     }
 
-    private GameUi animateHearts(GameObject[] copyHearts)
+    private GameUi animateHearts(GameObject[] copyHearts, float animationDelay = 0)
     {
-        TweenEaseAnimationScaleComponent.CreateSequence("hearts", copyHearts, null, 0.5f);
+        TweenEaseAnimationScaleComponent.CreateSequence("hearts", copyHearts, null, 0.5f, animationDelay);
         return this;
     }
 

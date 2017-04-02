@@ -153,10 +153,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool ReStart()
     {
-        FullReset();
-        this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
-        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
-        StartNewGame();
+        this.sceneTransition.Exit().Then(() =>
+        {
+            FullReset();
+            this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
+            this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+            this.sceneTransition.Enter().Then(() => StartNewGame());
+        });
         return this;
     }
 

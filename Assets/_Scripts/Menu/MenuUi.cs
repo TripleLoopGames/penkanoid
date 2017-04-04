@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Resources = SRResources.Menu.Ui;
 using UnityEngine;
+using RSG;
 
 public class MenuUi : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class MenuUi : MonoBehaviour
         InitializeBackground()
         .InitializeLevelSelector();
         return this;
+    }
+
+    public IPromise<string> WaitForNextLevel(){
+        return this.levelSelector.WaitForNextLevel();
     }
 
     private MenuUi InitializeBackground()
@@ -23,10 +28,12 @@ public class MenuUi : MonoBehaviour
 
     private MenuUi InitializeLevelSelector()
     {
-        LevelSelector levelSelector = Resources.LevelSelector.Instantiate().GetComponent<LevelSelector>();
-        levelSelector.Initialize();
-        levelSelector.name = "LevelSelector";
-        levelSelector.transform.SetParent(this.gameObject.transform, false);
+        this.levelSelector = Resources.LevelSelector.Instantiate().GetComponent<LevelSelector>();
+        this.levelSelector.Initialize();
+        this.levelSelector.name = "LevelSelector";
+        this.levelSelector.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
+
+    LevelSelector levelSelector;
 }

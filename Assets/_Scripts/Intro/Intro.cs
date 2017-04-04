@@ -156,7 +156,7 @@ public class Intro : MonoBehaviourEx
     private Intro InitializeStartBlock()
     {
         StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
-        startBlock.Initialize(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Game)));
+        startBlock.Initialize(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu)));
         startBlock.name = "startBlock";
         startBlock.transform.SetParent(this.gameObject.transform, false);
         return this;

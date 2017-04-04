@@ -36,14 +36,24 @@ public static class Config
     public static class Ball
     {
         public const int lifetime = 10;
-    }
+    }   
 
-    public static class WorldStatus
+    public static class Worlds
     {
-        public const string defaultWorld = "basic";
+        public const string defaultWorld = Names.basic;
+        public static readonly string[] names = new string[] { Names.basic, Names.rock, Names.coco, Names.rica };
+
+        public static class Names
+        {
+            public const string basic = "basic";
+            public const string rock = "rock";
+            public const string coco = "coco";
+            public const string rica = "rica";
+        }
+
         public static readonly WorldData[] worldsData = new WorldData[]
         {
-           new WorldData("basic", new LevelData[]
+           new WorldData(Names.basic, new LevelData[]
            {
               new LevelData { name="W01_S01_level"},
               new LevelData { name="W01_S02_level"},
@@ -51,7 +61,7 @@ public static class Config
               new LevelData { name="W01_S04_level"},
               new LevelData { name="W01_S05_level"},
            }),
-           new WorldData("rock", new LevelData[]
+           new WorldData(Names.rock, new LevelData[]
            {
               new LevelData { name="W02_S01_level"},
               new LevelData { name="W02_S02_level"},

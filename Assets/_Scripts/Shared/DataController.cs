@@ -26,6 +26,13 @@ public class DataController : MonoBehaviour
         return this.worldStatus.currentWorldName;
     }
 
+    public DataController SetCurrentWorldName(string worldName)
+    {
+        this.worldStatus.currentWorldName = worldName;
+        this.SaveWorldStatus();
+        return this;
+    }   
+
     public DataController SetLoginStatus(LoginStatus loginStatus)
     {
         this.loginStatus.Merge(loginStatus);
@@ -79,6 +86,12 @@ public class DataController : MonoBehaviour
         {
             this.worldStatus.currentWorldName = PlayerPrefs.GetString("currentWorldName");
         }      
+        return this;
+    }
+
+    private DataController SaveWorldStatus()
+    {
+        PlayerPrefs.SetString("currentWorldName", this.worldStatus.currentWorldName);
         return this;
     }
 

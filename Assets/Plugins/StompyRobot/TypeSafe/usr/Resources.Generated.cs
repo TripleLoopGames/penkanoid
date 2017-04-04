@@ -1974,9 +1974,15 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource LevelSelector {
+            public static global::TypeSafe.PrefabResource Door {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource LevelSelector {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
                 }
             }
             
@@ -1984,6 +1990,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("Canvas", "Menu/Ui/Canvas"),
                         new global::TypeSafe.PrefabResource("Background", "Menu/Ui/Background"),
                         new global::TypeSafe.PrefabResource("EventSystem", "Menu/Ui/EventSystem"),
+                        new global::TypeSafe.PrefabResource("Door", "Menu/Ui/Door"),
                         new global::TypeSafe.PrefabResource("LevelSelector", "Menu/Ui/LevelSelector")});
             
             /// <summary>

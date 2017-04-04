@@ -5,7 +5,8 @@ using RSG;
 
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
-public class Menu : MonoBehaviour
+[RequireComponent(typeof(ChangeSceneComponent))]
+public class Menu : MonoBehaviourEx
 {
     private Menu Initialize()
     {
@@ -15,13 +16,19 @@ public class Menu : MonoBehaviour
         .InitializeTransition()
         .InitializeUI()
         .InitializeSoundCentralPool()
-        .MenuStartProcess();
+        .MenuProcess();
         return this;
     }
 
-    private IPromise MenuStartProcess()
+    private IPromise<string> MenuProcess()
     {
-        return this.sceneTransition.Enter();
+        return this.sceneTransition.Enter()
+            .Then(() => this.ui.WaitForNextLevel())
+            .Then((world) =>
+            {
+                this.dataController.SetCurrentWorldName(world);
+                Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
+            });
     }
 
     private Menu InitializeCamera()
@@ -53,6 +60,7 @@ public class Menu : MonoBehaviour
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
         this.sceneTransition.Initialize();
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
         return this;
     }
 
@@ -71,7 +79,7 @@ public class Menu : MonoBehaviour
         }
         return this;
     }
-    
+
     private Menu InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();

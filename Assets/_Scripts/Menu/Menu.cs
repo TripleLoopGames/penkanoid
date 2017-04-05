@@ -23,9 +23,14 @@ public class Menu : MonoBehaviourEx
     private IPromise<string> MenuProcess()
     {
         return this.sceneTransition.Enter()
-            .Then(() => this.ui.WaitForNextLevel())
+            .Then(() => 
+            {
+                this.ui.MakeInteractable();
+                return this.ui.WaitForNextLevel();
+            })
             .Then((world) =>
             {
+                this.ui.MakeNonInteractable();
                 this.dataController.SetCurrentWorldName(world);
                 Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
             });

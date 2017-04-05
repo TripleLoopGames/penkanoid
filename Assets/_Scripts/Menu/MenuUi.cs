@@ -10,12 +10,26 @@ public class MenuUi : MonoBehaviour
     public MenuUi Initialize()
     {
         InitializeBackground()
+        .InitializeCanvasGroup()
         .InitializeLevelSelector();
+        MakeNonInteractable();
         return this;
-    }
+    }  
 
     public IPromise<string> WaitForNextLevel(){
         return this.levelSelector.WaitForNextLevel();
+    }
+  
+    public MenuUi MakeNonInteractable()
+    {
+        this.canvasGroup.interactable = false;
+        return this;
+    }
+
+    public MenuUi MakeInteractable()
+    {
+        this.canvasGroup.interactable = true;
+        return this;
     }
 
     private MenuUi InitializeBackground()
@@ -35,5 +49,12 @@ public class MenuUi : MonoBehaviour
         return this;
     }
 
+    public MenuUi InitializeCanvasGroup()
+    {
+        this.canvasGroup = GetComponent<CanvasGroup>();
+        return this;
+    }
+
     LevelSelector levelSelector;
+    private CanvasGroup canvasGroup;
 }

@@ -100,8 +100,7 @@ public class LevelSelector : MonoBehaviour
 
     private IPromise TransitionRight()
     {
-        int index = 0;
-        Promise[] animations = this.levelDoors.Select(door =>
+        Promise[] animations = this.levelDoors.map((door, index) =>
         {
             int indexWaypoint = this.goRightOrder[index];
             Vector2 position = this.waypoints[indexWaypoint].position;
@@ -110,15 +109,14 @@ public class LevelSelector : MonoBehaviour
                 var promise = new Promise();
                 door.SetPosition(position);
                 promise.Resolve();
-                index++;
                 return promise;
             }
-            index++;
             return door.MoveTo(position);
         }).ToArray();
         return Promise.All(animations)
             .Then(() =>
             {
+                // move last element to first position
                 LevelDoor lastDoor = this.levelDoors.Last();
                 this.levelDoors.Remove(lastDoor);
                 this.levelDoors.Insert(0, lastDoor);
@@ -127,8 +125,7 @@ public class LevelSelector : MonoBehaviour
 
     private IPromise TransitionLeft()
     {
-        int index = 0;
-        Promise[] animations = this.levelDoors.Select(door =>
+        Promise[] animations = this.levelDoors.map((door, index) =>
         {
             int indexWaypoint = this.goLeftOrder[index];
             Vector2 position = this.waypoints[indexWaypoint].position;
@@ -137,15 +134,14 @@ public class LevelSelector : MonoBehaviour
                 var promise = new Promise();
                 door.SetPosition(position);
                 promise.Resolve();
-                index++;
                 return promise;
             }
-            index++;
             return door.MoveTo(position);
         }).ToArray();
         return Promise.All(animations)
             .Then(() =>
             {
+                // move first element to last position
                 LevelDoor firstDoor = this.levelDoors.First();
                 this.levelDoors.Remove(firstDoor);
                 this.levelDoors.Add(firstDoor);

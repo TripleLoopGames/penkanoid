@@ -332,19 +332,19 @@ namespace hpjFonts {
 		bool CheckMap () {
 			if (!CheckNPOT( fontMap )) {
 				showError = true;
-				errorString = "Font Map is NPOT, Change the Import Settings property for NPOT maps to 'None'";
+				errorString = "Font map is NPOT, Change the Import Settings property for NPOT maps to 'None'";
 				font = null;
 				return true;
 			}
 			if (CheckImportSize( fontMap )) {
 				showError = true;
-				errorString = "Your texture Map is larger than the import size, change this in the Import Settings";
+				errorString = "Your texture map is larger than the import size, change this in the Import Settings";
 				font = null;
 				return true;
 			}
 			if (!CheckImportFormat( fontMap )) {
 				showError = true;
-				errorString = "Please set the Font Map to a compatible format in its Texture Settings (eg. Compressed, Truecolor, RGBA32)";
+				errorString = "Please set the Font map to a compatible format in its Texture Settings (eg. Compressed, Truecolor, RGBA32)";
 				font = null;
 				return true;
 			}
@@ -496,7 +496,7 @@ namespace hpjFonts {
 				menu.AddItem( new GUIContent( "Shrinkwrap" ), false, ToolsShrinkWrap );
 				menu.AddItem( new GUIContent( "Auto-set gylphs" ), false, ToolsAutoBasic );
 				menu.AddItem( new GUIContent( "Auto-set gylphs (smart)" ), false, ToolsAutoSmart );
-				menu.AddItem( new GUIContent( "Pack Font Map" ), false, ToolsPack );
+				menu.AddItem( new GUIContent( "Pack Font map" ), false, ToolsPack );
 				menu.DropDown( buttonRect );
 				EditorGUIUtility.ExitGUI();
 			}

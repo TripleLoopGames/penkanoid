@@ -12,7 +12,6 @@ public class MenuUi : MonoBehaviour
         InitializeBackground()
         .InitializeCanvasGroup()
         .InitializeLevelSelector();
-        MakeNonInteractable();
         return this;
     }  
 

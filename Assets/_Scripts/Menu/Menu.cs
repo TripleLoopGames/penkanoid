@@ -22,6 +22,7 @@ public class Menu : MonoBehaviourEx
 
     private IPromise<string> MenuProcess()
     {
+        this.ui.MakeNonInteractable();
         return this.sceneTransition.Enter()
             .Then(() => 
             {

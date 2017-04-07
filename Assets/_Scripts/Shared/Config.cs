@@ -41,14 +41,13 @@ public static class Config
     public static class Worlds
     {
         public const string defaultWorld = Names.basic;
-        public static readonly string[] names = new string[] { Names.basic, Names.rock, Names.coco, Names.rica };
+        public const int startingIndex = 0;
+        public static readonly string[] names = new string[] { Names.basic, Names.rock };
 
         public static class Names
         {
             public const string basic = "basic";
-            public const string rock = "rock";
-            public const string coco = "coco";
-            public const string rica = "rica";
+            public const string rock = "rock";        
         }
 
         public static readonly WorldData[] worldsData = new WorldData[]

@@ -5,21 +5,19 @@ using RSG;
 
 public class LevelDoor : MonoBehaviour {
 
-    public LevelDoor Initialize(string levelDoor)
+    public LevelDoor Initialize()
     {
-        this.gameObject.name = levelDoor;        
         this.rectTransform = GetComponent<RectTransform>();
         this.changeLevel = GetComponentInChildren<Button>();
-        this.changeLevel.onClick.AddListener(() =>
-                                           this.promise.Resolve(this.levelName));
-        this.levelName = levelDoor;
-        SetType(levelDoor);
+        this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
         return this;
     }
 
     public LevelDoor SetType(string type)
     {
         Text uiText = GetComponentInChildren<Text>();
+        this.gameObject.name = type;
+        this.levelName = type;
         uiText.text = type;
         return this;
     }

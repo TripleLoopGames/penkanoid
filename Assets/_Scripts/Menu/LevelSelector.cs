@@ -4,6 +4,7 @@ using WorldsConfig = Config.Worlds;
 using Resources = SRResources.Menu.Ui;
 using RSG;
 using System.Collections.Generic;
+using System;
 
 public class LevelSelector : MonoBehaviour
 {
@@ -25,16 +26,15 @@ public class LevelSelector : MonoBehaviour
 
     private LevelSelector InitializeDoors()
     {
-        int index = -1;
-        this.levelDoors = this.waypoints.Select(waypoint =>
+        this.levelDoors = this.waypoints.map((waypoint, index) =>
         {
             LevelDoor levelDoor = Resources.Door.Instantiate().GetComponent<LevelDoor>();
-            levelDoor.Initialize(GetWorldName(index));
+            levelDoor.Initialize();
             levelDoor.SetPosition(waypoint.position);
             levelDoor.transform.SetParent(this.gameObject.transform, false);
-            index++;
             return levelDoor;
         }).ToList();
+        AssingLevelDoorValues(this.startingIndex, this.levelDoors);
         return this;
     }
 
@@ -120,9 +120,12 @@ public class LevelSelector : MonoBehaviour
                 LevelDoor lastDoor = this.levelDoors.Last();
                 this.levelDoors.Remove(lastDoor);
                 this.levelDoors.Insert(0, lastDoor);
+                this.startingIndex--;
+                this.startingIndex = this.makeInsideBoundaries(this.startingIndex, WorldsConfig.names.Length);
+                AssingLevelDoorValues(this.startingIndex, this.levelDoors);
             });
     }
-
+    
     private IPromise TransitionLeft()
     {
         Promise[] animations = this.levelDoors.map((door, index) =>
@@ -144,10 +147,34 @@ public class LevelSelector : MonoBehaviour
                 // move first element to last position
                 LevelDoor firstDoor = this.levelDoors.First();
                 this.levelDoors.Remove(firstDoor);
-                this.levelDoors.Add(firstDoor);
+                this.levelDoors.Add(firstDoor);              
+                this.startingIndex++;
+                this.startingIndex = this.makeInsideBoundaries(this.startingIndex, WorldsConfig.names.Length);
+                AssingLevelDoorValues(this.startingIndex, this.levelDoors);
             });
     }
 
+    private LevelSelector AssingLevelDoorValues(int indexLevelDoor, List<LevelDoor> levelDoors)
+    {
+        Func<int, string[], string[]> getSelectedAndAdjecent = (index, array) =>
+        {
+            int upper = index + 1;
+            int lower = index - 1;
+            if (upper >= array.Length)
+            {
+                upper = 0;
+            }
+            if (lower < 0)
+            {
+                lower = array.Length - 1;
+            }
+            return new string[] { array[lower], array[index], array[upper] };
+        };
+        string[] worldNames = getSelectedAndAdjecent(indexLevelDoor, WorldsConfig.names);
+        worldNames.map((worldName, index) => levelDoors[index].SetType(worldName));
+        return this;
+    }
+    
     private LevelSelector DisableButtons()
     {
         this.goLeft.interactable = false;
@@ -168,6 +195,19 @@ public class LevelSelector : MonoBehaviour
         return WorldsConfig.names[normalized % WorldsConfig.names.Length];
     }
 
+    Func<int, int, int> makeInsideBoundaries = (number, limit) =>
+    {
+        if (number >= limit)
+        {
+            return 0;
+        }
+        if (number < 0)
+        {
+            return limit - 1;
+        }
+        return number;
+    };
+    private int startingIndex = WorldsConfig.startingIndex;
     private Promise<string> waitForNextLevel;
     private readonly int[] goLeftOrder = new int[] { 2, 0, 1 };
     private readonly int[] goRightOrder = new int[] { 1, 2, 0 };

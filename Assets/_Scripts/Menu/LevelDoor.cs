@@ -33,7 +33,7 @@ public class LevelDoor : MonoBehaviour {
         return new Promise((resolve, reject)=>
         {
             Vector2 currentPosition = this.rectTransform.position;
-            this.rectTransform.DOMove(position, 1f, true)
+            this.rectTransform.DOMove(position, 1f, false)
             .OnComplete(()=> resolve());
         });        
     }

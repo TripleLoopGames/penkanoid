@@ -49,7 +49,7 @@ public class LevelSelector : MonoBehaviour
                 this.goLeft.onClick.AddListener(() =>
                 {
                     DisableButtons();
-                    TransitionLeft()
+                    TransitionRight()
                     .Then(() => EnableButtons());
                 });
                 return true;
@@ -60,7 +60,7 @@ public class LevelSelector : MonoBehaviour
                 this.goRight.onClick.AddListener(() =>
                 {
                     DisableButtons();
-                    TransitionRight()
+                    TransitionLeft()
                     .Then(() => EnableButtons());
                 });
                 return true;

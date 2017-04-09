@@ -23,6 +23,7 @@ public class Menu : MonoBehaviourEx
     private IPromise<string> MenuProcess()
     {
         this.ui.MakeNonInteractable();
+        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
         return this.sceneTransition.Enter()
             .Then(() => 
             {
@@ -33,6 +34,7 @@ public class Menu : MonoBehaviourEx
             {
                 this.ui.MakeNonInteractable();
                 this.dataController.SetCurrentWorldName(world);
+                GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.colorTransition.Exit().Then(onEnd));
                 Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
             });
     }
@@ -64,9 +66,10 @@ public class Menu : MonoBehaviourEx
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
+        this.colorTransition = canvas.GetComponentInChildren<ColorTransition>();
+        this.colorTransition.Initialize(Color.white, true);
         this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
-        this.sceneTransition.Initialize();
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
+        this.sceneTransition.Initialize();       
         return this;
     }
 
@@ -104,6 +107,7 @@ public class Menu : MonoBehaviourEx
     private Camera mainCamera;
     private DataController dataController;
     private SceneTransition sceneTransition;
+    private ColorTransition colorTransition;
     private SoundCentralPool soundCentralPool;
     private BackendProxy backendProxy;
 }

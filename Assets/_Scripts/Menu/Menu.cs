@@ -20,11 +20,10 @@ public class Menu : MonoBehaviourEx
         return this;
     }
 
-    private IPromise<string> MenuProcess()
+    private Menu MenuProcess()
     {
         this.ui.MakeNonInteractable();
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
-        return this.sceneTransition.Enter()
+        this.holeTransition.Enter()
             .Then(() => 
             {
                 this.ui.MakeInteractable();
@@ -34,9 +33,10 @@ public class Menu : MonoBehaviourEx
             {
                 this.ui.MakeNonInteractable();
                 this.dataController.SetCurrentWorldName(world);
-                GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.colorTransition.Exit().Then(onEnd));
-                Messenger.Publish(new ChangeSceneMessage(SRScenes.Game));
-            });
+                return this.fadeTransition.Exit();               
+            })
+            .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Game)));
+        return this;
     }
 
     private Menu InitializeCamera()
@@ -66,10 +66,10 @@ public class Menu : MonoBehaviourEx
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.colorTransition = canvas.GetComponentInChildren<ColorTransition>();
-        this.colorTransition.Initialize(Color.white, true);
-        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
-        this.sceneTransition.Initialize();       
+        this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
+        this.fadeTransition.Initialize(Color.white, true);
+        this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
+        this.holeTransition.Initialize(Color.black, false);       
         return this;
     }
 
@@ -106,8 +106,8 @@ public class Menu : MonoBehaviourEx
     private MenuUi ui;
     private Camera mainCamera;
     private DataController dataController;
-    private SceneTransition sceneTransition;
-    private ColorTransition colorTransition;
+    private HoleTransition holeTransition;
+    private FadeTransition fadeTransition;
     private SoundCentralPool soundCentralPool;
     private BackendProxy backendProxy;
 }

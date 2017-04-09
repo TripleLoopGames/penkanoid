@@ -29,15 +29,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         .InitializeBallParticlePool()
         .SetReferences()
         .SetCollisionsBetweenLayers()
-        .InitializeWorldProgress()
-        .SetExitAction();
+        .InitializeWorldProgress();
+
 
         // create world
         this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         // Init (ingored if multipel times)
         DOTween.Init();
-        this.sceneTransition.Enter().Then(() => StartNewGame());
+        this.fadeTransition.Enter().Then(() => StartNewGame());
     }
 
     public void Handle(PlayerDeadMessage message)
@@ -82,12 +82,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 .Then(() =>
                 {
                     this.gameUI.MakeNonInteractable();
-                    return this.sceneTransition.Exit();
+                    return this.holeTransition.Exit();
                 })
                 .Then(() =>
                 {
                     LoadNextLevel();
-                    return this.sceneTransition.Enter();
+                    return this.holeTransition.Enter();
                 })
                 .Then(() =>
                 {
@@ -153,12 +153,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool ReStart()
     {
-        this.sceneTransition.Exit().Then(() =>
+        this.holeTransition.Exit().Then(() =>
         {
             FullReset();
             this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
             this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
-            this.sceneTransition.Enter().Then(() => StartNewGame());
+            this.holeTransition.Enter().Then(() => StartNewGame());
         });
         return this;
     }
@@ -208,19 +208,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
-    private BreakoutCool SetExitAction()
-    {
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
-        return this;
-    }
-
     private BreakoutCool InitializeTransition()
     {
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
-        this.sceneTransition.Initialize();
+        this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
+        this.holeTransition.Initialize(Color.black, true);
+        this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
+        this.fadeTransition.Initialize(Color.white, false);
         return this;
     }
 
@@ -336,7 +332,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private Player player;
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
-    private SceneTransition sceneTransition;
+    private HoleTransition holeTransition;
+    private FadeTransition fadeTransition;
     private DataController dataController;
     private BackendProxy backendProxy;
     private WorldProgress worldProgress;

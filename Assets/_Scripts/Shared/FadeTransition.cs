@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class ColorTransition : MonoBehaviour
+public class FadeTransition : MonoBehaviour
 {
 
-    public ColorTransition Initialize(Color color, bool transparent)
+    public FadeTransition Initialize(Color color, bool transparent)
     {
         this.color = color;
         this.image = this.GetComponent<Image>();

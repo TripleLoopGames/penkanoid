@@ -4,6 +4,7 @@ using Resources = SRResources.Intro;
 using Exceptions = Config.Exceptions;
 using PathologicalGames;
 using RSG;
+using System;
 
 [RequireComponent(typeof(ChangeSceneComponent))]
 [RequireComponent(typeof(InputDetector))]
@@ -30,7 +31,6 @@ public class Intro : MonoBehaviourEx
         .InitializeStartBlock()
         .SetReferences()
         .SetCollisionsBetweenLayers()
-        .SetExitAction()
         .IntroStartProcess();
         return this;
     }
@@ -57,7 +57,7 @@ public class Intro : MonoBehaviourEx
                 Debug.Log("Unknown error Main Menu" + exceptionName);
             });
         })
-        .Then(() => this.sceneTransition.Enter())
+        .Then(() => this.holeTransition.Enter())
         .Then(() =>
         {
             this.inputDetector.EnableInput();
@@ -70,8 +70,8 @@ public class Intro : MonoBehaviourEx
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
-        this.sceneTransition.Initialize();
+        this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
+        this.holeTransition.Initialize(Color.black, false);
         return this;
     }
 
@@ -156,7 +156,10 @@ public class Intro : MonoBehaviourEx
     private Intro InitializeStartBlock()
     {
         StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
-        startBlock.Initialize(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu)));
+        Action onClick = () =>
+            this.holeTransition.Exit()
+            .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu)));
+        startBlock.Initialize(onClick);
         startBlock.name = "startBlock";
         startBlock.transform.SetParent(this.gameObject.transform, false);
         return this;
@@ -191,12 +194,6 @@ public class Intro : MonoBehaviourEx
         return this;
     }
 
-    private Intro SetExitAction()
-    {
-        GetComponent<ChangeSceneComponent>().setAction((onEnd) => this.sceneTransition.Exit().Then(onEnd));
-        return this;
-    }
-
     private void Start()
     {
         Initialize();
@@ -209,7 +206,7 @@ public class Intro : MonoBehaviourEx
     private Camera mainCamera;
     private SpawnPool ballPool;
     private SpawnPool ballParticlePool;
-    private SceneTransition sceneTransition;
+    private HoleTransition holeTransition;
     private BackendProxy backendProxy;
     private LevelFactory levelFactory;
     private DataController dataController;

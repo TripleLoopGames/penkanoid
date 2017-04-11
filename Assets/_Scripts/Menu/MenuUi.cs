@@ -4,6 +4,7 @@ using Resources = SRResources.Menu.Ui;
 using UnityEngine;
 using RSG;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class MenuUi : MonoBehaviour
 {
@@ -20,6 +21,35 @@ public class MenuUi : MonoBehaviour
     public IPromise<string> WaitForNextLevel()
     {
         return this.levelSelector.WaitForNextLevel();
+    }
+
+    public IPromise ZoomIn(float time = 1)
+    {
+        //hack to zoom we have to get all first depth child into a gameobject and scale that
+        GameObject zoomableObject = new GameObject("ZoomableObject");
+        zoomableObject.AddComponent<CanvasGroup>();
+        zoomableObject.transform.position = new Vector2(0, -300);
+        zoomableObject.transform.SetParent(this.transform, false);
+        Transform[] firstdepthChildren = GetComponentsInChildren<Transform>()
+                                         .Where((childTransfrom) =>
+                                         {
+                                             if (childTransfrom.parent == this.transform)
+                                             {
+                                                 return true;
+                                             }
+                                             return false;
+                                         })
+                                         .Select((childTransform) =>
+                                         {
+                                             childTransform.SetParent(zoomableObject.transform, true);
+                                             return childTransform;
+                                         })
+                                         .ToArray();
+        return new Promise((resolve, reject) =>
+        {
+            zoomableObject.transform.DOScale(new Vector2(6, 6), time)
+                                    .OnComplete(() => resolve());
+        });
     }
 
     public MenuUi MakeNonInteractable()

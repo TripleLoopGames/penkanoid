@@ -15,21 +15,21 @@ public class FadeTransition : MonoBehaviour
         return this;
     }
 
-    public IPromise Enter()
+    public IPromise Enter(float time = 1f)
     {
         return new Promise((resolve, reject) =>
         {
             Color colorToTransparent = new Color(this.color.r, this.color.g, this.color.b, 0);
-            this.image.DOColor(colorToTransparent, 1f).OnComplete(() => resolve());
+            this.image.DOColor(colorToTransparent, time).OnComplete(() => resolve());
         });
     }
 
-    public IPromise Exit()
+    public IPromise Exit(float time = 1f)
     {
         return new Promise((resolve, reject) =>
         {
             Color colorToSolid = new Color(this.color.r, this.color.g, this.color.b, 1);
-            this.image.DOColor(colorToSolid, 1f).OnComplete(() => resolve());
+            this.image.DOColor(colorToSolid, time).OnComplete(() => resolve());
         });
     }
 

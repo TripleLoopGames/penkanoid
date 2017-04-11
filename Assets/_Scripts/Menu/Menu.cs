@@ -24,7 +24,7 @@ public class Menu : MonoBehaviourEx
     {
         this.ui.MakeNonInteractable();
         this.holeTransition.Enter()
-            .Then(() => 
+            .Then(() =>
             {
                 this.ui.MakeInteractable();
                 return this.ui.WaitForNextLevel();
@@ -33,7 +33,11 @@ public class Menu : MonoBehaviourEx
             {
                 this.ui.MakeNonInteractable();
                 this.dataController.SetCurrentWorldName(world);
-                return this.fadeTransition.Exit();               
+                return Promise.All
+                    (
+                    this.ui.ZoomIn(1.5f),
+                    this.fadeTransition.Exit(1.5f)
+                    );
             })
             .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Game)));
         return this;
@@ -69,7 +73,7 @@ public class Menu : MonoBehaviourEx
         this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
         this.fadeTransition.Initialize(Color.white, true);
         this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
-        this.holeTransition.Initialize(Color.black, false);       
+        this.holeTransition.Initialize(Color.black, false);
         return this;
     }
 

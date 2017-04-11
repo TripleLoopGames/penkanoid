@@ -31,7 +31,7 @@ public class MenuUi : MonoBehaviour
         zoomableObject.transform.position = new Vector2(0, -300);
         zoomableObject.transform.SetParent(this.transform, false);
         Transform[] firstdepthChildren = GetComponentsInChildren<Transform>()
-                                         .Where((childTransfrom) =>
+                                         .filter((childTransfrom) =>
                                          {
                                              if (childTransfrom.parent == this.transform)
                                              {
@@ -39,7 +39,7 @@ public class MenuUi : MonoBehaviour
                                              }
                                              return false;
                                          })
-                                         .Select((childTransform) =>
+                                         .map((childTransform) =>
                                          {
                                              childTransform.SetParent(zoomableObject.transform, true);
                                              return childTransform;

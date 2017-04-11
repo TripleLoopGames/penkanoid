@@ -17,4 +17,19 @@ public static class IEnumerableExtensions
     {
         return items.Select((item) => action(item));       
     }
+
+    public static IEnumerable<T1> filter<T1>(this IEnumerable<T1> items, Func<T1, int, bool> action)
+    {
+        int index = 0;
+        return items.Where((item) => {
+            var value = action(item, index);
+            index++;
+            return value;
+        });
+    }
+
+    public static IEnumerable<T1> filter<T1>(this IEnumerable<T1> items, Func<T1, bool> action)
+    {
+        return items.Where((item) => action(item));
+    }
 }

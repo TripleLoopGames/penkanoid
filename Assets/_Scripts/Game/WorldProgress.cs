@@ -8,9 +8,9 @@ public class WorldProgress
     {
         WorldData worldData = FindWorldData(worldName);        
         int levelId = 0;
-        LevelData firstLevel = worldData.levelsData[levelId];
-        bool isLast = worldData.levelsData.Length == levelId + 1;
-        return new WorldStage(levelId, worldName, firstLevel.name, isLast);
+        String firstLevel = worldData.levelsNames[levelId];
+        bool isLast = worldData.levelsNames.Length == levelId + 1;
+        return new WorldStage(levelId, worldName, firstLevel, isLast);
     }
 
     public WorldStage GetNextStage(WorldStage worldStage)
@@ -21,10 +21,10 @@ public class WorldProgress
         }
         WorldData worldData = FindWorldData(worldStage.World);
         int levelId = worldStage.Id + 1;
-        bool isLast = worldData.levelsData.Length <= levelId + 1;
+        bool isLast = worldData.levelsNames.Length <= levelId + 1;
         return new WorldStage(levelId,
                               worldStage.World,
-                              worldData.levelsData[levelId].name,
+                              worldData.levelsNames[levelId],
                               isLast);
     }
 
@@ -44,7 +44,7 @@ public class WorldProgress
         {
             return false;
         }
-        if (worldData.levelsData.Length <= worldStage.Id + 1)
+        if (worldData.levelsNames.Length <= worldStage.Id + 1)
         {
             return false;
         }

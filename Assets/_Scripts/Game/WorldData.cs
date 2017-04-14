@@ -1,10 +1,11 @@
 ﻿public class WorldData {
 
     public string name;
-    public LevelData[] levelsData;
+    public string[] levelsNames;
 
-    public WorldData(string name, LevelData[] levelsData){
+    public WorldData(string name, string[] levelsNames)
+    {
         this.name = name;
-        this.levelsData = levelsData;
+        this.levelsNames = levelsNames;
     }
 }

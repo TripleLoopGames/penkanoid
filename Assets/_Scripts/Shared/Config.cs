@@ -36,7 +36,7 @@ public static class Config
     public static class Ball
     {
         public const int lifetime = 10;
-    }   
+    }
 
     public static class Worlds
     {
@@ -47,26 +47,26 @@ public static class Config
         public static class Names
         {
             public const string basic = "basic";
-            public const string rock = "rock";        
+            public const string rock = "rock";
         }
 
         public static readonly WorldData[] worldsData = new WorldData[]
         {
-           new WorldData(Names.basic, new LevelData[]
+           new WorldData(Names.basic, new string[]
            {
-              new LevelData { name="W01_S01_level"},
-              new LevelData { name="W01_S02_level"},
-              new LevelData { name="W01_S03_level"},
-              new LevelData { name="W01_S04_level"},
-              new LevelData { name="W01_S05_level"},
+              "W01_S01_level",
+              "W01_S02_level",
+              "W01_S03_level",
+              "W01_S04_level",
+              "W01_S05_level",
            }),
-           new WorldData(Names.rock, new LevelData[]
+           new WorldData(Names.rock, new string[]
            {
-              new LevelData { name="W02_S01_level"},
-              new LevelData { name="W02_S02_level"},
-              new LevelData { name="W02_S03_level"},
-              new LevelData { name="W02_S04_level"},
-              new LevelData { name="W02_S05_level"},
+              "W02_S01_level",
+              "W02_S02_level",
+              "W02_S03_level",
+              "W02_S04_level",
+              "W02_S05_level",
            })
         };
     }

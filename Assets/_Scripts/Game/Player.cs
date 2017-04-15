@@ -22,6 +22,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
 
     public Player Damage()
     {
+        return this;
         if (this.invulnerable
             || this.damageInvulnerable
             || this.interactionsBlocked

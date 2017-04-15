@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 public class DataController : MonoBehaviour
@@ -9,11 +10,6 @@ public class DataController : MonoBehaviour
         this.LoadLoginStatus();
         this.LoadWorldStatus();
         return this;
-    }
-
-    public int GetPlayerGameTries()
-    {
-        return this.playerProgress.gameTries;
     }
 
     public LoginStatus GetLoginStatus()
@@ -31,7 +27,7 @@ public class DataController : MonoBehaviour
         this.worldStatus.currentWorldName = worldName;
         this.SaveWorldStatus();
         return this;
-    }   
+    }
 
     public DataController SetLoginStatus(LoginStatus loginStatus)
     {
@@ -39,28 +35,114 @@ public class DataController : MonoBehaviour
         SaveLoginStatus(this.loginStatus);
         return this;
     }
-
-    public DataController AddPlayerGameTries(int tries)
+    
+    public WorldSave[] GetWorldSaves()
     {
-        this.playerProgress.gameTries += tries;
+        return this.playerProgress.worldSaves.map((worldSave)=>
+        {
+            return new WorldSave
+            {
+                name = worldSave.name,
+                highScore = worldSave.highScore,
+                unlocked = worldSave.unlocked,
+                tries = worldSave.tries
+            };
+        }).ToArray();
+    }
+
+    public DataController SetWorldGameTries(string worldName, int tries)
+    {
+        this.playerProgress.worldSaves = this.playerProgress.worldSaves.map(worldSave =>
+        {
+            if (worldSave.name == worldName)
+            {
+                return new WorldSave
+                {
+                    name = worldSave.name,
+                    highScore = worldSave.highScore,
+                    unlocked = worldSave.unlocked,
+                    tries = tries
+                };
+            }
+            return worldSave;
+        }).ToArray();
         SavePlayerProgress(this.playerProgress);
         return this;
     }
 
-    public DataController ResetPlayerGameTries()
+    public int GetWorldGameTries(string worldName)
     {
-        this.playerProgress.gameTries = 0;
+
+        WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves, (worldSave) =>
+        {
+            if (worldSave.name == worldName)
+            {
+                return true;
+            }
+            return false;
+        });
+        if(foundworldSave == null)
+        {
+            Debug.LogError("Can't find world");
+            return 0;
+        }
+        return foundworldSave.tries;
+    }
+
+    public DataController SetHighScore(string worldName, int highScore)
+    {
+        this.playerProgress.worldSaves = this.playerProgress.worldSaves.map(worldSave =>
+        {
+            if (worldSave.name == worldName)
+            {
+                return new WorldSave
+                {
+                    name = worldSave.name,
+                    highScore = highScore,
+                    unlocked = worldSave.unlocked,
+                    tries = worldSave.tries
+                };
+            }
+            return worldSave;
+        }).ToArray();
         SavePlayerProgress(this.playerProgress);
         return this;
     }
 
+    #region SaveAndLoadProperties
     private DataController LoadPlayerProgress()
     {
-        this.playerProgress = new PlayerProgress();
-        if (PlayerPrefs.HasKey("gameTries"))
+        string progressPath = Application.persistentDataPath + "/playerProgress.json";
+        if (File.Exists(progressPath))
         {
-            this.playerProgress.gameTries = PlayerPrefs.GetInt("gameTries");
+            string dataAsJson = File.ReadAllText(progressPath);
+            this.playerProgress = JsonUtility.FromJson<PlayerProgress>(dataAsJson);
+            return this;
         }
+        // generate default player progress
+        WorldSave[] worldSaves = Config.Worlds.names.map((worldName, index) =>
+        {
+            bool isFirst = index == 1;
+            return new WorldSave
+            {
+                name = worldName,
+                highScore = 0,
+                tries = 0,
+                unlocked = isFirst
+            };
+        }).ToArray();
+        this.playerProgress = new PlayerProgress
+        {
+            worldSaves = worldSaves
+        };
+        return this;
+    }
+
+    private DataController SavePlayerProgress(PlayerProgress playerProgress)
+    {
+        string dataAsJson = JsonUtility.ToJson(playerProgress);
+        string progressPath = Application.persistentDataPath + "/playerProgress.json";
+        File.WriteAllText(progressPath, dataAsJson);
         return this;
     }
 
@@ -79,28 +161,6 @@ public class DataController : MonoBehaviour
         return this;
     }
 
-    private DataController LoadWorldStatus()
-    {
-        this.worldStatus = new WorldStatus();
-        if (PlayerPrefs.HasKey("currentWorldName"))
-        {
-            this.worldStatus.currentWorldName = PlayerPrefs.GetString("currentWorldName");
-        }      
-        return this;
-    }
-
-    private DataController SaveWorldStatus()
-    {
-        PlayerPrefs.SetString("currentWorldName", this.worldStatus.currentWorldName);
-        return this;
-    }
-
-    private DataController SavePlayerProgress(PlayerProgress playerProgress)
-    {
-        PlayerPrefs.SetInt("gameTries", playerProgress.gameTries);
-        return this;
-    }
-
     private DataController SaveLoginStatus(LoginStatus loginStatus)
     {
         Func<bool, int> boolToInt = boolean => boolean ? 1 : 0;
@@ -110,7 +170,24 @@ public class DataController : MonoBehaviour
         PlayerPrefs.SetInt("refusedLogIn", boolToInt(loginStatus.RefusedLogIn));
         return this;
     }
+    
+    private DataController LoadWorldStatus()
+    {
+        this.worldStatus = new WorldStatus();
+        if (PlayerPrefs.HasKey("currentWorldName"))
+        {
+            this.worldStatus.currentWorldName = PlayerPrefs.GetString("currentWorldName");
+        }
+        return this;
+    }
 
+    private DataController SaveWorldStatus()
+    {
+        PlayerPrefs.SetString("currentWorldName", this.worldStatus.currentWorldName);
+        return this;
+    }
+    #endregion SaveAndLoadProperties
+    
     private PlayerProgress playerProgress;
     private LoginStatus loginStatus;
     private WorldStatus worldStatus;

@@ -55,7 +55,9 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     {
         SoundData playVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme, true);
         Messenger.Publish(new PlayMusicMessage(playVulkanoid));
-        this.dataController.AddPlayerGameTries(1);
+        string currentWorldName = this.dataController.GetCurrentWorldName();
+        int tries = this.dataController.GetWorldGameTries(currentWorldName);
+        this.dataController.SetWorldGameTries(currentWorldName, (tries + 1));
         this.inputDetector.EnableInput();
         this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
         return this;
@@ -101,9 +103,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         SoundData playVictory = new SoundData(GetInstanceID(), SRResources.Audio.Music.VictoryTheme);
         Messenger.Publish(new PlayMusicMessage(playVictory));
         int timeSpent = this.gameUI.GetTimeSpent();
-        int tries = this.dataController.GetPlayerGameTries();
+        string currentWorldName = this.dataController.GetCurrentWorldName();
+        int tries = this.dataController.GetWorldGameTries(currentWorldName);
         // reset so when player tries again tries re-start
-        this.dataController.ResetPlayerGameTries();
+        this.dataController.SetWorldGameTries(currentWorldName, 0);
         this.gameUI.SetWinGameInfo(timeSpent, tries);
         Promise.All(new Promise((resolve, reject) =>
         {

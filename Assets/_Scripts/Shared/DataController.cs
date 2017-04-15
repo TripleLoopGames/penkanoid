@@ -73,20 +73,7 @@ public class DataController : MonoBehaviour
     public int GetWorldGameTries(string worldName)
     {
 
-        WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves, (worldSave) =>
-        {
-            if (worldSave.name == worldName)
-            {
-                return true;
-            }
-            return false;
-        });
-        if(foundworldSave == null)
-        {
-            Debug.LogError("Can't find world");
-            return 0;
-        }
-        return foundworldSave.tries;
+        return FindWorldSave(this.playerProgress.worldSaves, worldName).tries;
     }
 
     public DataController SetHighScore(string worldName, int highScore)
@@ -94,7 +81,7 @@ public class DataController : MonoBehaviour
         this.playerProgress.worldSaves = this.playerProgress.worldSaves.map(worldSave =>
         {
             if (worldSave.name == worldName)
-            {
+            {               
                 return new WorldSave
                 {
                     name = worldSave.name,
@@ -109,6 +96,11 @@ public class DataController : MonoBehaviour
         return this;
     }
 
+    public int GetHighScore(string worldName)
+    {
+        return FindWorldSave(this.playerProgress.worldSaves, worldName).highScore;
+    }
+    
     #region SaveAndLoadProperties
     private DataController LoadPlayerProgress()
     {
@@ -122,7 +114,7 @@ public class DataController : MonoBehaviour
         // generate default player progress
         WorldSave[] worldSaves = Config.Worlds.names.map((worldName, index) =>
         {
-            bool isFirst = index == 1;
+            bool isFirst = index == 0;
             return new WorldSave
             {
                 name = worldName,
@@ -187,7 +179,26 @@ public class DataController : MonoBehaviour
         return this;
     }
     #endregion SaveAndLoadProperties
-    
+
+    private WorldSave FindWorldSave(WorldSave[] worldSaves, string worldName)
+    {
+        WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves, (worldSave) =>
+        {
+            if (worldSave.name == worldName)
+            {
+                return true;
+            }
+            return false;
+        });
+        if (foundworldSave == null)
+        {
+            Debug.LogError("Can't find world");
+            return null;
+        }
+        return foundworldSave;
+    }
+
+
     private PlayerProgress playerProgress;
     private LoginStatus loginStatus;
     private WorldStatus worldStatus;

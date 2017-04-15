@@ -98,18 +98,28 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 });
             return this;
         }
+
+        // stop background music and play win music
         SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
         Messenger.Publish(new StopMusicMessage(stopVulkanoid));
         SoundData playVictory = new SoundData(GetInstanceID(), SRResources.Audio.Music.VictoryTheme);
         Messenger.Publish(new PlayMusicMessage(playVictory));
-        int timeSpent = this.gameUI.GetTimeSpent();
         string currentWorldName = this.dataController.GetCurrentWorldName();
-        int tries = this.dataController.GetWorldGameTries(currentWorldName);
-        // reset so when player tries again tries re-start
-        this.dataController.SetWorldGameTries(currentWorldName, 0);
-        this.gameUI.SetWinGameInfo(timeSpent, tries);
+
+        // check and save highscore if necessary
+        int timeLeft = this.gameUI.GetTimeLeft();
+        int highScore = this.dataController.GetHighScore(currentWorldName);
+        if(timeLeft > highScore)
+        {
+            this.dataController.SetHighScore(currentWorldName, timeLeft);
+        }      
         Promise.All(new Promise((resolve, reject) =>
         {
+            int tries = this.dataController.GetWorldGameTries(currentWorldName);
+            // reset so when player tries again tries are set to 0
+            this.dataController.SetWorldGameTries(currentWorldName, 0);
+            int timeSpent = this.gameUI.GetTimeSpent();
+            this.gameUI.SetWinGameInfo(timeSpent, tries);
             this.backendProxy.PublishScore(timeSpent)
             .Then(() => resolve())
             .Catch((exception) =>

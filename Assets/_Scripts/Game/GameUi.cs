@@ -85,6 +85,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this.timer.GetTimeSpent();
     }
 
+    public int GetTimeLeft()
+    {
+        return this.timer.GetTimeLeft();
+    }
+
     public IPromise ShowEnd()
     {
         return this.gameOverScreen.Show();

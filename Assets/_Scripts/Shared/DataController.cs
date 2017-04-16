@@ -182,14 +182,8 @@ public class DataController : MonoBehaviour
 
     private WorldSave FindWorldSave(WorldSave[] worldSaves, string worldName)
     {
-        WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves, (worldSave) =>
-        {
-            if (worldSave.name == worldName)
-            {
-                return true;
-            }
-            return false;
-        });
+        WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves,
+                                             (worldSave) => worldSave.name == worldName);
         if (foundworldSave == null)
         {
             Debug.LogError("Can't find world");

@@ -31,15 +31,8 @@ public class MenuUi : MonoBehaviour
         zoomableObject.transform.position = new Vector2(0, -300);
         zoomableObject.transform.SetParent(this.transform, false);
         Transform[] firstdepthChildren = GetComponentsInChildren<Transform>()
-                                         .filter((childTransfrom) =>
-                                         {
-                                             if (childTransfrom.parent == this.transform)
-                                             {
-                                                 return true;
-                                             }
-                                             return false;
-                                         })
-                                         .map((childTransform) =>
+                                         .filter(childTransfrom => childTransfrom.parent == this.transform)                                            
+                                         .map(childTransform =>
                                          {
                                              childTransform.SetParent(zoomableObject.transform, true);
                                              return childTransform;

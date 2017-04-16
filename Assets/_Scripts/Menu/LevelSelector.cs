@@ -5,6 +5,7 @@ using Resources = SRResources.Menu.Ui;
 using RSG;
 using System.Collections.Generic;
 using System;
+using DG.Tweening;
 
 public class LevelSelector : MonoBehaviour
 {
@@ -22,22 +23,7 @@ public class LevelSelector : MonoBehaviour
         this.waitForNextLevel = new Promise<string>();
         this.levelDoors.Select(door => door.SetOnClickDoorPromise(this.waitForNextLevel));
         return this.waitForNextLevel;
-    }
-
-    private LevelSelector InitializeDoors(WorldSave[] worldSaves)
-    {
-        this.worldSaves = worldSaves;
-        this.levelDoors = this.waypoints.map((waypoint, index) =>
-        {
-            LevelDoor levelDoor = Resources.Door.Instantiate().GetComponent<LevelDoor>();
-            levelDoor.Initialize();
-            levelDoor.SetPosition(waypoint.position);
-            levelDoor.transform.SetParent(this.gameObject.transform, false);
-            return levelDoor;
-        }).ToList();
-        AssingLevelDoorValues(this.startingIndex, this.levelDoors);
-        return this;
-    }
+    }   
 
     private LevelSelector SetDrawingOrder()
     {
@@ -48,7 +34,8 @@ public class LevelSelector : MonoBehaviour
 
     private IPromise TransitionRight()
     {
-        Promise[] animations = this.levelDoors.map((door, index) =>
+        // animate the doors
+        Promise[] doorAnimations = this.levelDoors.map((door, index) =>
         {
             int indexWaypoint = this.goRightOrder[index];
             Vector2 position = this.waypoints[indexWaypoint].position;
@@ -61,17 +48,31 @@ public class LevelSelector : MonoBehaviour
             }
             return door.MoveTo(position);
         }).ToArray();
-        // TODO:set animation world up change when not visible and then go down
-        string worldName = this.levelDoors.First().GetWorldName();
-        WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) =>
+        //animation world up change when not visible and then go down
+        Promise[] worldInfoAnimations = new Promise[]
         {
-            if (worldSave.name == worldName)
+            new Promise((resolve, reject)=>
             {
-                return true;
-            }
-            return false;
-        });
-        this.highScore.text = foundWorldSave.highScore.ToString();
+                Sequence mySequence = DOTween.Sequence();
+                mySequence.Append(this.highScore.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => {
+                   string worldName = this.levelDoors.First().GetWorldName();
+                   WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
+                   this.highScoreText.text = foundWorldSave.highScore.ToString();
+                });
+                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());               
+                mySequence.AppendCallback(() => resolve());
+            }),
+            new Promise((resolve, reject)=>
+            {
+                Sequence mySequence = DOTween.Sequence();
+                mySequence.Append(this.worldTitle.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => resolve());
+            }),
+        };
+        Promise[] animations = doorAnimations.Union(worldInfoAnimations).ToArray();
+        // set highScore world     
         return Promise.All(animations)
             .Then(() =>
             {
@@ -84,10 +85,10 @@ public class LevelSelector : MonoBehaviour
                 AssingLevelDoorValues(this.startingIndex, this.levelDoors);
             });
     }
-    
+
     private IPromise TransitionLeft()
     {
-        Promise[] animations = this.levelDoors.map((door, index) =>
+        Promise[] doorAnimations = this.levelDoors.map((door, index) =>
         {
             int indexWaypoint = this.goLeftOrder[index];
             Vector2 position = this.waypoints[indexWaypoint].position;
@@ -100,24 +101,37 @@ public class LevelSelector : MonoBehaviour
             }
             return door.MoveTo(position);
         }).ToArray();
-        // TODO:set animation world up change when not visible and then go down
-        string worldName = this.levelDoors.Last().GetWorldName();
-        WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) =>
+        //animation world up change when not visible and then go down
+        Promise[] worldInfoAnimations = new Promise[]
         {
-            if (worldSave.name == worldName)
+            new Promise((resolve, reject)=>
             {
-                return true;
-            }
-            return false;
-        });
-        this.highScore.text = foundWorldSave.highScore.ToString();
+                Sequence mySequence = DOTween.Sequence();
+                mySequence.Append(this.highScore.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => {
+                   string worldName = this.levelDoors.First().GetWorldName();
+                   WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
+                   this.highScoreText.text = foundWorldSave.highScore.ToString();
+                });
+                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());               
+                mySequence.AppendCallback(() => resolve());
+            }),
+            new Promise((resolve, reject)=>
+            {
+                Sequence mySequence = DOTween.Sequence();
+                mySequence.Append(this.worldTitle.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => resolve());
+            }),
+        };
+        Promise[] animations = doorAnimations.Union(worldInfoAnimations).ToArray();
         return Promise.All(animations)
             .Then(() =>
             {
                 // move first element to last position
                 LevelDoor firstDoor = this.levelDoors.First();
                 this.levelDoors.Remove(firstDoor);
-                this.levelDoors.Add(firstDoor);              
+                this.levelDoors.Add(firstDoor);
                 this.startingIndex++;
                 this.startingIndex = this.makeInsideBoundaries(this.startingIndex, WorldsConfig.names.Length);
                 AssingLevelDoorValues(this.startingIndex, this.levelDoors);
@@ -144,7 +158,7 @@ public class LevelSelector : MonoBehaviour
         worldNames.map((worldName, index) => levelDoors[index].SetWorldName(worldName));
         return this;
     }
-    
+
     private LevelSelector DisableButtons()
     {
         this.goLeft.interactable = false;
@@ -217,16 +231,37 @@ public class LevelSelector : MonoBehaviour
             }
             if (currentTransform.name == "Score")
             {
-                this.highScore = currentTransform.GetComponentInChildren<Text>();
+                this.highScoreText = currentTransform.GetComponentInChildren<Text>();
+                this.highScore = currentTransform.GetComponent<RectTransform>();
+                return true;
+            }
+            if (currentTransform.name == "WorldTitle")
+            {
+                this.worldTitle = currentTransform.GetComponent<RectTransform>();
                 return true;
             }
             return false;
         }).ToArray();
         int activatedAmount = activated.Where(element => element).Count();
-        if (activatedAmount != 6)
+        if (activatedAmount != 7)
         {
             Debug.LogError("Cound not find proper amount of elements");
         }
+        return this;
+    }
+
+    private LevelSelector InitializeDoors(WorldSave[] worldSaves)
+    {
+        this.worldSaves = worldSaves;
+        this.levelDoors = this.waypoints.map((waypoint, index) =>
+        {
+            LevelDoor levelDoor = Resources.Door.Instantiate().GetComponent<LevelDoor>();
+            levelDoor.Initialize();
+            levelDoor.SetPosition(waypoint.position);
+            levelDoor.transform.SetParent(this.gameObject.transform, false);
+            return levelDoor;
+        }).ToList();
+        AssingLevelDoorValues(this.startingIndex, this.levelDoors);
         return this;
     }
 
@@ -238,6 +273,8 @@ public class LevelSelector : MonoBehaviour
     private Button goRight;
     private Transform[] waypoints = new Transform[3];
     private List<LevelDoor> levelDoors;
-    private Text highScore;
+    private Text highScoreText;
+    private RectTransform highScore;
+    private RectTransform worldTitle;
     private WorldSave[] worldSaves;
 }

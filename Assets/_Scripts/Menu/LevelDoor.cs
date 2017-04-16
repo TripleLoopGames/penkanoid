@@ -13,7 +13,7 @@ public class LevelDoor : MonoBehaviour {
         return this;
     }
 
-    public LevelDoor SetType(string type)
+    public LevelDoor SetWorldName(string type)
     {
         Text uiText = GetComponentInChildren<Text>();
         this.gameObject.name = type;
@@ -22,18 +22,23 @@ public class LevelDoor : MonoBehaviour {
         return this;
     }
 
+    public string GetWorldName()
+    {
+        return this.levelName;
+    }
+
     public LevelDoor SetOnClickDoorPromise(Promise<string> promise)
     {
         this.promise = promise;
         return this;
     }
 
-    public Promise MoveTo(Vector2 position)
+    public Promise MoveTo(Vector2 position, float time = 1f)
     {
         return new Promise((resolve, reject)=>
         {
             Vector2 currentPosition = this.rectTransform.position;
-            this.rectTransform.DOMove(position, 1f, false)
+            this.rectTransform.DOMove(position, time, false)
             .OnComplete(()=> resolve());
         });        
     }

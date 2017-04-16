@@ -9,11 +9,11 @@ using DG.Tweening;
 public class MenuUi : MonoBehaviour
 {
 
-    public MenuUi Initialize()
+    public MenuUi Initialize(WorldSave[] worldSaves)
     {
         InitializeBackground()
         .InitializeCanvasGroup()
-        .InitializeLevelSelector()
+        .InitializeLevelSelector(worldSaves)
         .InitializeButtons();
         return this;
     }
@@ -72,10 +72,10 @@ public class MenuUi : MonoBehaviour
         return this;
     }
 
-    private MenuUi InitializeLevelSelector()
+    private MenuUi InitializeLevelSelector(WorldSave[] worldSaves)
     {
         this.levelSelector = Resources.LevelSelector.Instantiate().GetComponent<LevelSelector>();
-        this.levelSelector.Initialize();
+        this.levelSelector.Initialize(worldSaves);
         this.levelSelector.name = "LevelSelector";
         this.levelSelector.transform.SetParent(this.gameObject.transform, false);
         return this;

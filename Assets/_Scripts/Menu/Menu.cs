@@ -12,9 +12,10 @@ public class Menu : MonoBehaviourEx
     {
         InitializeCamera();
         DataController dataController = InitializeDataController();
+        WorldSave[] worldSaves = dataController.GetWorldSaves();
         InitializeBackendProxy(dataController)
         .InitializeTransition()
-        .InitializeUI()
+        .InitializeUI(worldSaves)
         .InitializeSoundCentralPool()
         .MenuProcess();
         return this;
@@ -77,13 +78,13 @@ public class Menu : MonoBehaviourEx
         return this;
     }
 
-    private Menu InitializeUI()
+    private Menu InitializeUI(WorldSave[] worldSaves)
     {
         GameObject canvas = Resources.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<MenuUi>();
-        this.ui.Initialize();
+        this.ui.Initialize(worldSaves);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = Resources.Ui.EventSystem.Instantiate();

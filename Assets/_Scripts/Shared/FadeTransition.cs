@@ -15,6 +15,12 @@ public class FadeTransition : MonoBehaviour
         return this;
     }
 
+    public FadeTransition SetColor(Color color)
+    {
+        this.color = color;
+        return this;
+    }
+
     public IPromise Enter(float time = 1f)
     {
         return new Promise((resolve, reject) =>

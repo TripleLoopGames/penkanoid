@@ -5,6 +5,7 @@ using UnityEngine;
 using RSG;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class MenuUi : MonoBehaviour
 {
@@ -45,6 +46,30 @@ public class MenuUi : MonoBehaviour
         });
     }
 
+    public IPromise EnterAnimation()
+    {
+        return Promise.All
+        (
+             new Promise((resolve, reject) =>
+             {
+                 RectTransform rectTransform = this.closeGame.GetComponent<RectTransform>();
+                 Sequence mySequence = DOTween.Sequence();
+                 rectTransform.DOMoveY(600, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             }),
+             new Promise((resolve, reject) =>
+              {
+                  RectTransform rectTransform = this.openLeaderboard.GetComponent<RectTransform>();
+                  Sequence mySequence = DOTween.Sequence();
+                  rectTransform.DOMoveY(600, 1f, false)
+                  .From()
+                  .OnComplete(() => resolve());
+             }),
+             this.levelSelector.EnterAnimation()
+        );
+    }
+
     public MenuUi MakeNonInteractable()
     {
         this.canvasGroup.interactable = false;
@@ -80,15 +105,17 @@ public class MenuUi : MonoBehaviour
         return this;
     }
 
-    public MenuUi InitializeButtons()
+    private MenuUi InitializeButtons()
     {
-        Button closeGame = Resources.CloseGame.Instantiate().GetComponent<Button>();
-        closeGame.transform.SetParent(this.gameObject.transform, false);
-        Button openLeaderboard = Resources.OpenLeaderboard.Instantiate().GetComponent<Button>(); ;
-        openLeaderboard.transform.SetParent(this.gameObject.transform, false);
+        this.closeGame = Resources.CloseGame.Instantiate().GetComponent<Button>();
+        this.closeGame.transform.SetParent(this.gameObject.transform, false);
+        this.openLeaderboard = Resources.OpenLeaderboard.Instantiate().GetComponent<Button>(); ;
+        this.openLeaderboard.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
     LevelSelector levelSelector;
     private CanvasGroup canvasGroup;
+    Button closeGame;
+    Button openLeaderboard;
 }

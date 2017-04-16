@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using RSG;
+using DG.Tweening;
 
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
@@ -24,7 +25,11 @@ public class Menu : MonoBehaviourEx
     private Menu MenuProcess()
     {
         this.ui.MakeNonInteractable();
-        this.holeTransition.Enter()
+        Promise.All
+            (
+            this.fadeTransition.Enter(),
+            this.ui.EnterAnimation()
+            )
             .Then(() =>
             {
                 this.ui.MakeInteractable();
@@ -34,6 +39,7 @@ public class Menu : MonoBehaviourEx
             {
                 this.ui.MakeNonInteractable();
                 this.dataController.SetCurrentWorldName(world);
+                this.fadeTransition.SetColor(Color.white);
                 return Promise.All
                     (
                     this.ui.ZoomIn(1.5f),
@@ -72,9 +78,9 @@ public class Menu : MonoBehaviourEx
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
-        this.fadeTransition.Initialize(Color.white, true);
+        this.fadeTransition.Initialize(Color.black, false);
         this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
-        this.holeTransition.Initialize(Color.black, false);
+        this.holeTransition.Initialize(Color.black, true);
         return this;
     }
 

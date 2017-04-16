@@ -23,7 +23,30 @@ public class LevelSelector : MonoBehaviour
         this.waitForNextLevel = new Promise<string>();
         this.levelDoors.Select(door => door.SetOnClickDoorPromise(this.waitForNextLevel));
         return this.waitForNextLevel;
-    }   
+    }
+
+    public IPromise EnterAnimation()
+    {
+        return Promise.All
+        (
+             new Promise((resolve, reject) =>
+             {
+                 RectTransform rectTransform = this.goLeft.GetComponent<RectTransform>();
+                 Sequence mySequence = DOTween.Sequence();
+                 rectTransform.DOMoveX(-300, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             }),
+             new Promise((resolve, reject) =>
+             {
+                 RectTransform rectTransform = this.goRight.GetComponent<RectTransform>();
+                 Sequence mySequence = DOTween.Sequence();
+                 rectTransform.DOMoveX(1200, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             })
+        );
+    }
 
     private LevelSelector SetDrawingOrder()
     {

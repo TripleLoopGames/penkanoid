@@ -14,7 +14,7 @@ public class LevelDoor : MonoBehaviour
         this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
         RectTransform spiral = Array.Find(GetComponentsInChildren<RectTransform>(),
                         childTransform => childTransform.name == "Spiral");
-        spiral.DORotate(new Vector3(0, 0, 360), 2f)
+        spiral.DORotate(new Vector3(0, 0, -360), 2f)
             .SetEase(Ease.Linear)
             .SetRelative()
             .SetLoops(-1);

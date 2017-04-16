@@ -90,35 +90,42 @@ public class LevelSelector : MonoBehaviour
             return door.MoveTo(position);
         }).ToArray();
         //animation world up change when not visible and then go down
-        Promise[] worldInfoAnimations = new Promise[]
+        Promise[] extraAnimations = new Promise[]
         {
             new Promise((resolve, reject)=>
             {
                 Sequence mySequence = DOTween.Sequence();
-                mySequence.Append(this.highScore.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.Append(this.highScore.DOMoveY(250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => {
                    string worldName = this.levelDoors.First().GetWorldName();
                    WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
                    this.highScoreText.text = foundWorldSave.highScore.ToString();
                 });
-                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.Append(this.highScore.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
             new Promise((resolve, reject)=>
             {
                 Sequence mySequence = DOTween.Sequence();
-                mySequence.Append(this.worldTitle.DOMoveY(200, 0.5f, false).SetRelative());
-                mySequence.Append(this.worldTitle.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
+            new Promise((resolve, reject)=>
+            {
+                this.levelDoors.Last()
+                .ResetVolkaRotation()
+                .AnimateEnterVolka()
+                .Then(()=> resolve());
+            }),
         };
-        Promise[] animations = doorAnimations.Union(worldInfoAnimations).ToArray();
+        Promise[] animations = doorAnimations.Union(extraAnimations).ToArray();
         // set highScore world     
         return Promise.All(animations)
             .Then(() =>
             {
                 // move last element to first position
-                LevelDoor lastDoor = this.levelDoors.Last();
+                LevelDoor lastDoor = this.levelDoors.First();
                 this.levelDoors.Remove(lastDoor);
                 this.levelDoors.Insert(0, lastDoor);
                 this.startingIndex--;
@@ -148,21 +155,28 @@ public class LevelSelector : MonoBehaviour
             new Promise((resolve, reject)=>
             {
                 Sequence mySequence = DOTween.Sequence();
-                mySequence.Append(this.highScore.DOMoveY(200, 0.5f, false).SetRelative());
+                mySequence.Append(this.highScore.DOMoveY(250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => {
                    string worldName = this.levelDoors.First().GetWorldName();
                    WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
                    this.highScoreText.text = foundWorldSave.highScore.ToString();
                 });
-                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.Append(this.highScore.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
             new Promise((resolve, reject)=>
             {
                 Sequence mySequence = DOTween.Sequence();
-                mySequence.Append(this.worldTitle.DOMoveY(200, 0.5f, false).SetRelative());
-                mySequence.Append(this.worldTitle.DOMoveY(-200, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+                mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
+            }),
+            new Promise((resolve, reject)=>
+            {
+                this.levelDoors.Last()
+                .ResetVolkaRotation()
+                .AnimateEnterVolka()
+                .Then(()=> resolve());
             }),
         };
         Promise[] animations = doorAnimations.Union(worldInfoAnimations).ToArray();

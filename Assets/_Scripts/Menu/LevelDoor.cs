@@ -12,13 +12,48 @@ public class LevelDoor : MonoBehaviour
         this.rectTransform = GetComponent<RectTransform>();
         this.changeLevel = GetComponentInChildren<Button>();
         this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
-        RectTransform spiral = Array.Find(GetComponentsInChildren<RectTransform>(),
-                        childTransform => childTransform.name == "Spiral");
-        spiral.DORotate(new Vector3(0, 0, -360), 2f)
-            .SetEase(Ease.Linear)
-            .SetRelative()
-            .SetLoops(-1);
+        bool[] activated = GetComponentsInChildren<RectTransform>().map((childTransform) =>
+        {
+
+            if (childTransform.name == "Spiral")
+            {
+                childTransform.DORotate(new Vector3(0, 0, -360), 2f)
+                              .SetEase(Ease.Linear)
+                              .SetRelative()
+                              .SetLoops(-1);
+                return true;
+            }
+            if (childTransform.name == "volka")
+            {
+                this.volka = childTransform;
+                AnimateEnterVolka();
+                return true;
+            }
+            return false;
+        }).ToArray();
+        int activatedAmount = activated.Where(element => element).Count();
+        if (activatedAmount != 2)
+        {
+            Debug.LogError("Cound not find proper amount of elements");
+        }
         return this;
+    }
+
+    public LevelDoor ResetVolkaRotation()
+    {
+        this.volka.localEulerAngles = defaultRotation;
+        return this;
+    }
+
+    public Promise AnimateEnterVolka()
+    {
+        return new Promise((resolve, reject) =>
+        {
+            this.volka.DORotate(new Vector3(0, 0, -80.7f), 1.5f)
+                           .SetEase(Ease.OutBack)
+                           .SetRelative()
+                           .OnComplete(() => resolve());
+        });
     }
 
     public LevelDoor SetWorldName(string type)
@@ -57,8 +92,10 @@ public class LevelDoor : MonoBehaviour
         return this;
     }
 
-    RectTransform rectTransform;
-    Button changeLevel;
+    private RectTransform rectTransform;
+    private readonly Vector3 defaultRotation = new Vector3(0, 0, 18.7f);
+    private Button changeLevel;
     string levelName;
     private Promise<string> promise;
+    private RectTransform volka;
 }

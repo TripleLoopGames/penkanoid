@@ -44,8 +44,26 @@ public class LevelSelector : MonoBehaviour
                  rectTransform.DOMoveX(1200, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
-             })
-        );
+             }),
+             new Promise((resolve, reject) =>
+             {
+                 this.worldTitle.DOMoveY(600, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             }),
+             new Promise((resolve, reject) =>
+             {
+                 this.highScore.DOMoveY(550, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             }),
+             new Promise((resolve, reject) =>
+             {
+                 RectTransform rectTransform =  this.levelDoors[1].GetComponent<RectTransform>();
+                 rectTransform.DOMoveY(-550, 1f, false)
+                 .From()
+                 .OnComplete(() => resolve());
+             }));
     }
 
     private LevelSelector SetDrawingOrder()
@@ -83,7 +101,7 @@ public class LevelSelector : MonoBehaviour
                    WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
                    this.highScoreText.text = foundWorldSave.highScore.ToString();
                 });
-                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());               
+                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
             new Promise((resolve, reject)=>
@@ -136,7 +154,7 @@ public class LevelSelector : MonoBehaviour
                    WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
                    this.highScoreText.text = foundWorldSave.highScore.ToString();
                 });
-                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());               
+                mySequence.Append(this.highScore.DOMoveY(-200, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
             new Promise((resolve, reject)=>

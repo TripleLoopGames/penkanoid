@@ -113,7 +113,7 @@ public class LevelSelector : MonoBehaviour
             }),
             new Promise((resolve, reject)=>
             {
-                this.levelDoors.Last()
+                this.levelDoors.First()
                 .ResetVolkaRotation()
                 .AnimateEnterVolka()
                 .Then(()=> resolve());
@@ -125,7 +125,7 @@ public class LevelSelector : MonoBehaviour
             .Then(() =>
             {
                 // move last element to first position
-                LevelDoor lastDoor = this.levelDoors.First();
+                LevelDoor lastDoor = this.levelDoors.Last();
                 this.levelDoors.Remove(lastDoor);
                 this.levelDoors.Insert(0, lastDoor);
                 this.startingIndex--;
@@ -136,6 +136,7 @@ public class LevelSelector : MonoBehaviour
 
     private IPromise TransitionLeft()
     {
+        // animate the doors
         Promise[] doorAnimations = this.levelDoors.map((door, index) =>
         {
             int indexWaypoint = this.goLeftOrder[index];
@@ -150,7 +151,7 @@ public class LevelSelector : MonoBehaviour
             return door.MoveTo(position);
         }).ToArray();
         //animation world up change when not visible and then go down
-        Promise[] worldInfoAnimations = new Promise[]
+        Promise[] extraAnimations = new Promise[]
         {
             new Promise((resolve, reject)=>
             {
@@ -179,7 +180,7 @@ public class LevelSelector : MonoBehaviour
                 .Then(()=> resolve());
             }),
         };
-        Promise[] animations = doorAnimations.Union(worldInfoAnimations).ToArray();
+        Promise[] animations = doorAnimations.Union(extraAnimations).ToArray();
         return Promise.All(animations)
             .Then(() =>
             {

@@ -33,6 +33,7 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
         GetComponent<Animator>().SetTrigger("Damage");
         SoundData playDamage = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Damage);
         Messenger.Publish(new PlayEffectMessage(playDamage));
+        Messenger.Publish(new PlayerDamaged(false));
         StartCoroutine(DamageInvulnerability());
         if (this.health <= 0)
         {
@@ -207,17 +208,6 @@ public class Player : MonoBehaviourEx, IHandle<UserShootMessage>, IHandle<UserDi
             {
                 particle.Play();
             }
-
-            /*Action<float, float, float> AnimateInvulnerabilityColor = (colorChannel, value, animationTime) =>
-            {
-                DOTween.To(() => colorChannel, x => colorChannel = x, value, time)
-                    .SetLoops(-1, LoopType.Yoyo)
-                    .SetId("InvulnerableAnimationColor");
-            };
-
-            AnimateInvulnerabilityColor(colorRGBComponent._ColorR, 1, 0.2f);
-            AnimateInvulnerabilityColor(colorRGBComponent._ColorG, 1, 0.2f);
-            AnimateInvulnerabilityColor(colorRGBComponent._ColorB, 1, 0.2f);*/
 
             DOTween.To(() => colorRGBComponent._ColorR, x => colorRGBComponent._ColorR = x, 1, 0.2f)
                     .SetLoops(-1, LoopType.Yoyo)

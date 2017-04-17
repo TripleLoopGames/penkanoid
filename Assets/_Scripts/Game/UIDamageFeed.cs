@@ -4,7 +4,8 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDamageFeed : MonoBehaviour {
+public class UIDamageFeed : MonoBehaviourEx, IHandle<PlayerDamaged>
+{
 
     public UIDamageFeed Initialize()
     {
@@ -12,12 +13,19 @@ public class UIDamageFeed : MonoBehaviour {
         return this;
     }
 
-    public void AnimationDamageFeed()
+    private void AnimationDamageFeed()
     {
-        imageFeed.DOColor(Color.red, 1.2f)
-        .SetEase(Ease.OutElastic, 0.4f)
-        .SetLoops(1, LoopType.Yoyo);
+        imageFeed.DOColor(Color.red, 0.2f)
+        .SetEase(Ease.OutElastic);
+        imageFeed.DOColor(Color.clear, 0.2f)
+        .SetEase(Ease.OutElastic);
+    }
+
+    public void Handle(PlayerDamaged message)
+    {
+        AnimationDamageFeed();
     }
 
     private Image imageFeed;
+    
 }

@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Threading;
 using DG.Tweening;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;

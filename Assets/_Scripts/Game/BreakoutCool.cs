@@ -230,6 +230,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.holeTransition.Initialize(Color.black, true);
         this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
         this.fadeTransition.Initialize(Color.white, false);
+        this.uiDamageFeed = canvas.GetComponentInChildren<UIDamageFeed>();
+        this.uiDamageFeed.Initialize();
         return this;
     }
 
@@ -347,6 +349,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private SpawnPool ballParticlePool;
     private HoleTransition holeTransition;
     private FadeTransition fadeTransition;
+    private UIDamageFeed uiDamageFeed;
     private DataController dataController;
     private BackendProxy backendProxy;
     private WorldProgress worldProgress;

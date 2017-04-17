@@ -19,6 +19,12 @@ public static class TweenEaseAnimationScaleComponent
     }
 
     private static Tween ScaleTween(GameObject targetObject){
+        if (targetObject.name == "Time")
+        {
+            return targetObject.transform.DOScale(0.9f, 1.2f)
+            .From()
+            .SetEase(Ease.OutElastic, 0.4f);
+        }
         return targetObject.transform.DOScale(0, 1.2f)
         .From()
         .SetEase(Ease.OutElastic, 0.4f);

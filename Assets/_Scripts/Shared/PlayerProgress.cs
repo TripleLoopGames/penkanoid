@@ -1,6 +1,5 @@
-﻿public class PlayerProgress
+﻿[System.Serializable]
+public class PlayerProgress
 {
-
-    public int gameTries;
-
+    public WorldSave[] worldSaves;
 }

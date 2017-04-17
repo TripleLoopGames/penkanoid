@@ -5,12 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SceneTransition : MonoBehaviour
+public class HoleTransition : MonoBehaviour
 {
-    public SceneTransition Initialize()
+    public HoleTransition Initialize(Color color, bool opened)
     {
-        this.holeMaterial = this.GetComponent<RawImage>().material;
-        this.holeMaterial.SetFloat("_Radius", 0);
+        RawImage rawImage = this.GetComponent<RawImage>();
+        rawImage.color = color;
+        this.holeMaterial = rawImage.material;
+        float radious = opened ? 1.2f : 0;
+        this.holeMaterial.SetFloat("_Radius", radious);
         return this;
     }
 

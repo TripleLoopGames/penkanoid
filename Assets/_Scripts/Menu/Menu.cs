@@ -2,26 +2,52 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using RSG;
+using DG.Tweening;
 
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
-public class Menu : MonoBehaviour
+[RequireComponent(typeof(ChangeSceneComponent))]
+public class Menu : MonoBehaviourEx
 {
     private Menu Initialize()
     {
         InitializeCamera();
         DataController dataController = InitializeDataController();
+        WorldSave[] worldSaves = dataController.GetWorldSaves();
         InitializeBackendProxy(dataController)
         .InitializeTransition()
-        .InitializeUI()
+        .InitializeUI(worldSaves)
         .InitializeSoundCentralPool()
-        .MenuStartProcess();
+        .MenuProcess();
         return this;
     }
 
-    private IPromise MenuStartProcess()
+    private Menu MenuProcess()
     {
-        return this.sceneTransition.Enter();
+        this.ui.MakeNonInteractable();
+        Promise.All
+            (
+            this.fadeTransition.Enter(),
+            this.ui.EnterAnimation()
+            )
+            .Then(() =>
+            {
+                this.ui.MakeInteractable();
+                return this.ui.WaitForNextLevel();
+            })
+            .Then((world) =>
+            {
+                this.ui.MakeNonInteractable();
+                this.dataController.SetCurrentWorldName(world);
+                this.fadeTransition.SetColor(Color.white);
+                return Promise.All
+                    (
+                    this.ui.ZoomIn(1.5f),
+                    this.fadeTransition.Exit(1.5f)
+                    );
+            })
+            .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Game)));
+        return this;
     }
 
     private Menu InitializeCamera()
@@ -51,18 +77,20 @@ public class Menu : MonoBehaviour
         GameObject canvas = SRResources.Game.Canvas_Transition.Instantiate();
         canvas.name = "Canvas_Transition";
         canvas.transform.SetParent(this.gameObject.transform, false);
-        this.sceneTransition = canvas.GetComponentInChildren<SceneTransition>();
-        this.sceneTransition.Initialize();
+        this.fadeTransition = canvas.GetComponentInChildren<FadeTransition>();
+        this.fadeTransition.Initialize(Color.black, false);
+        this.holeTransition = canvas.GetComponentInChildren<HoleTransition>();
+        this.holeTransition.Initialize(Color.black, true);
         return this;
     }
 
-    private Menu InitializeUI()
+    private Menu InitializeUI(WorldSave[] worldSaves)
     {
         GameObject canvas = Resources.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<MenuUi>();
-        this.ui.Initialize();
+        this.ui.Initialize(worldSaves);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = Resources.Ui.EventSystem.Instantiate();
@@ -71,7 +99,7 @@ public class Menu : MonoBehaviour
         }
         return this;
     }
-    
+
     private Menu InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
@@ -89,7 +117,8 @@ public class Menu : MonoBehaviour
     private MenuUi ui;
     private Camera mainCamera;
     private DataController dataController;
-    private SceneTransition sceneTransition;
+    private HoleTransition holeTransition;
+    private FadeTransition fadeTransition;
     private SoundCentralPool soundCentralPool;
     private BackendProxy backendProxy;
 }

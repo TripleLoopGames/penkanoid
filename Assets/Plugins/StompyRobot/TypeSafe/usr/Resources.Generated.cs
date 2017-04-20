@@ -1569,39 +1569,46 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Background {
+            public static global::TypeSafe.PrefabResource OpenLeaderboard_1 {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[2]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource EventSystem {
+            public static global::TypeSafe.PrefabResource Background {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource CloseGame {
+            public static global::TypeSafe.PrefabResource EventSystem {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Door {
+            public static global::TypeSafe.PrefabResource CloseGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource LevelSelector {
+            public static global::TypeSafe.PrefabResource Door {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[6]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource LevelSelector {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[7]));
                 }
             }
             
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                         new global::TypeSafe.PrefabResource("OpenLeaderboard", "Menu/Ui/OpenLeaderboard"),
                         new global::TypeSafe.PrefabResource("Canvas", "Menu/Ui/Canvas"),
+                        new global::TypeSafe.PrefabResource("OpenLeaderboard 1", "Menu/Ui/OpenLeaderboard 1"),
                         new global::TypeSafe.PrefabResource("Background", "Menu/Ui/Background"),
                         new global::TypeSafe.PrefabResource("EventSystem", "Menu/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("CloseGame", "Menu/Ui/CloseGame"),

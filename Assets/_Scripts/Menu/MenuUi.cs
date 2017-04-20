@@ -52,17 +52,17 @@ public class MenuUi : MonoBehaviour
         (
              new Promise((resolve, reject) =>
              {
+                 Vector2 targetPosition = this.closeGame.GetComponentInChildren<WaypointUi>().GetPosition();
                  RectTransform rectTransform = this.closeGame.GetComponent<RectTransform>();
-                 Sequence mySequence = DOTween.Sequence();
-                 rectTransform.DOMoveY(600, 1f, false)
+                 rectTransform.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }),
              new Promise((resolve, reject) =>
               {
+                  Vector2 targetPosition = this.openLeaderboard.GetComponentInChildren<WaypointUi>().GetPosition();
                   RectTransform rectTransform = this.openLeaderboard.GetComponent<RectTransform>();
-                  Sequence mySequence = DOTween.Sequence();
-                  rectTransform.DOMoveY(600, 1f, false)
+                  rectTransform.DOMove(targetPosition, 1f, false)
                   .From()
                   .OnComplete(() => resolve());
              }),

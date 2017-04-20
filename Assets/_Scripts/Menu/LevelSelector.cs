@@ -31,36 +31,39 @@ public class LevelSelector : MonoBehaviour
         (
              new Promise((resolve, reject) =>
              {
+                 Vector2 targetPosition = this.goLeft.GetComponentInChildren<WaypointUi>().GetPosition();
                  RectTransform rectTransform = this.goLeft.GetComponent<RectTransform>();
-                 Sequence mySequence = DOTween.Sequence();
-                 rectTransform.DOMoveX(-300, 1f, false)
+                 rectTransform.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }),
              new Promise((resolve, reject) =>
              {
+                 Vector2 targetPosition = this.goRight.GetComponentInChildren<WaypointUi>().GetPosition();
                  RectTransform rectTransform = this.goRight.GetComponent<RectTransform>();
-                 Sequence mySequence = DOTween.Sequence();
-                 rectTransform.DOMoveX(1200, 1f, false)
+                 rectTransform.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }),
              new Promise((resolve, reject) =>
              {
-                 this.worldTitle.DOMoveY(600, 1f, false)
+                 Vector2 targetPosition = this.worldTitle.GetComponentInChildren<WaypointUi>().GetPosition();
+                 this.worldTitle.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }),
              new Promise((resolve, reject) =>
              {
-                 this.highScore.DOMoveY(550, 1f, false)
+                 Vector2 targetPosition = this.highScore.GetComponentInChildren<WaypointUi>().GetPosition();
+                 this.highScore.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }),
              new Promise((resolve, reject) =>
              {
-                 RectTransform rectTransform =  this.levelDoors[1].GetComponent<RectTransform>();
-                 rectTransform.DOMoveY(-550, 1f, false)
+                 Vector2 targetPosition = this.levelDoors[1].GetComponentInChildren<WaypointUi>().GetPosition();
+                 RectTransform rectTransform = this.levelDoors[1].GetComponent<RectTransform>();
+                 rectTransform.DOMove(targetPosition, 1f, false)
                  .From()
                  .OnComplete(() => resolve());
              }));

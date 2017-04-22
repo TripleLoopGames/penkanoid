@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using RSG;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
@@ -12,13 +13,16 @@ public class Menu : MonoBehaviourEx
     private Menu Initialize()
     {
         InitializeCamera();
+        InitializeTransition();
         DataController dataController = InitializeDataController();
+        BackendProxy backendProxy = InitializeBackendProxy(dataController);
         WorldSave[] worldSaves = dataController.GetWorldSaves();
-        InitializeBackendProxy(dataController)
-        .InitializeTransition()
-        .InitializeUI(worldSaves)
-        .InitializeSoundCentralPool()
-        .MenuProcess();
+        InitializeUI(worldSaves,
+                     () => backendProxy.ShowLeaderboard(),
+                     () => Application.Quit()        
+                    );
+        InitializeSoundCentralPool();
+        this.MenuProcess();
         return this;
     }
 
@@ -65,11 +69,10 @@ public class Menu : MonoBehaviourEx
         return this.dataController;
     }
 
-    private Menu InitializeBackendProxy(DataController dataController)
+    private BackendProxy InitializeBackendProxy(DataController dataController)
     {
         this.backendProxy = GetComponent<BackendProxy>();
-        this.backendProxy.Initialize(dataController);
-        return this;
+        return this.backendProxy.Initialize(dataController);
     }
 
     private Menu InitializeTransition()
@@ -84,13 +87,13 @@ public class Menu : MonoBehaviourEx
         return this;
     }
 
-    private Menu InitializeUI(WorldSave[] worldSaves)
+    private Menu InitializeUI(WorldSave[] worldSaves, Action closeGame, Action openLeaderboard)
     {
         GameObject canvas = Resources.Ui.Canvas.Instantiate();
         canvas.name = "Canvas";
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<MenuUi>();
-        this.ui.Initialize(worldSaves);
+        this.ui.Initialize(worldSaves, closeGame, openLeaderboard);
         if (EventSystem.current == null)
         {
             GameObject eventSystem = Resources.Ui.EventSystem.Instantiate();

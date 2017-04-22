@@ -104,9 +104,15 @@ public class BackendProxy : MonoBehaviour
         });
     }
 
-    public void ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
+    public BackendProxy ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
     {
+        LoginStatus loginStatus = this.dataController.GetLoginStatus();
+        if (!loginStatus.LoggedIn)
+        {
+            return this;
+        }
         ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderBoardId);
+        return this;
     }
 
     public BackendProxy Initialize(DataController dataController)

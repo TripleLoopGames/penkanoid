@@ -10,12 +10,12 @@ using System;
 public class MenuUi : MonoBehaviour
 {
 
-    public MenuUi Initialize(WorldSave[] worldSaves)
+    public MenuUi Initialize(WorldSave[] worldSaves, Action closeGame, Action openLeaderboard)
     {
         InitializeBackground()
         .InitializeCanvasGroup()
         .InitializeLevelSelector(worldSaves)
-        .InitializeButtons();
+        .InitializeButtons(closeGame, openLeaderboard);
         return this;
     }
 
@@ -99,17 +99,19 @@ public class MenuUi : MonoBehaviour
         return this;
     }
 
-    public MenuUi InitializeCanvasGroup()
+    private MenuUi InitializeCanvasGroup()
     {
         this.canvasGroup = GetComponent<CanvasGroup>();
         return this;
     }
 
-    private MenuUi InitializeButtons()
+    private MenuUi InitializeButtons(Action closeGame, Action openLeaderboard)
     {
         this.closeGame = Resources.CloseGame.Instantiate().GetComponent<Button>();
+        this.closeGame.onClick.AddListener(()=> closeGame());
         this.closeGame.transform.SetParent(this.gameObject.transform, false);
         this.openLeaderboard = Resources.OpenLeaderboard.Instantiate().GetComponent<Button>(); ;
+        this.openLeaderboard.onClick.AddListener(() => openLeaderboard());
         this.openLeaderboard.transform.SetParent(this.gameObject.transform, false);
         return this;
     }

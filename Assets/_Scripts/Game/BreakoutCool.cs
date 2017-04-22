@@ -6,6 +6,7 @@ using PathologicalGames;
 using DG.Tweening;
 using RSG;
 using Exceptions = Config.Exceptions;
+using System.Linq;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelFactory))]
@@ -120,7 +121,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             this.dataController.SetWorldGameTries(currentWorldName, 0);
             int timeSpent = this.gameUI.GetTimeSpent();
             this.gameUI.SetWinGameInfo(timeSpent, tries);
-            this.backendProxy.PublishScore(timeSpent)
+            int totalHighScore = this.dataController.GetWorldSaves().Aggregate(0, (acc, worldSave) => acc + worldSave.highScore);
+            this.backendProxy.PublishScore(totalHighScore)
             .Then(() => resolve())
             .Catch((exception) =>
             {

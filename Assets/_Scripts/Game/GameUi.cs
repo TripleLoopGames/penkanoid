@@ -6,6 +6,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using Resources = SRResources.Game.Ui;
+using System.Linq;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
@@ -90,6 +91,11 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     public int GetTimeLeft()
     {
         return this.timer.GetTimeLeft();
+    }
+
+    public int GetHeartsLeft()
+    {
+        return this.hearts.Aggregate(0, (acc, heart) => acc + (heart.activeSelf ? 1 : 0));
     }
 
     public IPromise ShowEnd()

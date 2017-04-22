@@ -28,6 +28,11 @@ public static class Config
         public const int InitialHealth = 3;
     }
 
+    public static class Score
+    {
+        public const int HeartValue = 20;
+    }
+
     public static class GameFlow
     {
         public const int countDownTime = 200;
@@ -40,6 +45,7 @@ public static class Config
 
     public static class Worlds
     {
+
         public const string defaultWorld = Names.basic;
         public const int startingIndex = 0;
         public static readonly string[] names = new string[] { Names.basic, Names.rock };

@@ -108,11 +108,12 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         string currentWorldName = this.dataController.GetCurrentWorldName();
 
         // check and save highscore if necessary
-        int timeLeft = this.gameUI.GetTimeLeft();
+
+        int levelScore = this.gameUI.GetTimeLeft() + (this.gameUI.GetHeartsLeft() * Config.Score.HeartValue);
         int highScore = this.dataController.GetHighScore(currentWorldName);
-        if(timeLeft > highScore)
+        if(levelScore > highScore)
         {
-            this.dataController.SetHighScore(currentWorldName, timeLeft);
+            this.dataController.SetHighScore(currentWorldName, levelScore);
         }      
         Promise.All(new Promise((resolve, reject) =>
         {

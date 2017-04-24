@@ -55,31 +55,26 @@ public class Ball : MonoBehaviourEx
         {
             SoundData playWallHit = new SoundData(GetInstanceID(), SRResources.Audio.Effects.ReboteProyectil);
             Messenger.Publish(new PlayEffectMessage(playWallHit));
-            DissappearIfNecessary();
+
+            if (HasToDisapper())
+            {
+                this.despawnOwn();
+            }
             return;
         }
         if (hasCollidedWithLevel)
         {
             SoundData playBlockHit = new SoundData(GetInstanceID(), SRResources.Audio.Effects.tick);
             Messenger.Publish(new PlayEffectMessage(playBlockHit));
-            DissappearIfNecessary();
+            if (HasToDisapper())
+            {
+                this.despawnOwn();
+            }
             return;
         }
     }
 
-    // We want to avoid horizontal bounces that are too low
-    // because the player has no way to avoid them
-    private Ball DissappearIfNecessary()
-    {
-        if (IsHorizontalBounce())
-        {
-            Debug.Log("boom");
-            this.despawnOwn();
-        }
-        return this;
-    }
-
-    private bool IsHorizontalBounce()
+    private bool HasToDisapper()
     {
         // ignore bounces that happen too high
         if (this.transform.position.y > -2f)
@@ -100,6 +95,11 @@ public class Ball : MonoBehaviourEx
             return false;
         }
         return true;
+    }
+
+    private bool IsHorizontalBounce()
+    {
+
     }
 
     private Action despawnOwn;

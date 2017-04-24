@@ -97,11 +97,6 @@ public class Ball : MonoBehaviourEx
         return true;
     }
 
-    private bool IsHorizontalBounce()
-    {
-
-    }
-
     private Action despawnOwn;
     private Rigidbody2D ownRigidbody;
     private TimerComponent timerComponent;

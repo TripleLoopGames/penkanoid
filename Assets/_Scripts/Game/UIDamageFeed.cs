@@ -15,10 +15,9 @@ public class UIDamageFeed : MonoBehaviourEx, IHandle<PlayerDamaged>
 
     private void AnimationDamageFeed()
     {
-        imageFeed.DOColor(Color.red, 0.2f)
-        .SetEase(Ease.OutElastic);
-        imageFeed.DOColor(Color.clear, 0.2f)
-        .SetEase(Ease.OutElastic);
+        imageFeed.DOColor(Color.red, 0.075f)
+        .SetEase(Ease.Linear)
+        .SetLoops(2, LoopType.Yoyo);
     }
 
     public void Handle(PlayerDamaged message)

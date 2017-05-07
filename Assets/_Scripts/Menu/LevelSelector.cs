@@ -214,7 +214,9 @@ public class LevelSelector : MonoBehaviour
             return new string[] { array[lower], array[index], array[upper] };
         };
         string[] worldNames = getSelectedAndAdjecent(indexLevelDoor, WorldsConfig.names);
-        worldNames.map((worldName, index) => levelDoors[index].SetWorldName(worldName));
+        worldNames.map((worldName, index) => levelDoors[index].SetWorldName(worldName)
+                                             .SetWorldDoorSprite(worldName)
+        );
         return this;
     }
 

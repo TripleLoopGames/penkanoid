@@ -65,6 +65,32 @@ public class LevelDoor : MonoBehaviour
         return this;
     }
 
+    public LevelDoor SetWorldDoorSprite(string type)
+    {
+        Image uiDoor = transform.Find("DoorFrame").GetComponentInChildren<Image>();
+        if (type == "basic")
+        {
+            uiDoor.sprite = DoorSprites[0];
+        }
+        if (type == "rock")
+        {
+            uiDoor.sprite = DoorSprites[1];
+        }
+        if (type == "jungle")
+        {
+            uiDoor.sprite = DoorSprites[2];
+        }
+        if (type == "ice")
+        {
+            uiDoor.sprite = DoorSprites[3];
+        }
+        if (type == "lava")
+        {
+            uiDoor.sprite = DoorSprites[4];
+        }
+        return this;
+    }
+
     public string GetWorldName()
     {
         return this.levelName;
@@ -98,4 +124,6 @@ public class LevelDoor : MonoBehaviour
     string levelName;
     private Promise<string> promise;
     private RectTransform volka;
+    [SerializeField]
+    private Sprite[] DoorSprites;
 }

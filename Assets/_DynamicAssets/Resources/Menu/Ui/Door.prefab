@@ -297,6 +297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf9a223e8257da144aa61e321c4a8acd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DoorSprites:
+  - {fileID: 21300000, guid: 8da8626e4e6240245a6a530ba9d15e93, type: 3}
+  - {fileID: 21300000, guid: 3350fb6ae813c7d42880615db3823c43, type: 3}
+  - {fileID: 21300000, guid: 7129893a3d22f744283c1fed4b9cc2c0, type: 3}
+  - {fileID: 21300000, guid: ce01951f31055fe47a4e0f232bdc6fc1, type: 3}
+  - {fileID: 21300000, guid: bfba94166f8d71649b145b5df6c3fc3d, type: 3}
 --- !u!114 &114478486815949100
 MonoBehaviour:
   m_ObjectHideFlags: 1

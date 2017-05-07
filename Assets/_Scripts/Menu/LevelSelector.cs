@@ -109,8 +109,10 @@ public class LevelSelector : MonoBehaviour
             }),
             new Promise((resolve, reject)=>
             {
+                string worldName = this.levelDoors.First().GetWorldName();
                 Sequence mySequence = DOTween.Sequence();
                 mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => this.worldTitle.GetComponent<WorldTitle>().ChangeTextImage(worldName));
                 mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
@@ -170,8 +172,10 @@ public class LevelSelector : MonoBehaviour
             }),
             new Promise((resolve, reject)=>
             {
+                string worldName = this.levelDoors.Last().GetWorldName();
                 Sequence mySequence = DOTween.Sequence();
                 mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+                mySequence.AppendCallback(() => this.worldTitle.GetComponent<WorldTitle>().ChangeTextImage(worldName));
                 mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
                 mySequence.AppendCallback(() => resolve());
             }),
@@ -323,6 +327,12 @@ public class LevelSelector : MonoBehaviour
             return levelDoor;
         }).ToList();
         AssingLevelDoorValues(this.startingIndex, this.levelDoors);
+        return this;
+    }
+
+    private LevelSelector ChangeTitleTextLevel()
+    {
+
         return this;
     }
 

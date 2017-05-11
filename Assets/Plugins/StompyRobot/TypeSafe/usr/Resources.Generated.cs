@@ -799,21 +799,27 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource WinLevel {
+            public static global::TypeSafe.PrefabResource WinWorld {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Health {
+            public static global::TypeSafe.PrefabResource WinLevel {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Time {
+            public static global::TypeSafe.PrefabResource Health {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[6]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource Time {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[7]));
                 }
             }
             
@@ -822,6 +828,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("EventSystem", "Game/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Canvas", "Game/Ui/Canvas"),
                         new global::TypeSafe.PrefabResource("GameOverScreen", "Game/Ui/GameOverScreen"),
+                        new global::TypeSafe.PrefabResource("WinWorld", "Game/Ui/WinWorld"),
                         new global::TypeSafe.PrefabResource("WinLevel", "Game/Ui/WinLevel"),
                         new global::TypeSafe.PrefabResource("Health", "Game/Ui/Health"),
                         new global::TypeSafe.PrefabResource("Time", "Game/Ui/Time")});

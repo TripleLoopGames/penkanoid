@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 224848634773838654}
   - component: {fileID: 222040044026698338}
   - component: {fileID: 114903604564274374}
+  - component: {fileID: 114460721666838934}
   m_Layer: 5
   m_Name: WorldTitle
   m_TagString: Untagged
@@ -305,6 +306,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791ee2be5876e554cb368a59106c3600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114460721666838934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415347448639172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05dd0905fc6fa294f8ef7cda87f63091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TitleSprites:
+  - {fileID: 21300000, guid: 7de78367ef8bb85459baff1a8fd9437f, type: 3}
+  - {fileID: 21300000, guid: 9d01aa527634cbf40817eb90ddf50bf5, type: 3}
+  - {fileID: 21300000, guid: 8da7b3aeb51b6ab42b37c4461a7eb0d5, type: 3}
+  - {fileID: 21300000, guid: 7aea377103541d5488f99f9b2afcf1a6, type: 3}
 --- !u!114 &114531830827542572
 MonoBehaviour:
   m_ObjectHideFlags: 1

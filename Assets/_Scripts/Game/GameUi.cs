@@ -17,6 +17,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         InitializeHealth(initialHealth)
         .InitializeTimer(startTime)
         .InitializeGameOverScreen()
+        .InitializeWinWorld()
         .InitializeWinLevel()
         .InitializeWinGame();
         return this;
@@ -109,6 +110,17 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
+    public IPromise ShowWinWorld()
+    {
+        return this.winWorldScreen.Show();
+    }
+
+    public GameUi HideWinWorld()
+    {
+        this.winWorldScreen.Hide();
+        return this;
+    }
+
     public IPromise ShowWinLevel()
     {
          return this.winLevel.Show();
@@ -161,6 +173,15 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         Utils.SetNameAndParent("WinLevel", this.winLevel.gameObject, this.gameObject);
         this.winLevel.Initialize();
         this.winLevel.Hide();
+        return this;
+    }
+
+    private GameUi InitializeWinWorld()
+    {
+        this.winWorldScreen = Resources.WinWorld.Instantiate().GetComponent<WinWorldScreen>();
+        Utils.SetNameAndParent("WinWorld", this.winWorldScreen.gameObject, this.gameObject);
+        this.winWorldScreen.Initialize();
+        this.winWorldScreen.Hide();
         return this;
     }
 
@@ -263,6 +284,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     private CanvasGroup canvasGroup;
     private GameOverScreen gameOverScreen;
     private WinLevel winLevel;
+    private WinWorldScreen winWorldScreen;
     private WinGameScreen winGameScreen;
     private GameObject health;
     private TimerComponent timer;

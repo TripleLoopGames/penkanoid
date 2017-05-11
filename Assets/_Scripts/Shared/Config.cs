@@ -55,6 +55,8 @@ public static class Config
             public const string basic = "basic";
             public const string rock = "rock";
             public const string jungle = "jungle";
+            public const string ice = "ice";
+            public const string lava = "lava";
         }
 
         public static readonly WorldData[] worldsData = new WorldData[]

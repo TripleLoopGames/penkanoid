@@ -146,7 +146,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 Debug.Log("Unknown error " + exceptionName);
             });
         }), this.gameUI.ShowWinWorld())
-            .Then(() => this.ReStart());
+            .Then(() => this.LoadNextLevel()); //Add new function to load next world
         return this;
     }
 

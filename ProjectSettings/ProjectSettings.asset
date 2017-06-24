@@ -220,7 +220,7 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/barro/Documents/Volkanoid-data/user.keystore
+  AndroidKeystoreName: C:/Users/Alberto/Desktop/Proyectos/__IMPORTANTE/TripleLoop/__KEYSTORE/Volcanoid.keystore
   AndroidKeyaliasName: volkanoid
   AndroidTVCompatibility: 1
   AndroidIsGame: 1

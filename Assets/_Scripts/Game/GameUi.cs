@@ -50,7 +50,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         SetHearts(this.initialHealth);
         HideEnd();
         HideWinLevel();
-        HideWinGame();
+        HideWinWorld();
         return this;
     }
 
@@ -58,7 +58,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
     {
         HideEnd();
         HideWinLevel();
-        HideWinGame();
+        HideWinWorld();
         return this;
     }
 

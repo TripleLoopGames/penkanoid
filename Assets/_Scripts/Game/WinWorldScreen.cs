@@ -71,7 +71,6 @@ public class WinWorldScreen : MonoBehaviourEx
                 resolve();
             };
             this.continueButton.onClick.AddListener(onClick);
-
         });
     }
 

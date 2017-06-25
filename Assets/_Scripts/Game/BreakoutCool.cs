@@ -179,7 +179,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.holeTransition.Exit().Then(() =>
         {
             FullReset();
-            this.worldStage = this.worldProgress.GetFirstStage(this.dataController.GetCurrentWorldName());
+            this.worldStage = this.worldProgress.GetFirstStage(this.worldStage.World);
             this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
             this.holeTransition.Enter().Then(() => StartNewGame());
         });

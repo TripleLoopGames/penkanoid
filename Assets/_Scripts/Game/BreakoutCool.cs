@@ -71,6 +71,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return this;
     }
 
+    private BreakoutCool StartNewWorld()
+    {
+        this.inputDetector.EnableInput();
+        this.gameUI.ReStartCountDown();
+        return this;
+    }
+
     private BreakoutCool WinGame()
     {
         this.currentLevel.EnableIgnoreCollisionResult();
@@ -146,7 +153,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 Debug.Log("Unknown error " + exceptionName);
             });
         }), this.gameUI.ShowWinWorld())
-            .Then(() => this.LoadNextLevel()); //Add new function to load next world
+            .Then(() => this.LoadNextWorld());
         return this;
     }
 
@@ -184,6 +191,15 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         NextLevelReset();
         this.worldStage = this.worldProgress.GetNextStage(this.worldStage);
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+        return this;
+    }
+
+    private BreakoutCool LoadNextWorld()
+    {
+        NextLevelReset();
+        this.worldStage = this.worldProgress.GetNextWorld(this.worldStage);
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+        StartNewWorld();
         return this;
     }
 

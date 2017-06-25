@@ -21,10 +21,21 @@ public class WorldProgress
         }
         WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
         int levelId = worldStage.Id + 1;
-        if (worldData.name != worldStage.World)
+        bool isLast = worldData.levelsNames.Length <= levelId + 1;
+        return new WorldStage(levelId,
+                              worldData.name,
+                              worldData.levelsNames[levelId],
+                              isLast);
+    }
+
+    public WorldStage GetNextWorld(WorldStage worldStage)
+    {
+        if (!ValidateWorld(worldStage))
         {
-            levelId = 0;
+            return null;
         }
+        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
+        int levelId = 0;
         bool isLast = worldData.levelsNames.Length <= levelId + 1;
         return new WorldStage(levelId,
                               worldData.name,
@@ -45,10 +56,24 @@ public class WorldProgress
 
     private bool ValidateStage(WorldStage worldStage)
     {
-        /*if (worldStage.IsLast)
+        if (worldStage.IsLast)
         {
             return false;
-        }*/
+        }
+        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
+        if (worldData == null)
+        {
+            return false;
+        }
+        if (worldData.levelsNames.Length <= worldStage.Id + 1)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private bool ValidateWorld(WorldStage worldStage)
+    {
         WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
         if (worldData == null)
         {
@@ -57,10 +82,6 @@ public class WorldProgress
         if (worldData.name != worldStage.World)
         {
             return true;
-        }
-        if (worldData.levelsNames.Length <= worldStage.Id + 1)
-        {
-            return false;
         }
         return true;
     }

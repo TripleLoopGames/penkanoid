@@ -110,9 +110,9 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    public IPromise ShowWinWorld()
+    public IPromise ShowWinWorld(int time, int health, int score)
     {
-        return this.winWorldScreen.Show();
+        return this.winWorldScreen.Show(time, health, score);
     }
 
     public GameUi HideWinWorld()

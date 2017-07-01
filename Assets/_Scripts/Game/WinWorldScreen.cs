@@ -30,7 +30,7 @@ public class WinWorldScreen : MonoBehaviourEx
             }
             if (currentTransform.name == "Life")
             {
-                this.life = currentTransform.gameObject;
+                this.health = currentTransform.gameObject;
                 return true;
             }
             if (currentTransform.name == "Score")
@@ -48,17 +48,22 @@ public class WinWorldScreen : MonoBehaviourEx
         return this;
     }
 
-    public IPromise Show()
+    public IPromise Show(int timeValue, int healthValue, int scoreValue)
     {
+        ResetValues();
         this.background.GetComponent<Image>().enabled = true;
         this.continueButton.gameObject.SetActive(true);
         this.time.SetActive(true);
-        this.life.SetActive(true);
+        this.health.SetActive(true);
         this.score.SetActive(true);
 
         this.continueButton.interactable = false;
 
         TweenEaseAnimationScaleComponent.CreateSequence("WinWorld", new GameObject[] { this.continueButton.gameObject, this.background }, () => this.continueButton.interactable = true);
+
+        StartCoroutine(ScoreUpAnimation(this.time.GetComponent<Text>(), timeValue));
+        StartCoroutine(ScoreUpAnimation(this.health.GetComponent<Text>(), healthValue));
+        StartCoroutine(ScoreUpAnimation(this.score.GetComponent<Text>(), scoreValue));
 
         return new Promise((resolve, reject) =>
         {
@@ -79,14 +84,37 @@ public class WinWorldScreen : MonoBehaviourEx
         this.background.GetComponent<Image>().enabled = false;
         this.continueButton.gameObject.SetActive(false);
         this.time.SetActive(false);
-        this.life.SetActive(false);
+        this.health.SetActive(false);
         this.score.SetActive(false);
         return this;
+    }
+
+    private WinWorldScreen ResetValues()
+    {
+        this.time.GetComponent<Text>().text = "0";
+        this.health.GetComponent<Text>().text = "0";
+        this.score.GetComponent<Text>().text = "0";
+
+        return this;
+    }
+
+    private IEnumerator ScoreUpAnimation(Text textCounter, int finalValue)
+    {
+        int currentValue = 0;
+        while (currentValue < finalValue)
+        {
+            currentValue++;
+            textCounter.text = "" + currentValue;
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 
     private Button continueButton;
     private GameObject background;
     private GameObject time;
-    private GameObject life;
+    private GameObject health;
     private GameObject score;
+
+    private int timeValue;
+    private int healthValue;
 }

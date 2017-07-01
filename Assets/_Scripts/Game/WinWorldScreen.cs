@@ -1,4 +1,5 @@
-﻿using RSG;
+﻿using System;
+using RSG;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,22 +62,28 @@ public class WinWorldScreen : MonoBehaviourEx
 
         TweenEaseAnimationScaleComponent.CreateSequence("WinWorld", new GameObject[] { this.continueButton.gameObject, this.background }, () => this.continueButton.interactable = true);
 
-        StartCoroutine(ScoreUpAnimation(this.time.GetComponent<Text>(), timeValue));
-        StartCoroutine(ScoreUpAnimation(this.health.GetComponent<Text>(), healthValue));
-        StartCoroutine(ScoreUpAnimation(this.score.GetComponent<Text>(), scoreValue));
-
-        return new Promise((resolve, reject) =>
+        return Promise.All(new Promise((resolve, rejected) =>
         {
-            UnityAction onClick = null;
-            onClick = () =>
+            StartCoroutine(ScoreUpAnimation(this.time.GetComponent<Text>(), timeValue, () => resolve()));;
+        }), new Promise((resolve, rejected) =>
+        {
+            StartCoroutine(ScoreUpAnimation(this.health.GetComponent<Text>(), healthValue, () => resolve()));
+        }), new Promise((resolve, rejected) =>
+        {
+            StartCoroutine(ScoreUpAnimation(this.score.GetComponent<Text>(), scoreValue, () => resolve()));
+        }), new Promise((resolve, reject) =>
             {
-                SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
-                Messenger.Publish(new PlayEffectMessage(playRestart));
-                this.continueButton.onClick.RemoveListener(onClick);
-                resolve();
-            };
-            this.continueButton.onClick.AddListener(onClick);
-        });
+                UnityAction onClick = null;
+                onClick = () =>
+                {
+                    SoundData playRestart = new SoundData(GetInstanceID(), SRResources.Audio.Effects.Confirm);
+                    Messenger.Publish(new PlayEffectMessage(playRestart));
+                    this.continueButton.onClick.RemoveListener(onClick);
+                    resolve();
+                };
+                this.continueButton.onClick.AddListener(onClick);
+            })
+         );
     }
 
     public WinWorldScreen Hide()
@@ -98,15 +105,16 @@ public class WinWorldScreen : MonoBehaviourEx
         return this;
     }
 
-    private IEnumerator ScoreUpAnimation(Text textCounter, int finalValue)
+    private IEnumerator ScoreUpAnimation(Text textCounter, int finalValue, Action resolvePromise)
     {
         int currentValue = 0;
         while (currentValue < finalValue)
         {
             currentValue++;
             textCounter.text = "" + currentValue;
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.01f);
         }
+        resolvePromise();
     }
 
     private Button continueButton;

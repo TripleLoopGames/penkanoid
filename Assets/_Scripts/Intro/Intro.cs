@@ -21,16 +21,8 @@ public class Intro : MonoBehaviourEx
         InitializeBackendProxy(dataController)
         .InitializeTransition()
         .InitializeUI()
-        .InitializeInputDetector()
         .InitializeSoundCentralPool()
-        .InitializeLevelFactory()
-        .InitializeScenario()
-        .InitializePlayer()
-        .InitializeBallPool()
-        .InitializeBallParticlePool()
-        .InitializeStartBlock()
         .SetReferences()
-        .SetCollisionsBetweenLayers()
         .IntroStartProcess();
         return this;
     }
@@ -58,10 +50,12 @@ public class Intro : MonoBehaviourEx
             });
         })
         .Then(() => this.holeTransition.Enter())
+        .Then(() => this.ui.Show()
+        .Then(() => this.holeTransition.Exit())
+        .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu))))
         .Then(() =>
         {
             this.inputDetector.EnableInput();
-            this.player.BlockInteractions();
         });
     }
 
@@ -82,6 +76,7 @@ public class Intro : MonoBehaviourEx
         canvas.transform.SetParent(this.gameObject.transform, false);
         this.ui = canvas.GetComponent<IntroUi>();
         this.ui.Initialize();
+
         if (EventSystem.current == null)
         {
             GameObject eventSystem = Resources.Ui.EventSystem.Instantiate();
@@ -99,69 +94,12 @@ public class Intro : MonoBehaviourEx
         return this;
     }
 
-    private Intro InitializePlayer()
-    {
-        this.player = SRResources.Game.Player.Instantiate(new Vector2()).GetComponent<Player>();
-        this.player.name = "player";
-        this.player.transform.SetParent(this.gameObject.transform, false);
-        this.player.Initialize();
-        return this;
-    }
-
-    private Intro InitializeInputDetector()
-    {
-        this.inputDetector = GetComponent<InputDetector>();
-        this.inputDetector.Initialize();
-        return this;
-    }
-
-    private Intro InitializeBallPool()
-    {
-        this.ballPool = SRResources.Game.BallPool.Instantiate().GetComponent<SpawnPool>();
-        this.ballPool.name = "BallPool";
-        this.ballPool.transform.SetParent(this.gameObject.transform, false);
-        return this;
-    }
-
-    private Intro InitializeBallParticlePool()
-    {
-        this.ballParticlePool = SRResources.Game.BallParticlePool.Instantiate().GetComponent<SpawnPool>();
-        this.ballParticlePool.name = "BallParticlePool";
-        this.ballParticlePool.transform.SetParent(this.gameObject.transform, false);
-        return this;
-    }
-
     private Intro InitializeSoundCentralPool()
     {
         this.soundCentralPool = SRResources.Audio.SoundCentralPool.Instantiate().GetComponent<SoundCentralPool>();
         this.soundCentralPool.name = "SoundCentralPool";
         this.soundCentralPool.Initialize();
         this.soundCentralPool.transform.SetParent(this.gameObject.transform, false);
-        return this;
-    }
-
-    private Intro InitializeScenario()
-    {
-        GameObject scenario = this.levelFactory.CreateSceneario("basic", "basic");
-        scenario.transform.SetParent(this.gameObject.transform, false);
-        return this;
-    }
-
-    private Intro InitializeLevelFactory()
-    {
-        this.levelFactory = GetComponent<LevelFactory>();
-        return this;
-    }
-
-    private Intro InitializeStartBlock()
-    {
-        StartBlock startBlock = Resources.StartBlock.Instantiate().GetComponent<StartBlock>();
-        Action onClick = () =>
-            this.holeTransition.Exit()
-            .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu)));
-        startBlock.Initialize(onClick);
-        startBlock.name = "startBlock";
-        startBlock.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
@@ -183,14 +121,6 @@ public class Intro : MonoBehaviourEx
     private Intro SetReferences()
     {
         this.ui.SetCamera(this.mainCamera);
-        this.player.SetBallPool(this.ballPool);
-        this.player.SetBallParticlePool(this.ballParticlePool);
-        return this;
-    }
-
-    private Intro SetCollisionsBetweenLayers()
-    {
-        Physics2D.IgnoreLayerCollision(SRLayers.Balls, SRLayers.Balls, true);
         return this;
     }
 

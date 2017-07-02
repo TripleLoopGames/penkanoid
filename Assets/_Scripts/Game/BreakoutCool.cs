@@ -170,7 +170,14 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.player.StopInvulerability();
         this.gameUI.StopCountDown();
         this.gameUI.ShowEnd()
-            .Then(() => ReStart());
+            .Then((restart) =>
+            {
+                if (!restart)
+                {
+                    BackToMenu();
+                }
+                ReStart();
+            });
         return this;
     }
 
@@ -183,6 +190,13 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
             this.holeTransition.Enter().Then(() => StartNewGame());
         });
+        return this;
+    }
+
+    private BreakoutCool BackToMenu()
+    {
+        this.holeTransition.Exit()
+            .Then(() => Messenger.Publish(new ChangeSceneMessage(SRScenes.Menu)));
         return this;
     }
 

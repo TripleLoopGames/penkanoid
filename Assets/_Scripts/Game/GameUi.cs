@@ -99,7 +99,7 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this.hearts.Aggregate(0, (acc, heart) => acc + (heart.activeSelf ? 1 : 0));
     }
 
-    public IPromise ShowEnd()
+    public IPromise<bool> ShowEnd()
     {
         return this.gameOverScreen.Show();
     }

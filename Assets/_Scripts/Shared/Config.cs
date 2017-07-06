@@ -48,7 +48,7 @@ public static class Config
 
         public const string defaultWorld = Names.basic;
         public const int startingIndex = 0;
-        public static readonly string[] names = new string[] { Names.basic, Names.rock, Names.jungle };
+        public static readonly string[] names = new string[] { Names.basic, Names.rock, Names.jungle, Names.lava };
 
         public static class Names
         {
@@ -84,6 +84,14 @@ public static class Config
               "W03_S03_level",
               "W03_S04_level",
               "W03_S05_level",
+           }),
+           new WorldData(Names.lava, new string[]
+           {
+              "W04_S01_level",
+              "W04_S02_level",
+              "W04_S03_level",
+              "W04_S04_level",
+              "W04_S05_level",
            })
         };
     }

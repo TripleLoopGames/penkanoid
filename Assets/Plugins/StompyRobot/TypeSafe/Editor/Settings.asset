@@ -68,3 +68,13 @@ MonoBehaviour:
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - Path: Assets/_DynamicAssets/Resources/Game/Worlds/jungle/W03_S04_level.json
     Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/lava/W04_S02_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/lava/W04_S04_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/lava/W04_S03_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/lava/W04_S05_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - Path: Assets/_DynamicAssets/Resources/Game/Worlds/lava/W04_S01_level.json
+    Type: UnityEngine.TextAsset, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

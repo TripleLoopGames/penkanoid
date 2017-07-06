@@ -24,6 +24,9 @@ public class Intro : MonoBehaviourEx
         .InitializeSoundCentralPool()
         .SetReferences()
         .IntroStartProcess();
+
+        SoundData playVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.Volkanoid2MenuTheme, true);
+        Messenger.Publish(new PlayMusicMessage(playVulkanoid));
         return this;
     }
 

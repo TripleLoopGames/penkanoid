@@ -11,6 +11,7 @@ public class IntroUi : MonoBehaviourEx
     public IntroUi Initialize()
     {
         InitializeBackground();
+        InitializeCopyright();
         InitializeUIElements();
         return this;
     }
@@ -27,8 +28,16 @@ public class IntroUi : MonoBehaviourEx
     private IntroUi InitializeBackground()
     {
         background = Resources.Background.Instantiate();
-        background.name = "background";
+        background.name = "Background";
         background.transform.SetParent(this.gameObject.transform, false);
+        return this;
+    }
+
+    private IntroUi InitializeCopyright()
+    {
+        copyright = Resources.Copyright.Instantiate();
+        copyright.name = "Copyright";
+        copyright.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
 
@@ -43,7 +52,7 @@ public class IntroUi : MonoBehaviourEx
     private IntroUi InitializeTitle()
     {
         title = Resources.Title.Instantiate();
-        title.name = "title";
+        title.name = "Title";
         title.transform.SetParent(this.gameObject.transform, false);
         return this;
     }
@@ -130,6 +139,7 @@ public class IntroUi : MonoBehaviourEx
     }
 
     private GameObject background;
+    private GameObject copyright;
     private GameObject title;
     private GameObject volkie;
     private Button start;

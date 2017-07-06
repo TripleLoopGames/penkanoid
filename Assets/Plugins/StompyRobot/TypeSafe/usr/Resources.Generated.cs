@@ -88,33 +88,39 @@ public sealed class SRResources {
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Volkie {
+            public static global::TypeSafe.PrefabResource Copyright {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[3]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Canvas {
+            public static global::TypeSafe.PrefabResource Volkie {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[4]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource Title {
+            public static global::TypeSafe.PrefabResource Canvas {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[5]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource WinGame {
+            public static global::TypeSafe.PrefabResource Title {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[6]));
                 }
             }
             
-            public static global::TypeSafe.PrefabResource MainPanel {
+            public static global::TypeSafe.PrefabResource WinGame {
                 get {
                     return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[7]));
+                }
+            }
+            
+            public static global::TypeSafe.PrefabResource MainPanel {
+                get {
+                    return ((global::TypeSafe.PrefabResource)(__ts_internal_resources[8]));
                 }
             }
             
@@ -122,6 +128,7 @@ public sealed class SRResources {
                         new global::TypeSafe.PrefabResource("EventSystem", "Intro/Ui/EventSystem"),
                         new global::TypeSafe.PrefabResource("Background", "Intro/Ui/Background"),
                         new global::TypeSafe.PrefabResource("StartButton", "Intro/Ui/StartButton"),
+                        new global::TypeSafe.PrefabResource("Copyright", "Intro/Ui/Copyright"),
                         new global::TypeSafe.PrefabResource("Volkie", "Intro/Ui/Volkie"),
                         new global::TypeSafe.PrefabResource("Canvas", "Intro/Ui/Canvas"),
                         new global::TypeSafe.PrefabResource("Title", "Intro/Ui/Title"),
@@ -1514,10 +1521,17 @@ public sealed class SRResources {
                 }
             }
             
+            public static global::TypeSafe.Resource<global::UnityEngine.AudioClip> Volkanoid2MenuTheme {
+                get {
+                    return ((global::TypeSafe.Resource<global::UnityEngine.AudioClip>)(__ts_internal_resources[3]));
+                }
+            }
+            
             private static global::System.Collections.Generic.IList<global::TypeSafe.IResource> __ts_internal_resources = new global::System.Collections.ObjectModel.ReadOnlyCollection<global::TypeSafe.IResource>(new global::TypeSafe.IResource[] {
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VolkanoidTheme", "Audio/Music/VolkanoidTheme"),
                         new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("VictoryTheme", "Audio/Music/VictoryTheme"),
-                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("DefeatTheme", "Audio/Music/DefeatTheme")});
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("DefeatTheme", "Audio/Music/DefeatTheme"),
+                        new global::TypeSafe.Resource<global::UnityEngine.AudioClip>("Volkanoid2MenuTheme", "Audio/Music/Volkanoid2MenuTheme")});
             
             /// <summary>
             /// Return a list of all resources in this folder.

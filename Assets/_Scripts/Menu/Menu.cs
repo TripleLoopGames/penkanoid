@@ -18,11 +18,14 @@ public class Menu : MonoBehaviourEx
         BackendProxy backendProxy = InitializeBackendProxy(dataController);
         WorldSave[] worldSaves = dataController.GetWorldSaves();
         InitializeUI(worldSaves,
-                     () => backendProxy.ShowLeaderboard(),
-                     () => Application.Quit()        
+                     () => Application.Quit(),
+                     () => backendProxy.ShowLeaderboard()
                     );
         InitializeSoundCentralPool();
         this.MenuProcess();
+
+        SoundData playVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.Volkanoid2MenuTheme, true);
+        Messenger.Publish(new PlayMusicMessage(playVulkanoid));
         return this;
     }
 

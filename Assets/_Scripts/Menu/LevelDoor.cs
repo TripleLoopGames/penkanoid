@@ -58,10 +58,8 @@ public class LevelDoor : MonoBehaviour
 
     public LevelDoor SetWorldName(string type)
     {
-        Text uiText = GetComponentInChildren<Text>();
         this.gameObject.name = type;
         this.levelName = type;
-        uiText.text = type;
         return this;
     }
 

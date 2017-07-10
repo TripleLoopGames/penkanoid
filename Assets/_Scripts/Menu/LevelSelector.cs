@@ -328,6 +328,8 @@ public class LevelSelector : MonoBehaviour
             return levelDoor;
         }).ToList();
         AssingLevelDoorValues(this.startingIndex, this.levelDoors);
+        WorldSave foundWorldSave = this.worldSaves.First();
+        this.highScoreText.text = foundWorldSave.highScore.ToString();
         return this;
     }
 

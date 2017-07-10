@@ -20,13 +20,14 @@ public class WorldTitle : MonoBehaviour {
         {
             uiTitle.sprite = TitleSprites[2];
         }
-        if (type == "ice")
+        //Ice world doesn't exists
+        /*if (type == "ice")
         {
             uiTitle.sprite = TitleSprites[3];
-        }
+        }*/
         if (type == "lava")
         {
-            uiTitle.sprite = TitleSprites[4];
+            uiTitle.sprite = TitleSprites[3];
         }
         return this;
     }

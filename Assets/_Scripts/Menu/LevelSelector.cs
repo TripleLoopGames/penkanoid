@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System;
 using DG.Tweening;
 
+
 public class LevelSelector : MonoBehaviour
 {
-
     public LevelSelector Initialize(WorldSave[] worldSaves)
     {
         InitializeReferences()
@@ -120,7 +120,7 @@ public class LevelSelector : MonoBehaviour
             {
                 this.levelDoors.First()
                 .ResetVolkaRotation()
-                .AnimateEnterVolka()
+                .AnimateEnterVolka(worldSaves[this.makeInsideBoundaries(this.startingIndex-1, WorldsConfig.names.Length)].unlocked)
                 .Then(()=> resolve());
             }),
         };
@@ -183,7 +183,7 @@ public class LevelSelector : MonoBehaviour
             {
                 this.levelDoors.Last()
                 .ResetVolkaRotation()
-                .AnimateEnterVolka()
+                .AnimateEnterVolka(worldSaves[this.makeInsideBoundaries(this.startingIndex+1, WorldsConfig.names.Length)].unlocked)
                 .Then(()=> resolve());
             }),
         };
@@ -220,6 +220,7 @@ public class LevelSelector : MonoBehaviour
         string[] worldNames = getSelectedAndAdjecent(indexLevelDoor, WorldsConfig.names);
         worldNames.map((worldName, index) => levelDoors[index].SetWorldName(worldName)
                                              .SetWorldDoorSprite(worldName)
+                                             .ActivateEnterWorld()
         );
         return this;
     }
@@ -321,7 +322,7 @@ public class LevelSelector : MonoBehaviour
         this.levelDoors = this.waypoints.map((waypoint, index) =>
         {
             LevelDoor levelDoor = Resources.Door.Instantiate().GetComponent<LevelDoor>();
-            levelDoor.Initialize();
+            levelDoor.Initialize(worldSaves);
             levelDoor.SetPosition(waypoint.position);
             levelDoor.transform.SetParent(this.gameObject.transform, false);
             return levelDoor;
@@ -348,4 +349,5 @@ public class LevelSelector : MonoBehaviour
     private RectTransform highScore;
     private RectTransform worldTitle;
     private WorldSave[] worldSaves;
+    private DataController dataController;
 }

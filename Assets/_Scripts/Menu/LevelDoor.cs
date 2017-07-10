@@ -7,26 +7,28 @@ using System;
 public class LevelDoor : MonoBehaviour
 {
 
-    public LevelDoor Initialize()
+    public LevelDoor Initialize(WorldSave[] worldSaves)
     {
+        this.worldSaves = worldSaves;
+        bool worldUnlocked = this.worldSaves[0].unlocked;
         this.rectTransform = GetComponent<RectTransform>();
         this.changeLevel = GetComponentInChildren<Button>();
-        this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
+        //this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
         bool[] activated = GetComponentsInChildren<RectTransform>().map((childTransform) =>
         {
 
             if (childTransform.name == "Spiral")
             {
                 childTransform.DORotate(new Vector3(0, 0, -360), 2f)
-                              .SetEase(Ease.Linear)
-                              .SetRelative()
-                              .SetLoops(-1);
+                    .SetEase(Ease.Linear)
+                    .SetRelative()
+                    .SetLoops(-1);
                 return true;
             }
             if (childTransform.name == "volka")
             {
                 this.volka = childTransform;
-                AnimateEnterVolka();
+                AnimateEnterVolka(worldUnlocked);
                 return true;
             }
             return false;
@@ -45,10 +47,18 @@ public class LevelDoor : MonoBehaviour
         return this;
     }
 
-    public Promise AnimateEnterVolka()
+    public Promise AnimateEnterVolka(bool worldUnlocked)
     {
         return new Promise((resolve, reject) =>
         {
+            if (!worldUnlocked)
+            {
+                this.volka.transform.gameObject.GetComponent<Image>().color = Color.black;
+            }
+            else
+            {
+                this.volka.transform.gameObject.GetComponent<Image>().color = Color.white;
+            }
             this.volka.DORotate(new Vector3(0, 0, -80.7f), 1.5f)
                            .SetEase(Ease.OutBack)
                            .SetRelative()
@@ -94,6 +104,18 @@ public class LevelDoor : MonoBehaviour
         return this.levelName;
     }
 
+    public LevelDoor ActivateEnterWorld()
+    {
+        bool activate = Array.Find(worldSaves, worldSave => worldSave.name == this.levelName).unlocked;
+        if (!activate)
+        {
+            this.changeLevel.onClick.RemoveAllListeners();
+            return this;
+        }
+        this.changeLevel.onClick.AddListener(() => this.promise.Resolve(this.levelName));
+        return this;
+    }
+
     public LevelDoor SetOnClickDoorPromise(Promise<string> promise)
     {
         this.promise = promise;
@@ -122,6 +144,7 @@ public class LevelDoor : MonoBehaviour
     string levelName;
     private Promise<string> promise;
     private RectTransform volka;
+    private WorldSave[] worldSaves;
     [SerializeField]
     private Sprite[] DoorSprites;
 }

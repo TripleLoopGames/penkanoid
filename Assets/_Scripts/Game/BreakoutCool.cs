@@ -74,7 +74,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BreakoutCool StartNewWorld()
     {
         this.inputDetector.EnableInput();
-        this.gameUI.ReStartCountDown();
+        this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
         return this;
     }
 

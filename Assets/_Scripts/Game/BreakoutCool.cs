@@ -90,7 +90,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.player.BlockInteractions();
         //this.worldStage.Level
         int timeSpentInLevel = this.gameUI.GetTimeSpent() - previousLevelTime;
-        Debug.Log(this.gameUI.GetTimeSpent() + " - " + previousLevelTime + " = " + timeSpentInLevel);
         previousLevelTime += timeSpentInLevel;
         TrackLevelFinished(this.worldStage.Id+1, this.worldStage.World, timeSpentInLevel, this.gameUI.GetHeartsLeft());
         if (!this.worldStage.IsLast)

@@ -7,6 +7,8 @@ using DG.Tweening;
 using RSG;
 using Exceptions = Config.Exceptions;
 using System.Linq;
+using UnityEngine.Analytics;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(InputDetector))]
 [RequireComponent(typeof(LevelFactory))]
@@ -86,6 +88,11 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         this.gameUI.StopCountDown();
         this.player.StopInvulerability();
         this.player.BlockInteractions();
+        //this.worldStage.Level
+        int timeSpentInLevel = this.gameUI.GetTimeSpent() - previousLevelTime;
+        Debug.Log(this.gameUI.GetTimeSpent() + " - " + previousLevelTime + " = " + timeSpentInLevel);
+        previousLevelTime += timeSpentInLevel;
+        TrackLevelFinished(this.worldStage.Id+1, this.worldStage.World, timeSpentInLevel, this.gameUI.GetHeartsLeft());
         if (!this.worldStage.IsLast)
         {
             this.gameUI.ShowWinLevel()
@@ -106,6 +113,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
                 });
             return this;
         }
+        TrackWorldFinished(this.worldStage.World, this.gameUI.GetTimeSpent(), this.gameUI.GetHeartsLeft());
 
         // stop background music and play win music
         SoundData stopVulkanoid = new SoundData(GetInstanceID(), SRResources.Audio.Music.VolkanoidTheme);
@@ -118,10 +126,10 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
         int levelScore = this.gameUI.GetTimeLeft() + (this.gameUI.GetHeartsLeft() * Config.Score.HeartValue);
         int highScore = this.dataController.GetHighScore(currentWorldName);
-        if(levelScore > highScore)
+        if (levelScore > highScore)
         {
             this.dataController.SetHighScore(currentWorldName, levelScore);
-        }      
+        }
         Promise.All(new Promise((resolve, reject) =>
         {
             int tries = this.dataController.GetWorldGameTries(currentWorldName);
@@ -210,7 +218,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool LoadNextWorld()
     {
-        NextLevelReset();
+        NextWorldReset();
         this.worldStage = this.worldProgress.GetNextWorld(this.worldStage);
         this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
         StartNewWorld();
@@ -219,9 +227,21 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
 
     private BreakoutCool FullReset()
     {
+        previousLevelTime = 0;
         this.ballPool.DespawnAll();
         this.player.FullReset();
         this.gameUI.FullReset();
+        this.currentLevel.Destroy();
+        this.currentLevel = null;
+        return this;
+    }
+
+    private BreakoutCool NextWorldReset()
+    {
+        previousLevelTime = 0;
+        this.ballPool.DespawnAll();
+        this.player.NextLevelReset();
+        this.gameUI.NextLevelReset();
         this.currentLevel.Destroy();
         this.currentLevel = null;
         return this;
@@ -366,6 +386,28 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         return currentLevel;
     }
 
+    private BreakoutCool TrackLevelFinished(int level, string world, int timeTook, int healthLeft)
+    {
+        Dictionary<string, object> dataToSend = new Dictionary<string, object>
+        {
+            { "timeTook", timeTook },
+            { "health", healthLeft },
+        };
+        Analytics.CustomEvent("Finished Level: " + level + " World: " + world, dataToSend);
+        return this;
+    }
+
+    private BreakoutCool TrackWorldFinished(string world, int timeTook, int healthLeft)
+    {
+        Dictionary<string, object> dataToSend = new Dictionary<string, object>
+        {
+            { "timeTook", timeTook },
+            { "health", healthLeft },
+        };
+        Analytics.CustomEvent("Finished World: " + world, dataToSend);
+        return this;
+    }
+
     private void Start()
     {
         Initialize();
@@ -387,4 +429,5 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
     private BackendProxy backendProxy;
     private WorldProgress worldProgress;
     private WorldStage worldStage;
+    private int previousLevelTime = 0;
 }

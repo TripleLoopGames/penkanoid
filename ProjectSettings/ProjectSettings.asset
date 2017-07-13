@@ -665,8 +665,8 @@ PlayerSettings:
     Unity_Ads: 0
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: e1148a2f-b1ac-4bbb-a2a9-83bad9f7d325
+  projectName: breakout-cool
+  organizationId: triple-loop
   cloudEnabled: 0
   enableNewInputSystem: 0

@@ -45,20 +45,24 @@ public class BackendProxy : MonoBehaviour
 #endif
 
 #if UNITY_ANDROID
-    public IPromise Authenticate()
+    public IPromise Authenticate(bool forced = false)
     {
         return new Promise((resolve, reject) =>
         {
             LoginStatus loginStatus = this.dataController.GetLoginStatus();
-            if (loginStatus.LoggedIn)
+            if (!forced)
             {
-                resolve();
-                return;
-            }
-            if (loginStatus.RefusedLogIn)
-            {
-                reject(new Exception(Exceptions.RefusedLogin));
-                return;
+                if (loginStatus.LoggedIn)
+                {
+                    resolve();
+                    Debug.Log("logged IN");
+                    return;
+                }
+                if (loginStatus.RefusedLogIn)
+                {
+                    reject(new Exception(Exceptions.RefusedLogin));
+                    return;
+                }
             }
             Social.localUser.Authenticate((sucess) =>
             {
@@ -106,17 +110,21 @@ public class BackendProxy : MonoBehaviour
 
     public BackendProxy ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
     {
+        Action showLeaderBoard = () => ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderBoardId);
         LoginStatus loginStatus = this.dataController.GetLoginStatus();
         if (!loginStatus.LoggedIn)
         {
+            Authenticate(true)
+                .Then(() => showLeaderBoard())
+                .Catch((error) => { });
             return this;
         }
-        ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderBoardId);
+        showLeaderBoard();
         return this;
     }
 
     public BackendProxy Initialize(DataController dataController)
-    {       
+    {
         this.dataController = dataController;
         LoginStatus loginStatus = this.dataController.GetLoginStatus();
         if (loginStatus.ServicesActivated)
@@ -126,11 +134,11 @@ public class BackendProxy : MonoBehaviour
         }
         Debug.Log("Called Once");
         PlayGamesPlatform.Activate();
-        loginStatus.ServicesActivated = true;       
+        loginStatus.ServicesActivated = true;
         this.dataController.SetLoginStatus(loginStatus);
         return this;
     }
-    
+
 #endif
     private DataController dataController;
 }

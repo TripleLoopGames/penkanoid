@@ -142,13 +142,10 @@ public class DataController : MonoBehaviour
     {
         this.loginStatus = new LoginStatus();
         this.loginStatus.ServicesActivated = servicesActivated;
-        if (PlayerPrefs.HasKey("loggedIn"))
-        {
-            this.loginStatus.LoggedIn = PlayerPrefs.GetInt("loggedIn") != 0;
-        }
+        this.loginStatus.LoggedIn = loggedIn;
         if (PlayerPrefs.HasKey("refusedLogIn"))
         {
-            this.loginStatus.RefusedLogIn = PlayerPrefs.GetInt("loggedIn") != 0;
+            this.loginStatus.RefusedLogIn = PlayerPrefs.GetInt("refusedLogIn") != 0;
         }
         return this;
     }
@@ -158,7 +155,7 @@ public class DataController : MonoBehaviour
         Func<bool, int> boolToInt = boolean => boolean ? 1 : 0;
 
         servicesActivated = loginStatus.ServicesActivated;
-        PlayerPrefs.SetInt("loggedIn", boolToInt(loginStatus.LoggedIn));
+        servicesActivated = this.loginStatus.LoggedIn;
         PlayerPrefs.SetInt("refusedLogIn", boolToInt(loginStatus.RefusedLogIn));
         return this;
     }
@@ -197,4 +194,5 @@ public class DataController : MonoBehaviour
     private LoginStatus loginStatus;
     private WorldStatus worldStatus;
     private static bool servicesActivated;
+    private static bool loggedIn;
 }

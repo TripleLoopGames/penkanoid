@@ -96,6 +96,26 @@ public class DataController : MonoBehaviour
         return this;
     }
 
+    public DataController SetWorldLocking(string worldName, bool locking)
+    {
+        this.playerProgress.worldSaves = this.playerProgress.worldSaves.map(worldSave =>
+        {
+            if (worldSave.name != worldName)
+            {
+                return worldSave;
+            }
+            return new WorldSave
+            {
+                name = worldSave.name,
+                highScore = worldSave.highScore,
+                unlocked = locking,
+                tries = worldSave.tries
+            };
+        }).ToArray();
+        SavePlayerProgress(this.playerProgress);
+        return this;
+    }
+
     public int GetHighScore(string worldName)
     {
         return FindWorldSave(this.playerProgress.worldSaves, worldName).highScore;

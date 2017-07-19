@@ -134,6 +134,8 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
             int tries = this.dataController.GetWorldGameTries(currentWorldName);
             // reset so when player tries again tries are set to 0
             this.dataController.SetWorldGameTries(currentWorldName, 0);
+            string nextWorldName = this.worldProgress.GetNextWorld(this.worldStage).World;
+            this.dataController.SetWorldLocking(nextWorldName, true);
             int timeSpent = this.gameUI.GetTimeSpent();
             this.gameUI.SetWinGameInfo(timeSpent, tries);
             int totalHighScore = this.dataController.GetWorldSaves().Aggregate(0, (acc, worldSave) => acc + worldSave.highScore);

@@ -69,6 +69,7 @@ public class BackendProxy : MonoBehaviour
                 if (sucess)
                 {
                     loginStatus.LoggedIn = true;
+                    loginStatus.RefusedLogIn = false;
                     this.dataController.SetLoginStatus(loginStatus);
                     resolve();
                     return;

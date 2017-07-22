@@ -128,40 +128,16 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage>
         if (levelScore > highScore)
         {
             this.dataController.SetHighScore(currentWorldName, levelScore);
-        }
-        Promise.All(new Promise((resolve, reject) =>
-        {
-            int tries = this.dataController.GetWorldGameTries(currentWorldName);
-            // reset so when player tries again tries are set to 0
-            this.dataController.SetWorldGameTries(currentWorldName, 0);
-            string nextWorldName = this.worldProgress.GetNextWorld(this.worldStage).World;
-            this.dataController.SetWorldLocking(nextWorldName, true);
-            int timeSpent = this.gameUI.GetTimeSpent();
-            this.gameUI.SetWinGameInfo(timeSpent, tries);
-            int totalHighScore = this.dataController.GetWorldSaves().Aggregate(0, (acc, worldSave) => acc + worldSave.highScore);
-            this.backendProxy.PublishScore(totalHighScore)
-            .Then(() => resolve())
-            .Catch((exception) =>
-            {
-                string exceptionName = exception.Message;
-                if (exceptionName == Exceptions.FailedPublishScore)
-                {
-                    resolve();
-                    return;
-                }
-                if (exceptionName == Exceptions.RefusedLogin)
-                {
-                    resolve();
-                    return;
-                }
-                if (exceptionName == Exceptions.NotLoggedIn)
-                {
-                    resolve();
-                    return;
-                }
-                Debug.Log("Unknown error " + exceptionName);
-            });
-        }), this.gameUI.ShowWinWorld(this.gameUI.GetTimeLeft(), this.gameUI.GetHeartsLeft(), levelScore))
+        }       
+        int tries = this.dataController.GetWorldGameTries(currentWorldName);
+        // reset so when player tries again tries are set to 0
+        this.dataController.SetWorldGameTries(currentWorldName, 0);
+        string nextWorldName = this.worldProgress.GetNextWorld(this.worldStage).World;
+        this.dataController.SetWorldLocking(nextWorldName, true);
+        int timeSpent = this.gameUI.GetTimeSpent();
+        this.gameUI.SetWinGameInfo(timeSpent, tries);
+
+        this.gameUI.ShowWinWorld(this.gameUI.GetTimeLeft(), this.gameUI.GetHeartsLeft(), levelScore)
             .Then(() => this.LoadNextWorld());
         return this;
     }

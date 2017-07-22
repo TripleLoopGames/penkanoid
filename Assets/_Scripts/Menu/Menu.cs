@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using RSG;
 using DG.Tweening;
 using System;
+using System.Linq;
 
 [RequireComponent(typeof(DataController))]
 [RequireComponent(typeof(BackendProxy))]
@@ -17,9 +18,16 @@ public class Menu : MonoBehaviourEx
         DataController dataController = InitializeDataController();
         BackendProxy backendProxy = InitializeBackendProxy(dataController);
         WorldSave[] worldSaves = dataController.GetWorldSaves();
+        Action publishAndShowLeaderboard = () =>
+        {
+        int totalHighScore = dataController.GetWorldSaves().Aggregate(0, (acc, worldSave) => acc + worldSave.highScore);
+        backendProxy.PublishScore(totalHighScore)
+        .Then(() => backendProxy.ShowLeaderboard())
+        .Catch(exception => { });
+        };
         InitializeUI(worldSaves,
-                     () => Application.Quit(),
-                     () => backendProxy.ShowLeaderboard()
+                        () => Application.Quit(),
+                        publishAndShowLeaderboard
                     );
         InitializeSoundCentralPool();
         this.MenuProcess();

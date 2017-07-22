@@ -139,7 +139,7 @@ public class LevelSelector : MonoBehaviour {
           Sequence mySequence = DOTween.Sequence();
           mySequence.Append(this.highScore.DOMoveY(250, 0.5f, false).SetRelative());
           mySequence.AppendCallback(() => {
-            string worldName = this.levelDoors.First().GetWorldName();
+            string worldName = this.levelDoors.Last().GetWorldName();
             WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
             this.highScoreText.text = foundWorldSave.highScore.ToString();
           });

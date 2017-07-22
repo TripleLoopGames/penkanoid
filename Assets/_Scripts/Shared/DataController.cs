@@ -175,7 +175,7 @@ public class DataController : MonoBehaviour
         Func<bool, int> boolToInt = boolean => boolean ? 1 : 0;
 
         servicesActivated = loginStatus.ServicesActivated;
-        servicesActivated = this.loginStatus.LoggedIn;
+        loggedIn = loginStatus.LoggedIn;
         PlayerPrefs.SetInt("refusedLogIn", boolToInt(loginStatus.RefusedLogIn));
         return this;
     }
@@ -200,7 +200,7 @@ public class DataController : MonoBehaviour
     private WorldSave FindWorldSave(WorldSave[] worldSaves, string worldName)
     {
         WorldSave foundworldSave = Array.Find(this.playerProgress.worldSaves,
-                                             (worldSave) => worldSave.name == worldName);
+                                                (worldSave) => worldSave.name == worldName);
         if (foundworldSave == null)
         {
             Debug.LogError("Can't find world");

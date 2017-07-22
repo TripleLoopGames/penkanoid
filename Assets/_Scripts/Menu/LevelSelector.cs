@@ -82,21 +82,25 @@ public class LevelSelector : MonoBehaviour {
     Promise[] extraAnimations = new Promise[] {
       new Promise((resolve, reject) => {
           Sequence mySequence = DOTween.Sequence();
-          mySequence.Append(this.highScore.DOMoveY(250, 0.5f, false).SetRelative());
+          Vector2 targetPosition = this.highScore.GetComponentInChildren<WaypointUi>().GetPosition();
+          Vector2 originalPosition = this.highScore.position;
+          mySequence.Append(this.highScore.DOMove(targetPosition, 0.5f, false));
           mySequence.AppendCallback(() => {
             string worldName = this.levelDoors.First().GetWorldName();
             WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
             this.highScoreText.text = foundWorldSave.highScore.ToString();
           });
-          mySequence.Append(this.highScore.DOMoveY(-250, 0.5f, false).SetRelative());
+          mySequence.Append(this.highScore.DOMove(originalPosition, 0.5f, false));
           mySequence.AppendCallback(() => resolve());
         }),
         new Promise((resolve, reject) => {
           string worldName = this.levelDoors.First().GetWorldName();
           Sequence mySequence = DOTween.Sequence();
-          mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+          Vector2 targetPosition = this.worldTitle.GetComponentInChildren<WaypointUi>().GetPosition();
+          Vector2 originalPosition = this.worldTitle.position;
+          mySequence.Append(this.worldTitle.DOMove(targetPosition, 0.5f, false));
           mySequence.AppendCallback(() => this.worldTitle.GetComponent<WorldTitle>().ChangeTextImage(worldName));
-          mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
+          mySequence.Append(this.worldTitle.DOMove(originalPosition, 0.5f, false));
           mySequence.AppendCallback(() => resolve());
         }),
         new Promise((resolve, reject) => {
@@ -137,21 +141,25 @@ public class LevelSelector : MonoBehaviour {
     Promise[] extraAnimations = new Promise[] {
       new Promise((resolve, reject) => {
           Sequence mySequence = DOTween.Sequence();
-          mySequence.Append(this.highScore.DOMoveY(250, 0.5f, false).SetRelative());
+          Vector2 targetPosition = this.highScore.GetComponentInChildren<WaypointUi>().GetPosition();
+          Vector2 originalPosition = this.highScore.position;
+          mySequence.Append(this.highScore.DOMove(targetPosition, 0.5f, false));
           mySequence.AppendCallback(() => {
             string worldName = this.levelDoors.Last().GetWorldName();
             WorldSave foundWorldSave = Array.Find(this.worldSaves, (worldSave) => worldSave.name == worldName);
             this.highScoreText.text = foundWorldSave.highScore.ToString();
           });
-          mySequence.Append(this.highScore.DOMoveY(-250, 0.5f, false).SetRelative());
+          mySequence.Append(this.highScore.DOMove(originalPosition, 0.5f, false));
           mySequence.AppendCallback(() => resolve());
         }),
         new Promise((resolve, reject) => {
           string worldName = this.levelDoors.Last().GetWorldName();
           Sequence mySequence = DOTween.Sequence();
-          mySequence.Append(this.worldTitle.DOMoveY(250, 0.5f, false).SetRelative());
+          Vector2 targetPosition = this.worldTitle.GetComponentInChildren<WaypointUi>().GetPosition();
+          Vector2 originalPosition = this.worldTitle.position;
+          mySequence.Append(this.worldTitle.DOMove(targetPosition, 0.5f, false));
           mySequence.AppendCallback(() => this.worldTitle.GetComponent<WorldTitle>().ChangeTextImage(worldName));
-          mySequence.Append(this.worldTitle.DOMoveY(-250, 0.5f, false).SetRelative());
+          mySequence.Append(this.worldTitle.DOMove(originalPosition, 0.5f, false));
           mySequence.AppendCallback(() => resolve());
         }),
         new Promise((resolve, reject) => {

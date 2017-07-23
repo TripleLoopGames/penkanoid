@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Analytics;
 
-
 [RequireComponent(typeof (InputDetector))]
 [RequireComponent(typeof (LevelFactory))]
 [RequireComponent(typeof (ChangeSceneComponent))]
@@ -119,13 +118,23 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
     int tries = this.dataController.GetWorldGameTries(currentWorldName);
     // reset so when player tries again tries are set to 0
     this.dataController.SetWorldGameTries(currentWorldName, 0);
-    string nextWorldName = this.worldProgress.GetNextWorld(this.worldStage).World;
-    this.dataController.SetWorldLocking(nextWorldName, true);
     int timeSpent = this.gameUI.GetTimeSpent();
     this.gameUI.SetWinGameInfo(timeSpent, tries);
 
     this.gameUI.ShowWinWorld(this.gameUI.GetTimeLeft(), this.gameUI.GetHeartsLeft(), levelScore)
-      .Then(() => this.LoadNextWorld());
+      .Then(() => {
+        string nextWorldName = this.worldProgress.GetNextWorld(this.worldStage.World);
+        if (nextWorldName == null) {
+          BackToMenu();
+          return;
+        }
+        this.dataController.SetWorldLocking(nextWorldName, true);
+        NextWorldReset();
+        this.worldStage = this.worldProgress.GetFirstStage(nextWorldName);
+        this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
+        StartNewWorld();
+        return;
+      });
     return this;
   }
 
@@ -170,14 +179,6 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
     NextLevelReset();
     this.worldStage = this.worldProgress.GetNextStage(this.worldStage);
     this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
-    return this;
-  }
-
-  private BreakoutCool LoadNextWorld() {
-    NextWorldReset();
-    this.worldStage = this.worldProgress.GetNextWorld(this.worldStage);
-    this.currentLevel = this.GenerateAndAddLevel(this.worldStage);
-    StartNewWorld();
     return this;
   }
 

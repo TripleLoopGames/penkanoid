@@ -19,7 +19,7 @@ public class WorldProgress
         {
             return null;
         }
-        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
+        WorldData worldData = FindWorldData(worldStage.World);
         int levelId = worldStage.Id + 1;
         bool isLast = worldData.levelsNames.Length <= levelId + 1;
         return new WorldStage(levelId,
@@ -28,29 +28,16 @@ public class WorldProgress
                               isLast);
     }
 
-    public WorldStage GetNextWorld(WorldStage worldStage)
-    {
-        if (!ValidateWorld(worldStage))
-        {
+    public string GetNextWorld(string worldName){
+        int worldIndex = Array.FindIndex(Localconfig.worldsData, worldData => worldData.name == worldName);
+        if(worldIndex == -1 || worldIndex >= (Localconfig.worldsData.Length - 1)){
             return null;
         }
-        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
-        int levelId = 0;
-        bool isLast = worldData.levelsNames.Length <= levelId + 1;
-        return new WorldStage(levelId,
-                              worldData.name,
-                              worldData.levelsNames[levelId],
-                              isLast);
+        return Localconfig.worldsData[worldIndex+1].name;
     }
 
-    private WorldData FindWorldData(string worldName, bool nextWorld = false)
+    private WorldData FindWorldData(string worldName)
     { 
-        
-        if (nextWorld)
-        {
-            int currentIndexWorld = Array.FindIndex(Localconfig.worldsData, worldData => worldData.name == worldName);
-            return Localconfig.worldsData[currentIndexWorld+1];
-        }
         return Array.Find(Localconfig.worldsData, worldData => worldData.name == worldName);
     }
 
@@ -60,7 +47,7 @@ public class WorldProgress
         {
             return false;
         }
-        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
+        WorldData worldData = FindWorldData(worldStage.World);
         if (worldData == null)
         {
             return false;
@@ -72,17 +59,4 @@ public class WorldProgress
         return true;
     }
 
-    private bool ValidateWorld(WorldStage worldStage)
-    {
-        WorldData worldData = FindWorldData(worldStage.World, worldStage.IsLast);
-        if (worldData == null)
-        {
-            return false;
-        }
-        if (worldData.name != worldStage.World)
-        {
-            return true;
-        }
-        return true;
-    }
 }

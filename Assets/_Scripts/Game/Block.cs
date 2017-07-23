@@ -45,7 +45,7 @@ public class Block : MonoBehaviourEx
 
     public Block Kill()
     {
-        if (destroyed)
+        if (destroyed || this.Indestructible)
         {
             return this;
         }

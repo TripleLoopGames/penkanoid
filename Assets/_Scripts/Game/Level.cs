@@ -62,17 +62,19 @@ public class Level : MonoBehaviour
             new Vector2(1, 1)
         };
 
-        int maxLength = blocksMatrix.GetLength(0);
+        int maxHeight = blocksMatrix.GetLength(0);
         int maxWidth = blocksMatrix.GetLength(1);
 
         Func<Vector2, bool> isDirectionAvailable = (direction) =>
         {
             Vector2 result = direction + position;
-            if (result.x > maxLength || result.y > maxWidth)
+            Debug.Log(result.x+" x - y "+ result.y);
+            Debug.Log(maxHeight+" height - width "+ maxWidth);
+            if (result.x >= maxHeight || result.y >= maxWidth)
             {
                 return false;
             }
-            if (result.x < 0 || (int)result.y < 0)
+            if (result.x < 0 || result.y < 0)
             {
                 return false;
             }

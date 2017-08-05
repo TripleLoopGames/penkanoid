@@ -33,11 +33,6 @@ public static class Config
         public const int HeartValue = 20;
     }
 
-    public static class GameFlow
-    {
-        public const int countDownTime = 200;
-    }
-
     public static class Ball
     {
         public const int lifetime = 10;
@@ -55,13 +50,20 @@ public static class Config
             public const string basic = "basic";
             public const string rock = "rock";
             public const string jungle = "jungle";
-            public const string ice = "ice";
             public const string lava = "lava";
+        }
+
+        public static class Times
+        {
+            public const int basic = 250;
+            public const int rock = 450;
+            public const int jungle = 450;
+            public const int lava = 550;
         }
 
         public static readonly WorldData[] worldsData = new WorldData[]
         {
-           new WorldData(Names.basic, new string[]
+           new WorldData(Names.basic, Times.basic, new string[]
            {
               "W01_S01_level",
               "W01_S02_level",
@@ -69,7 +71,7 @@ public static class Config
               "W01_S04_level",
               "W01_S05_level",
            }),
-           new WorldData(Names.rock, new string[]
+           new WorldData(Names.rock, Times.rock, new string[]
            {
               "W02_S01_level",
               "W02_S02_level",
@@ -77,7 +79,7 @@ public static class Config
               "W02_S04_level",
               "W02_S05_level",
            }),
-           new WorldData(Names.jungle, new string[]
+           new WorldData(Names.jungle, Times.jungle, new string[]
            {
               "W03_S01_level",
               "W03_S02_level",
@@ -85,7 +87,7 @@ public static class Config
               "W03_S04_level",
               "W03_S05_level",
            }),
-           new WorldData(Names.lava, new string[]
+           new WorldData(Names.lava, Times.lava, new string[]
            {
               "W04_S01_level",
               "W04_S02_level",

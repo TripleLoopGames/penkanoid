@@ -36,6 +36,10 @@ public class WorldProgress
         return Localconfig.worldsData[worldIndex+1].name;
     }
 
+    public int GetWorldTime(string worldName){
+        return FindWorldData(worldName).time;
+    }
+
     private WorldData FindWorldData(string worldName)
     { 
         return Array.Find(Localconfig.worldsData, worldData => worldData.name == worldName);

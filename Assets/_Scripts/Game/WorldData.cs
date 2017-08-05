@@ -3,9 +3,12 @@
     public string name;
     public string[] levelsNames;
 
-    public WorldData(string name, string[] levelsNames)
+    public int time;
+
+    public WorldData(string name, int time, string[] levelsNames)
     {
         this.name = name;
         this.levelsNames = levelsNames;
+        this.time = time;
     }
 }

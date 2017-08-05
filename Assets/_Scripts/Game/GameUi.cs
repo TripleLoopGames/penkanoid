@@ -10,12 +10,12 @@ using System.Linq;
 
 public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHandle<ModifyTimeMessage>
 {
-    public GameUi Initialize(int initialHealth, int startTime)
+    public GameUi Initialize(int initialHealth)
     {
         this.initialHealth = initialHealth;
         this.canvasGroup = GetComponent<CanvasGroup>();
         InitializeHealth(initialHealth)
-        .InitializeTimer(startTime)
+        .InitializeTimer()
         .InitializeGameOverScreen()
         .InitializeWinWorld()
         .InitializeWinLevel()
@@ -213,14 +213,14 @@ public class GameUi : MonoBehaviourEx, IHandle<PlayerChangeHealthMessage>, IHand
         return this;
     }
 
-    private GameUi InitializeTimer(int startTime)
+    private GameUi InitializeTimer()
     {
         GameObject time = Resources.Time.Instantiate();
         this.timer = time.GetComponent<TimerComponent>();
         this.timer.name = "Time";
         this.timer.transform.SetParent(this.gameObject.transform, false);
         this.timeText = time.GetComponentInChildren<Text>();
-        this.timeText.text = startTime.ToString();
+        this.timeText.text = "";
         return this;
     }
 

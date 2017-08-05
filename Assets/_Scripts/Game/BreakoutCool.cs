@@ -56,7 +56,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
     int tries = this.dataController.GetWorldGameTries(currentWorldName);
     this.dataController.SetWorldGameTries(currentWorldName, (tries + 1));
     this.inputDetector.EnableInput();
-    this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+    this.gameUI.StartCountDown(worldProgress.GetWorldTime(this.worldStage.World), () => EndGame());
     return this;
   }
 
@@ -68,7 +68,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
 
   private BreakoutCool StartNewWorld() {
     this.inputDetector.EnableInput();
-    this.gameUI.StartCountDown(Config.GameFlow.countDownTime, () => EndGame());
+    this.gameUI.StartCountDown(worldProgress.GetWorldTime(this.worldStage.World), () => EndGame());
     return this;
   }
 
@@ -244,7 +244,7 @@ public class BreakoutCool : MonoBehaviourEx, IHandle<PlayerDeadMessage> {
     canvas.name = "Canvas";
     canvas.transform.SetParent(this.gameObject.transform, false);
     this.gameUI = canvas.GetComponent<GameUi>();
-    this.gameUI.Initialize(Config.Player.InitialHealth, Config.GameFlow.countDownTime);
+    this.gameUI.Initialize(Config.Player.InitialHealth);
     if (EventSystem.current == null) {
       GameObject eventSystem = SRResources.Game.Ui.EventSystem.Instantiate();
       eventSystem.name = "EventSystemIn";

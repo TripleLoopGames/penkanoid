@@ -17,7 +17,7 @@ public class BackendProxy : MonoBehaviour
         });
     }
 
-    public IPromise PublishScore(int score, string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
+    public IPromise PublishScore(int score, string leaderBoardId = GPGSIds.leaderboard_best_volcano)
     {
         return new Promise((resolve, reject) =>
         {
@@ -26,7 +26,7 @@ public class BackendProxy : MonoBehaviour
         });
     }
 
-    public void ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
+    public void ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_best_volcano)
     {
         return;
     }
@@ -82,7 +82,7 @@ public class BackendProxy : MonoBehaviour
         });
     }
 
-    public IPromise PublishScore(int score, string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
+    public IPromise PublishScore(int score, string leaderBoardId = GPGSIds.leaderboard_best_volcano)
     {
         return new Promise((resolve, reject) =>
         {
@@ -109,7 +109,7 @@ public class BackendProxy : MonoBehaviour
         });
     }
 
-    public BackendProxy ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_test_cool_leaderboard_d)
+    public BackendProxy ShowLeaderboard(string leaderBoardId = GPGSIds.leaderboard_best_volcano)
     {
         Action showLeaderBoard = () => ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(leaderBoardId);
         LoginStatus loginStatus = this.dataController.GetLoginStatus();

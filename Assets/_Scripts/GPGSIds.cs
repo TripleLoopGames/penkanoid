@@ -24,7 +24,7 @@
 
 public static class GPGSIds
 {
-        public const string leaderboard_test_cool_leaderboard_d = "CgkIxoWotc4SEAIQAQ"; // <GPGSID>
+        public const string leaderboard_best_volcano = "CgkIxoWotc4SEAIQAg"; // <GPGSID>
 
 }
 
